@@ -1,4 +1,4 @@
-module BMP_ROM_milwaukee(clk,addr,dout);
+module BMP_ROM_Pounce(clk,addr,dout);
 
   input clk;     // 50MHz clock
   input [15:0] addr;
@@ -7,7 +7,7 @@ module BMP_ROM_milwaukee(clk,addr,dout);
   reg [8:0] rom[0:30801];
 
   initial
-    $readmemh("milwaukee.hex",rom);
+    $readmemh("Pounce.hex",rom);
 
   always @(posedge clk)
     dout <= rom[addr];
