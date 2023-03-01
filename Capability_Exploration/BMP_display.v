@@ -4,25 +4,14 @@
 //=======================================================
 
 module BMP_display(
+  input clk,
+  input rst_n,
+  input pll_locked,
 
-
-	//////////// CLOCK //////////
-	input 		          		CLOCK2_50,
-	input 		          		CLOCK3_50,
-	input 		          		CLOCK4_50,
-	input 		          		REF_CLK,
-
-	
-	//////////// KEY //////////
-	input 						RST_n,	// this is KEY[0]
-
-	//////////// LED //////////
-	output		     [9:0]		LEDR,
-
-	//////////// VGA //////////
+	//////////// VGA ////////// ----> PASSED OUT TO TOP LEVEL
 	output		          		VGA_BLANK_N,
 	output		     [7:0]		VGA_B,
-	output		          		VGA_CLK,
+	input		          		  VGA_CLK,
 	output		     [7:0]		VGA_G,
 	output		          		VGA_HS,
 	output		     [7:0]		VGA_R,
@@ -33,9 +22,9 @@ module BMP_display(
   ////////////////////////////////////
   // internal nets for connections //
   //////////////////////////////////
-  wire rst_n;						// synchronized global reset signal
-  wire clk;							// 50MHz clock from PLL
-  wire pll_locked;					// PLL is locked on reference clock
+  // wire rst_n;						// synchronized global reset signal
+  // wire clk;							// 50MHz clock from PLL
+  // wire pll_locked;					// PLL is locked on reference clock
   wire [9:0] xpix;					// current X coordinate of VGA
   wire [8:0] ypix;					// current Y coordinate of VGA
   wire [18:0] raddr;				// address into videoMem for reads
@@ -50,19 +39,19 @@ module BMP_display(
   
   reg [18:0] count;					// generate a pulse on add_img
   
-  ////////////////////////////////////////////////////////
-  // Instantiate PLL to generate clk and 25MHz VGA_CLK //
-  //////////////////////////////////////////////////////
-  PLL iPLL(.refclk(REF_CLK), .rst(~RST_n),.outclk_0(clk),.outclk_1(VGA_CLK),
-           .locked(pll_locked));
+  // ////////////////////////////////////////////////////////
+  // // Instantiate PLL to generate clk and 25MHz VGA_CLK //
+  // //////////////////////////////////////////////////////
+  // PLL iPLL(.refclk(REF_CLK), .rst(~RST_n),.outclk_0(clk),.outclk_1(VGA_CLK),
+  //          .locked(pll_locked));
  
-  /////////////////////////////////////
-  // instantiate rst_n synchronizer //
-  ///////////////////////////////////
-  rst_synch iRST(.clk(clk),.RST_n(RST_n), .pll_locked(pll_locked), .rst_n(rst_n));
+  // /////////////////////////////////////
+  // // instantiate rst_n synchronizer //
+  // ///////////////////////////////////
+  // rst_synch iRST(.clk(clk),.RST_n(RST_n), .pll_locked(pll_locked), .rst_n(rst_n));
 
 
-  //assign LEDR = 10'h3FF;
+  // //assign LEDR = 10'h3FF;
  
   ///////////////////////////////////////
   // Instantiate VGA Timing Generator //
@@ -128,20 +117,21 @@ module BMP_display(
 				(count==19'h05005) ? 10'd256 :
                 (count[18]) ? 10'h180 : 10'h40;
 
-logic [9:0] XLOC;
-logic [8:0] YLOC;
-logic [7:0] control; /// {[5:0] index, (img or fnt?)}
+// COMMAND PARSING LOGIC
+// logic [9:0] XLOC;
+// logic [8:0] YLOC;
+// logic [7:0] control; /// {[5:0] index, (img_or_fnt?)}
 
-always_ff @ (posedge clk, negedge rst_n) begin
-  if (!rst_n)
-    // default
-  else if (addr == 16'hc008)
-    // write databus to XLOC
-  else if (addr == 16'hc009)
-    // write databus to XLOC
-  else if (addr == 16'hc00a)
-    // write databus to control
-end
+// always_ff @ (posedge clk, negedge rst_n) begin
+//   if (!rst_n)
+//     // default
+//   else if (addr == 16'hc008)
+//     // write databus to XLOC
+//   else if (addr == 16'hc009)
+//     // write databus to XLOC
+//   else if (addr == 16'hc00a)
+//     // write databus to control
+// end
   
 	
  endmodule

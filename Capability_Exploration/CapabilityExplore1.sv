@@ -1,4 +1,4 @@
-module CapabilityExplore1 (KEY, CLOCK_50, SW, LEDR, TX, RX);
+module CapabilityExplore1 (KEY, CLOCK_50, SW, LEDR, TX, RX, VGA_BLANK_N, VGA_B, VGA_CLK, VGA_G, VGA_HS, VGA_R, VGA_SYNC_N, VGA_VS);
 	
 	input [3:0] KEY; 		// key/reset
 	input CLOCK_50;			// clock
@@ -7,6 +7,17 @@ module CapabilityExplore1 (KEY, CLOCK_50, SW, LEDR, TX, RX);
 	output [9:0] LEDR;		// debug process
 	output TX;				// UART TX line
     input RX; 				// UART TX line
+
+	//////////////// VGA STUFF ///////////////////
+	output		          		VGA_BLANK_N;
+	output		     [7:0]		VGA_B;
+	output		          		VGA_CLK;
+	output		     [7:0]		VGA_G;
+	output		          		VGA_HS;
+	output		     [7:0]		VGA_R;
+	output		          		VGA_SYNC_N;
+	output		          		VGA_VS;
+
 	
 	// internal signals for modified cpu
 	logic rst_n;
@@ -20,6 +31,12 @@ module CapabilityExplore1 (KEY, CLOCK_50, SW, LEDR, TX, RX);
 	wire [7:0] databus;
 	logic iorw_n, iocs_n, rx_q_empty, tx_q_full;
 
+	// BMP
+	logic bmp_sel;
+
+	// PLL/rst_synch
+	logic pll_locked;
+
 	////////////////// REMOVE
 	logic [7:0] status;
 	
@@ -29,15 +46,8 @@ module CapabilityExplore1 (KEY, CLOCK_50, SW, LEDR, TX, RX);
 		// reset behavior, when KEY0 is pressed it should blank the LED's
 		if(!rst_n)
 			LEDR_reg <= 10'h000;
-			
-		// if addr is of write and a memory read is enabled, load into LEDR
-		// if (mm_we & addr==16'hc000) begin
-		// 	// just take low 10 bits for LEDR
-		// 	LEDR_reg <= wdata[9:0];
-			
-		// end
 		else
-			LEDR_reg <= status;
+			LEDR_reg <= status;		// REPLACE FOR DEBUG
 	end
 	
 	// combinational logic for SW
@@ -51,27 +61,46 @@ module CapabilityExplore1 (KEY, CLOCK_50, SW, LEDR, TX, RX);
 		iocs_n = ~((addr==16'hc004 | addr==16'hc005 | addr==16'hc006 | addr==16'hc007) & (mm_we | mm_re));		// selects C004/5/6/7
 		iorw_n = (~iocs_n) & mm_re;
 
-		bmp_sel = ((addr==16'hc008 | addr==16'hc009 | addr==16'hc00A) & mm_we)
+		bmp_sel = ((addr==16'hc008 | addr==16'hc009 | addr==16'hc00A) & mm_we);
 		// bmp_enable ---> BMP_display wil read from databus. do stuff
 	end
-	
+
+	assign databus = (~iorw_n) ? wdata[7:0] : 8'hzz;	// infer tri state for driving bus from proc to spart
+
+	////////////////////////////////////////////////////////
+	// Instantiate PLL to generate clk and 25MHz VGA_CLK //
+	//////////////////////////////////////////////////////
+	PLL iPLL(.refclk(CLOCK_50), .rst(~KEY[0]),.outclk_0(clk),.outclk_1(VGA_CLK), .locked(pll_locked));
+
+		
 	/////////////////////////////////////
-    // instantiate rst_n synchronizer //
-    ///////////////////////////////////
-	rst_synch rst_synch1(.RST_n(KEY[0]), .rst_n(rst_n), .clk(CLOCK_50));
+	// instantiate rst_n synchronizer //
+	///////////////////////////////////
+	rst_synch iRST(.clk(clk),.RST_n(KEY[0]), .pll_locked(pll_locked), .rst_n(rst_n));
+	
+	// /////////////////////////////////////
+    // // instantiate rst_n synchronizer //
+    // ///////////////////////////////////
+	// rst_synch rst_synch1(.RST_n(KEY[0]), .rst_n(rst_n), .clk(CLOCK_50));
 	
 	/////////////////////////////////////
     // instantiate cpu topl level mod //
     ///////////////////////////////////
-	cpu cpu1(.clk(CLOCK_50), .rst_n(rst_n), .wdata(wdata), .mm_we(mm_we), .addr(addr), .mm_re(mm_re), .rdata(rdata));
-
-	assign databus = (~iorw_n) ? wdata[7:0] : 8'hzz;	// infer tri state for driving bus from proc to spart
+	cpu cpu1(.clk(clk), .rst_n(rst_n), .wdata(wdata), .mm_we(mm_we), .addr(addr), .mm_re(mm_re), .rdata(rdata));
 
 	//////////////////////////////////////////////////
   	// Instantiate Logic that includes internal    //
   	// RX -> TX in that particular order          //
   	///////////////////////////////////////////////	
-	spart spart1(.clk(CLOCK_50), .rst_n(rst_n), .iocs_n(iocs_n), .iorw_n(iorw_n), .tx_q_full(tx_q_full), .rx_q_empty(rx_q_empty),
+	spart spart1(.clk(clk), .rst_n(rst_n), .iocs_n(iocs_n), .iorw_n(iorw_n), .tx_q_full(tx_q_full), .rx_q_empty(rx_q_empty),
 				 .ioaddr(addr[1:0]), .databus(databus), .TX(TX), .RX(RX));
+
+	////////////////////////////////
+    // instantiate BMP_display	 //
+    //////////////////////////////
+	BMP_display iBMP(.clk(clk), .rst_n(rst_n), .pll_locked(pll_locked), .VGA_BLANK_N(VGA_BLANK_N), .VGA_B(VGA_B),
+					.VGA_CLK(VGA_CLK), .VGA_G(VGA_G), .VGA_HS(VGA_HS), .VGA_R(VGA_R), .VGA_SYNC_N(VGA_SYNC_N), .VGA_VS(VGA_VS));
+
+	
 
 endmodule

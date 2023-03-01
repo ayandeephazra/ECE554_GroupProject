@@ -13,8 +13,8 @@ input [15:0] wrt_data;	// data to be written
 
 output reg [15:0] rd_data;	//output of data memory
 
-// 8K 16-bit memory
-reg [15:0]data_mem[0:8191];
+// 1K 16-bit memory
+reg [15:0]data_mem[0:511];
 
 // ///////////////////////////////////////////////
 // // Model read, data is flopped on clock low //

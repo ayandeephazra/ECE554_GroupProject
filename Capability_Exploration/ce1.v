@@ -47,7 +47,10 @@ module ce1(
 //  Structural coding
 //=======================================================
 
-CapabilityExplore1 CE1(.KEY(KEY), .CLOCK_50(CLOCK_50), .LEDR(LEDR), .SW(SW), .TX(GPIO[3]), .RX(GPIO[5]));
+CapabilityExplore1 CE1(.KEY(KEY), .CLOCK_50(CLOCK_50), .LEDR(LEDR), .SW(SW), .TX(GPIO[3]), .RX(GPIO[5]),
+						// VGA outs assigned in BMP_Display
+						.VGA_BLANK_N(VGA_BLANK_N), .VGA_B(VGA_B), .VGA_CLK(VGA_CLK), .VGA_G(VGA_G), .VGA_HS(VGA_HS),
+						.VGA_R(VGA_R), .VGA_SYNC_N(VGA_SYNC_N), .VGA_VS(VGA_VS));
 
 
 
