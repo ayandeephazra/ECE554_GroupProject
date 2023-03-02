@@ -9,12 +9,12 @@ input clk;
 input [15:0] addr;
 input re;				// asserted when instruction read desired
 input we;				// asserted when write desired
-input [15:0] wrt_data;	// data to be written
+input [10:0] wrt_data;	// data to be written
 
 output reg [15:0] rd_data;	//output of data memory
 
-// 1K 16-bit memory
-reg [15:0]data_mem[0:511];
+// 2K 16-bit memory
+reg [15:0]data_mem[0:1023];
 
 // ///////////////////////////////////////////////
 // // Model read, data is flopped on clock low //

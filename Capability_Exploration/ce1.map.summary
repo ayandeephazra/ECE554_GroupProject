@@ -1,0 +1,17 @@
+Analysis & Synthesis Status : Successful - Thu Mar  2 00:21:18 2023
+Quartus Prime Version : 22.1std.0 Build 915 10/25/2022 SC Lite Edition
+Revision Name : ce1
+Top-level Entity Name : ce1
+Family : Cyclone V
+Logic utilization (in ALMs) : N/A
+Total registers : 397
+Total pins : 93
+Total virtual pins : 0
+Total block memory bits : 3,117,510
+Total DSP Blocks : 2
+Total HSSI RX PCSs : 0
+Total HSSI PMA RX Deserializers : 0
+Total HSSI TX PCSs : 0
+Total HSSI PMA TX Serializers : 0
+Total PLLs : 1
+Total DLLs : 0

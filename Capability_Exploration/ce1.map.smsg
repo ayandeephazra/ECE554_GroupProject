@@ -1,0 +1,2 @@
+Info (10281): Verilog HDL Declaration information at UART_tx.sv(30): object "trmt" differs only in case from object "TRMT" in the same scope File: C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Capability Explore/BMP_display/UART_tx.sv Line: 30
+Info (10281): Verilog HDL Declaration information at rst_synch.v(4): object "RST_n" differs only in case from object "rst_n" in the same scope File: C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Capability Explore/BMP_display/rst_synch.v Line: 4
