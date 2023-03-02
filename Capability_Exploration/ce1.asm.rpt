@@ -1,6 +1,6 @@
 Assembler report for ce1
-Thu Mar  2 00:23:45 2023
-Quartus Prime Version 22.1std.0 Build 915 10/25/2022 SC Lite Edition
+Thu Mar  2 16:13:50 2023
+Quartus Prime Version 21.1.0 Build 842 10/21/2021 SJ Lite Edition
 
 
 ---------------------
@@ -10,7 +10,7 @@ Quartus Prime Version 22.1std.0 Build 915 10/25/2022 SC Lite Edition
   2. Assembler Summary
   3. Assembler Settings
   4. Assembler Generated Files
-  5. Assembler Device Options: C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Capability Explore/BMP_display/ce1.sof
+  5. Assembler Device Options: I:/ece554/ECE554_GroupProject/Capability_Exploration/ce1.sof
   6. Assembler Messages
 
 
@@ -18,7 +18,7 @@ Quartus Prime Version 22.1std.0 Build 915 10/25/2022 SC Lite Edition
 ----------------
 ; Legal Notice ;
 ----------------
-Copyright (C) 2022  Intel Corporation. All rights reserved.
+Copyright (C) 2021  Intel Corporation. All rights reserved.
 Your use of Intel Corporation's design tools, logic functions 
 and other software and tools, and any partner logic 
 functions, and any output files from any of the foregoing 
@@ -38,7 +38,7 @@ https://fpgasoftware.intel.com/eula.
 +---------------------------------------------------------------+
 ; Assembler Summary                                             ;
 +-----------------------+---------------------------------------+
-; Assembler Status      ; Successful - Thu Mar  2 00:23:45 2023 ;
+; Assembler Status      ; Successful - Thu Mar  2 16:13:49 2023 ;
 ; Revision Name         ; ce1                                   ;
 ; Top-level Entity Name ; ce1                                   ;
 ; Family                ; Cyclone V                             ;
@@ -53,23 +53,23 @@ https://fpgasoftware.intel.com/eula.
 +--------+---------+---------------+
 
 
-+------------------------------------------------------------------------------------------------------+
-; Assembler Generated Files                                                                            ;
-+------------------------------------------------------------------------------------------------------+
-; File Name                                                                                            ;
-+------------------------------------------------------------------------------------------------------+
-; C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Capability Explore/BMP_display/ce1.sof ;
-+------------------------------------------------------------------------------------------------------+
++--------------------------------------------------------------+
+; Assembler Generated Files                                    ;
++--------------------------------------------------------------+
+; File Name                                                    ;
++--------------------------------------------------------------+
+; I:/ece554/ECE554_GroupProject/Capability_Exploration/ce1.sof ;
++--------------------------------------------------------------+
 
 
-+--------------------------------------------------------------------------------------------------------------------------------+
-; Assembler Device Options: C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Capability Explore/BMP_display/ce1.sof ;
-+----------------+---------------------------------------------------------------------------------------------------------------+
-; Option         ; Setting                                                                                                       ;
-+----------------+---------------------------------------------------------------------------------------------------------------+
-; JTAG usercode  ; 0x084ACEB2                                                                                                    ;
-; Checksum       ; 0x084ACEB2                                                                                                    ;
-+----------------+---------------------------------------------------------------------------------------------------------------+
++----------------------------------------------------------------------------------------+
+; Assembler Device Options: I:/ece554/ECE554_GroupProject/Capability_Exploration/ce1.sof ;
++----------------+-----------------------------------------------------------------------+
+; Option         ; Setting                                                               ;
++----------------+-----------------------------------------------------------------------+
+; JTAG usercode  ; 0x09BE7C30                                                            ;
+; Checksum       ; 0x09BE7C30                                                            ;
++----------------+-----------------------------------------------------------------------+
 
 
 +--------------------+
@@ -77,15 +77,15 @@ https://fpgasoftware.intel.com/eula.
 +--------------------+
 Info: *******************************************************************
 Info: Running Quartus Prime Assembler
-    Info: Version 22.1std.0 Build 915 10/25/2022 SC Lite Edition
-    Info: Processing started: Thu Mar  2 00:23:34 2023
+    Info: Version 21.1.0 Build 842 10/21/2021 SJ Lite Edition
+    Info: Processing started: Thu Mar  2 16:13:25 2023
 Info: Command: quartus_asm --read_settings_files=off --write_settings_files=off ce1 -c ce1
 Warning (18236): Number of processors has not been specified which may cause overloading on shared machines.  Set the global assignment NUM_PARALLEL_PROCESSORS in your QSF to an appropriate value for best performance.
 Info (115030): Assembler is generating device programming files
 Info: Quartus Prime Assembler was successful. 0 errors, 1 warning
-    Info: Peak virtual memory: 4918 megabytes
-    Info: Processing ended: Thu Mar  2 00:23:45 2023
-    Info: Elapsed time: 00:00:11
-    Info: Total CPU time (on all processors): 00:00:12
+    Info: Peak virtual memory: 5103 megabytes
+    Info: Processing ended: Thu Mar  2 16:13:50 2023
+    Info: Elapsed time: 00:00:25
+    Info: Total CPU time (on all processors): 00:00:22
 
 

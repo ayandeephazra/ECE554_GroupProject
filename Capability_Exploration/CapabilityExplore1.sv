@@ -28,7 +28,7 @@ module CapabilityExplore1 (KEY, CLOCK_50, SW, LEDR, TX, RX, VGA_BLANK_N, VGA_B, 
 	assign LEDR = LEDR_reg;
 
 	// SPART interface
-	wire [7:0] databus;
+	wire [15:0] databus;
 	logic iorw_n, iocs_n, rx_q_empty, tx_q_full;
 
 	// BMP
@@ -50,10 +50,8 @@ module CapabilityExplore1 (KEY, CLOCK_50, SW, LEDR, TX, RX, VGA_BLANK_N, VGA_B, 
 			LEDR_reg <= status;		// REPLACE FOR DEBUG
 	end
 	
-	// combinational logic for SW
+	// Memory Mappings
 	always_comb begin
-		// If you have to use SW, then zero extend to meet rdata's bitwidth
-		// 16'ha5a5 is a junk value for debug, should not affect remaining program
 		rdata = (mm_re & (addr==16'hc001)) ? {{6{1'b0}},SW} :
 				(mm_re & (addr==16'hc004 | addr==16'hc005)) ? databus : 
 				16'ha5a5; 
@@ -62,10 +60,10 @@ module CapabilityExplore1 (KEY, CLOCK_50, SW, LEDR, TX, RX, VGA_BLANK_N, VGA_B, 
 		iorw_n = (~iocs_n) & mm_re;
 
 		bmp_sel = ((addr==16'hc008 | addr==16'hc009 | addr==16'hc00A) & mm_we);
-		// bmp_enable ---> BMP_display wil read from databus. do stuff
 	end
 
-	assign databus = (~iorw_n) ? wdata[7:0] : 8'hzz;	// infer tri state for driving bus from proc to spart
+	// assign databus = (~iorw_n | bmp_sel) ? wdata[7:0] : 8'hzz;	// infer tri state for driving bus from proc to spart
+	assign databus = (mm_we) ? wdata : 8'hzz;	// infer tri state for driving bus from proc to spart
 
 	////////////////////////////////////////////////////////
 	// Instantiate PLL to generate clk and 25MHz VGA_CLK //
@@ -93,13 +91,13 @@ module CapabilityExplore1 (KEY, CLOCK_50, SW, LEDR, TX, RX, VGA_BLANK_N, VGA_B, 
   	// RX -> TX in that particular order          //
   	///////////////////////////////////////////////	
 	spart spart1(.clk(clk), .rst_n(rst_n), .iocs_n(iocs_n), .iorw_n(iorw_n), .tx_q_full(tx_q_full), .rx_q_empty(rx_q_empty),
-				 .ioaddr(addr[1:0]), .databus(databus), .TX(TX), .RX(RX));
+				 .ioaddr(addr[1:0]), .databus(databus[7:0]), .TX(TX), .RX(RX));
 
 	////////////////////////////////
     // instantiate BMP_display	 //
     //////////////////////////////
-	BMP_display iBMP(.clk(clk), .rst_n(rst_n), .pll_locked(pll_locked), .VGA_BLANK_N(VGA_BLANK_N), .VGA_B(VGA_B),
-					.VGA_CLK(VGA_CLK), .VGA_G(VGA_G), .VGA_HS(VGA_HS), .VGA_R(VGA_R), .VGA_SYNC_N(VGA_SYNC_N), .VGA_VS(VGA_VS));
+	BMP_display iBMP(.clk(clk), .rst_n(rst_n), .pll_locked(pll_locked), .bmp_sel(bmp_sel), .addr(addr), .databus(databus),
+					.VGA_BLANK_N(VGA_BLANK_N), .VGA_B(VGA_B), .VGA_CLK(VGA_CLK), .VGA_G(VGA_G), .VGA_HS(VGA_HS), .VGA_R(VGA_R), .VGA_SYNC_N(VGA_SYNC_N), .VGA_VS(VGA_VS));
 
 	
 

@@ -1,10 +1,10 @@
 module IM(clk,addr,rd_en,instr);
 
 input clk;
-input [15:0] addr; 
+input [10:0] addr; 
 input rd_en;			// asserted when instruction read desired
 
-output reg [11:0] instr;	//output of insturction memory
+output reg [15:0] instr;	//output of insturction memory
 
 // 4k 16-bit instruction memory
 reg [15:0]instr_mem[0:2047];
@@ -22,7 +22,7 @@ always_ff @ (negedge clk)
 ////////////////////////////////////
 
 initial begin
-  $readmemh("C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Capability Explore/BMP_display/HelloWorld.hex",instr_mem);
+  $readmemh("I:/ece554/ECE554_GroupProject/Capability_Exploration/test.hex",instr_mem);
 end
 
 endmodule

@@ -6,10 +6,10 @@ module DM(clk,addr,re,we,wrt_data,rd_data);
 // high, read/write on clock low.                   //
 /////////////////////////////////////////////////////
 input clk;
-input [15:0] addr;
+input [9:0] addr;
 input re;				// asserted when instruction read desired
 input we;				// asserted when write desired
-input [10:0] wrt_data;	// data to be written
+input [15:0] wrt_data;	// data to be written
 
 output reg [15:0] rd_data;	//output of data memory
 

@@ -221,11 +221,11 @@ module PlaceBMP(clk,rst_n,add_fnt,fnt_indx,add_img,rem_img,image_indx,
   BMP_ROM_Font  iROM0(.clk(clk),.addr(font_addr),.dout(bmp_read0));
   BMP_ROM_Mario iROM1(.clk(clk),.addr(bmp_addr),.dout(bmp_read1));
   BMP_ROM_Bucky iROM2(.clk(clk),.addr(bmp_addr),.dout(bmp_read2));
-  BMP_ROM_Pounce iROM3(.clk(clk),.addr(bmp_addr),.dout(bmp_read3));
+  BMP_ROM_Po iROM3(.clk(clk),.addr(bmp_addr),.dout(bmp_read3));
   assign bmp_read = (fnt_addr_inc) ? bmp_read0 :
                     (indx == 5'd1) ? bmp_read1 :
 					(indx == 5'd2) ? bmp_read2 :
-					(indx == 5'd3) ? bmp_read3 :	// handles Pounce
+					(indx == 5'd3) ? bmp_read3 :	// handles Po
 					5'hxxx;		// ERROR state
 
   

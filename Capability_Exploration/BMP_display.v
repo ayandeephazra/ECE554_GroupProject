@@ -8,6 +8,10 @@ module BMP_display(
   input rst_n,
   input pll_locked,
 
+  input bmp_sel,
+  input [15:0] addr,
+  input [15:0] databus,
+
 	//////////// VGA ////////// ----> PASSED OUT TO TOP LEVEL
 	output		          		VGA_BLANK_N,
 	output		     [7:0]		VGA_B,
@@ -33,6 +37,7 @@ module BMP_display(
   wire [8:0] wdata;					// write data to videoMem
   wire [4:0] image_indx;
   wire [9:0] xloc;
+  wire [8:0] yloc;
   wire we;
   wire add_img,add_fnt;
   wire [5:0] fnt_indx;
@@ -63,7 +68,7 @@ module BMP_display(
   /////////////////////////////////////
   // Instantiate 9-bit video memory //
   ///////////////////////////////////
-  videoMem(.clk(clk),.we(we),.waddr(waddr),.wdata(wdata),.raddr(raddr),.rdata(rdata));
+  videoMem ivm(.clk(clk),.we(we),.waddr(waddr),.wdata(wdata),.raddr(raddr),.rdata(rdata));
   
   assign VGA_R = {rdata[8:6],5'b00000};
   assign VGA_G = {rdata[5:3],5'b00000};
@@ -73,7 +78,7 @@ module BMP_display(
   // Instantiate Logic that determines pixel //
   // colors based on BMP placement          //
   ///////////////////////////////////////////					
-  PlaceBMP(.clk(clk),.rst_n(rst_n),.add_fnt(add_fnt),.fnt_indx(fnt_indx),
+  PlaceBMP iplace(.clk(clk),.rst_n(rst_n),.add_fnt(add_fnt),.fnt_indx(fnt_indx),
            .add_img(add_img),.rem_img(1'b0),.image_indx(image_indx),
            .xloc(xloc),.yloc(9'h50),.waddr(waddr),.wdata(wdata),.we(we));
 
@@ -85,53 +90,71 @@ module BMP_display(
   // to the databus of your processor and using
   // your processor code to write images and characters
   ///////////////////////////////////////////////
-  always @(posedge clk, negedge rst_n)
-    if (!rst_n)
-	  count <= 19'h00000;
-	else if (~&count)
-	  count <= count + 1;
+  // always @(posedge clk, negedge rst_n)
+  //   if (!rst_n)
+	//   count <= 19'h00000;
+	// else if (~&count)
+	//   count <= count + 1;
 	  
-  assign add_fnt = (count==19'h00005) ? 1'b1 : 
-                   (count==19'h01005) ? 1'b1 :
-				   (count==19'h02005) ? 1'b1 :
-				   (count==19'h03005) ? 1'b1 :
-				   (count==19'h04005) ? 1'b1 :
-				   (count==19'h05005) ? 1'b1 :
-				   1'b0;
+  // assign add_fnt = (count==19'h00005) ? 1'b1 : 
+  //                  (count==19'h01005) ? 1'b1 :
+	// 			   (count==19'h02005) ? 1'b1 :
+	// 			   (count==19'h03005) ? 1'b1 :
+	// 			   (count==19'h04005) ? 1'b1 :
+	// 			   (count==19'h05005) ? 1'b1 :
+	// 			   1'b0;
 				   
-  assign fnt_indx = (count==19'h00005) ? 6'd22 : // M
-                   (count==19'h01005) ? 6'd36 :  // ' '
-				   (count==19'h02005) ? 6'd31 :	 // V
-				   (count==19'h03005) ? 6'd28 :	 // S
-				   (count==19'h04005) ? 6'd36 :  // ' '
-				   (count==19'h05005) ? 6'd11 :  // B 
-				   1'b0;
+  // assign fnt_indx = (count==19'h00005) ? 6'd22 : // M
+  //                  (count==19'h01005) ? 6'd36 :  // ' '
+	// 			   (count==19'h02005) ? 6'd31 :	 // V
+	// 			   (count==19'h03005) ? 6'd28 :	 // S
+	// 			   (count==19'h04005) ? 6'd36 :  // ' '
+	// 			   (count==19'h05005) ? 6'd11 :  // B 
+	// 			   1'b0;
 				   
-  assign add_img = ((count==19'h07000) || (count==19'h7FFFE)) ? 1'b1 : 1'b0;
-  assign image_indx = (count[18]) ? 5'h02 : 5'h01;
-  assign xloc = (count==19'h00005) ? 10'd321 :
-                (count==19'h01005) ? 10'd269 :
-				(count==19'h02005) ? 10'd282 :
-				(count==19'h03005) ? 10'd295 :
-				(count==19'h04005) ? 10'd308 :
-				(count==19'h05005) ? 10'd256 :
-                (count[18]) ? 10'h180 : 10'h40;
+  // assign add_img = ((count==19'h07000) || (count==19'h7FFFE)) ? 1'b1 : 1'b0;
+  // assign image_indx = (count[18]) ? 5'h02 : 5'h01;
+  // assign xloc = (count==19'h00005) ? 10'd321 :
+  //               (count==19'h01005) ? 10'd269 :
+	// 			(count==19'h02005) ? 10'd282 :
+	// 			(count==19'h03005) ? 10'd295 :
+	// 			(count==19'h04005) ? 10'd308 :
+	// 			(count==19'h05005) ? 10'd256 :
+  //               (count[18]) ? 10'h180 : 10'h40;
+
+reg [9:0] XLOC;
+reg [8:0] YLOC;
+reg [7:0] cntrl; /// {index -- [6:1], (img_nfnt) -- [0]}
+wire cntrl_wr;
+
+always @ (posedge clk, negedge rst_n) begin
+  if (!rst_n) begin
+    XLOC <= 10'h0;
+    YLOC <= 9'h0;
+  end
+  else if (addr == 16'hc008 & bmp_sel)
+    XLOC <= databus[9:0];    // sign extend ???????? (cant send 10'h170 for example -- will become 10'h070)
+  else if (addr == 16'hc009 & bmp_sel)
+    YLOC <= databus[8:0];
+  // else if (addr == 16'hc00a & bmp_sel)
+  //   cntrl <= databus;
+  // XLOC <= 10'h180;
+  // YLOC <= 
+  // cntrl <= 8'h03;
+    
+end
+
+
+assign cntrl_wr = (addr == 16'hc00a & bmp_sel);
+
 
 // COMMAND PARSING LOGIC
-// logic [9:0] XLOC;
-// logic [8:0] YLOC;
-// logic [7:0] control; /// {[5:0] index, (img_or_fnt?)}
+assign xloc = XLOC;
+assign yloc = YLOC;
 
-// always_ff @ (posedge clk, negedge rst_n) begin
-//   if (!rst_n)
-//     // default
-//   else if (addr == 16'hc008)
-//     // write databus to XLOC
-//   else if (addr == 16'hc009)
-//     // write databus to XLOC
-//   else if (addr == 16'hc00a)
-//     // write databus to control
-// end
-  
-	
- endmodule
+assign add_img = (cntrl_wr) ? databus[0] : 0;
+assign add_fnt = (cntrl_wr) ? ~databus[0] : 0;
+assign fnt_indx = databus[6:1];
+assign image_indx = databus[6:1];
+
+endmodule
