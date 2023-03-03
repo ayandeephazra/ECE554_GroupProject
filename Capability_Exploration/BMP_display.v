@@ -80,7 +80,7 @@ module BMP_display(
   ///////////////////////////////////////////					
   PlaceBMP iplace(.clk(clk),.rst_n(rst_n),.add_fnt(add_fnt),.fnt_indx(fnt_indx),
            .add_img(add_img),.rem_img(1'b0),.image_indx(image_indx),
-           .xloc(xloc),.yloc(9'h50),.waddr(waddr),.wdata(wdata),.we(we));
+           .xloc(xloc),.yloc(yloc),.waddr(waddr),.wdata(wdata),.we(we));
 
   ///////////////////////////////////////////////
   // What follows is a super cheese ball method
@@ -124,7 +124,6 @@ module BMP_display(
 
 reg [9:0] XLOC;
 reg [8:0] YLOC;
-reg [7:0] cntrl; /// {index -- [6:1], (img_nfnt) -- [0]}
 wire cntrl_wr;
 
 always @ (posedge clk, negedge rst_n) begin
@@ -133,15 +132,9 @@ always @ (posedge clk, negedge rst_n) begin
     YLOC <= 9'h0;
   end
   else if (addr == 16'hc008 & bmp_sel)
-    XLOC <= databus[9:0];    // sign extend ???????? (cant send 10'h170 for example -- will become 10'h070)
+    XLOC <= databus[9:0];
   else if (addr == 16'hc009 & bmp_sel)
-    YLOC <= databus[8:0];
-  // else if (addr == 16'hc00a & bmp_sel)
-  //   cntrl <= databus;
-  // XLOC <= 10'h180;
-  // YLOC <= 
-  // cntrl <= 8'h03;
-    
+    YLOC <= databus[8:0];    
 end
 
 

@@ -90,8 +90,8 @@ module CapabilityExplore1 (KEY, CLOCK_50, SW, LEDR, TX, RX, VGA_BLANK_N, VGA_B, 
   	// Instantiate Logic that includes internal    //
   	// RX -> TX in that particular order          //
   	///////////////////////////////////////////////	
-	spart spart1(.clk(clk), .rst_n(rst_n), .iocs_n(iocs_n), .iorw_n(iorw_n), .tx_q_full(tx_q_full), .rx_q_empty(rx_q_empty),
-				 .ioaddr(addr[1:0]), .databus(databus[7:0]), .TX(TX), .RX(RX));
+	// spart spart1(.clk(clk), .rst_n(rst_n), .iocs_n(iocs_n), .iorw_n(iorw_n), .tx_q_full(tx_q_full), .rx_q_empty(rx_q_empty),
+	// 			 .ioaddr(addr[1:0]), .databus(databus[7:0]), .TX(TX), .RX(RX));
 
 	////////////////////////////////
     // instantiate BMP_display	 //
