@@ -6,7 +6,7 @@ module id(clk,rst_n,instr,zr_EX_DM,br_instr_ID_EX,jmp_imm_ID_EX,jmp_reg_ID_EX,
 		  byp1_EX,byp1_DM,flow_change_ID_EX);
 
 input clk,rst_n;
-input [15:0] instr;					// instruction to decode and execute direct from IM, flop first
+input [16:0] instr;					// instruction to decode and execute direct from IM, flop first
 input zr_EX_DM;						// zero flag from ALU (used for ADDZ)
 input flow_change_ID_EX;
 
@@ -56,7 +56,7 @@ reg cond_ex;
 /////////////////////////////////
 // Registers needed for flops //
 ///////////////////////////////
-reg [15:0] instr_IM_ID;			// flop capturing the instruction to be decoded
+reg [16:0] instr_IM_ID;			// flop capturing the instruction to be decoded
 reg	rf_we_ID_EX,rf_we_EX_DM;
 reg [3:0] rf_dst_addr_ID_EX,rf_dst_addr_EX_DM;
 reg	dm_re_ID_EX;
@@ -79,7 +79,7 @@ wire load_use_hazard,flush;
 /////////////////////////////////
 always @(posedge clk, negedge rst_n)
   if (!rst_n)
-    instr_IM_ID <= 16'hb000;			// LLB R0, #0000
+    instr_IM_ID <= 17'hb00000;			// LLB R0, #0000
   else if (!stall_IM_ID)
     instr_IM_ID <= instr;				// flop raw instruction from IM
 	
@@ -208,7 +208,7 @@ always @(instr_IM_ID) begin
   hlt = 0;
   cond_ex = 0;
   
-  case (instr_IM_ID[15:12])
+  case (instr_IM_ID[16:12])
     ADDi : begin
 	  rf_re0 = 1;
 	  rf_re1 = 1;

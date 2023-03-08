@@ -4,10 +4,10 @@ input clk;
 input [10:0] addr; 
 input rd_en;			// asserted when instruction read desired
 
-output reg [15:0] instr;	//output of insturction memory
+output reg [16:0] instr;	//output of insturction memory
 
-// 4k 16-bit instruction memory
-reg [15:0]instr_mem[0:2047];
+// 4k 17-bit instruction memory
+reg [16:0]instr_mem[0:2047];
 
 // /////////////////////////////////////////////////////////////
 // // Instruction is loaded on clock low when read is enabled//

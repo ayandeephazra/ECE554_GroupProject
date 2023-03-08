@@ -20,20 +20,20 @@ module alu(clk,src0,src1,shamt,func,dst,dst_EX_DM,ov,zr,neg);
 `include "common_params.inc"
 
 input clk;
-input [15:0] src0,src1;
+input [16:0] src0,src1;
 input [2:0] func;			// selects function to perform
 input [3:0] shamt;			// shift amount
 
-output [15:0] dst;			// ID_EX version for branch/jump targets
-output reg [15:0] dst_EX_DM;
+output [16:0] dst;			// ID_EX version for branch/jump targets
+output reg [16:0] dst_EX_DM;
 output ov,zr,neg;
 
-wire [15:0] sum;		// output of adder
-wire [15:0] sum_sat;	// saturated sum
-wire [15:0] src0_2s_cmp;
+wire [16:0] sum;		// output of adder
+wire [16:0] sum_sat;	// saturated sum
+wire [16:0] src0_2s_cmp;
 wire cin;
-wire [15:0] shft_l1,shft_l2,shft_l4,shft_l;		// intermediates for shift left
-wire [15:0] shft_r1,shft_r2,shft_r4,shft_r;		// intermediates for shift right
+wire [16:0] shft_l1,shft_l2,shft_l4,shft_l;		// intermediates for shift left
+wire [16:0] shft_r1,shft_r2,shft_r4,shft_r;		// intermediates for shift right
 
 /////////////////////////////////////////////////
 // Implement 2s complement logic for subtract //
