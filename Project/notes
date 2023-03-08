@@ -1,0 +1,14 @@
+Instructions are flushed only when BRANCH IS TAKEN
+because Erics proc was coded based on an branch not taken assumption
+I need to modify the flushing to depend on what the prediction was
+Example: Need to flush whenevr the prediction is wrong
+Whether that is branch taken or not taken
+
+Need to pipe hit into EX stage
+if it was a hit -- I predicted branch taken
+then flowchange is just ~flowchange
+  if b eq -- case 001
+    bnt: flow change is normally just zero flag - if Z then flow change else dont flow change
+    bt: now it would be ~Z -- if Z then dont flow change (because you already assumed this)
+if it was a miss -- I predicted branch not taken
+then flowchange is the same

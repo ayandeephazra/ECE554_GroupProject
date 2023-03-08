@@ -1,10 +1,11 @@
 module btb (
     input clk,
     input rst_n,
+    // input en,         // enable btb default high
     input [15:0] PC,
     output [15:0] target_PC,
-    output hit
-    // ADD PIPELINED SIGNAL OUTPUTS
+    output hit,
+    output logic btb_hit_ID_EX
 );
 
 // 512 entries deep
@@ -15,6 +16,7 @@ logic [8:0] index;
 logic [6:0] tag;
 logic [25:0] btb_out;
 logic valid_bit, strong_bit;
+logic en, btb_hit_IF_ID;
 
 assign index = PC[8:0];
 
@@ -25,14 +27,24 @@ always_ff @(negedge clk, negedge rst_n)     // RST TO 0 AFTER TESTING
 // Determine hit
 assign valid_bit = btb_out[16];
 assign tag = btb_out[24:18];
-assign hit = ((valid_bit) && (PC[15:9] == tag)) ? 1 : 0;
+assign hit = (valid_bit & en & (PC[15:9] == tag)) ? 1 : 0;
 
 // output target
 assign target_PC = btb_out[13:0];
 
 
-
-// PIPELINE SIGNALS HERE
+	  
+/////////////////////////
+// Pipeline reg IF_ID //
+///////////////////////
+always @(posedge clk)
+  btb_hit_IF_ID <= hit;
+	
+/////////////////////////
+// Pipeline reg ID_EX //
+///////////////////////
+always @(posedge clk)
+  btb_hit_ID_EX <= btb_hit_IF_ID;   // Pipeline to EX to decide if flow change is necessary
 
 
 

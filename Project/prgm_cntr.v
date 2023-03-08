@@ -1,5 +1,6 @@
 module pc(clk,rst_n,stall_IM_ID,dst_ID_EX,
-          pc,pc_ID_EX,flow_change_ID_EX,pc_EX_DM);
+          pc,pc_ID_EX,flow_change_ID_EX,pc_EX_DM,
+          btb_hit, btb_nxt_pc, btb_hit_ID_EX);
 ////////////////////////////////////////////////////////////////////////////\
 // This module implements the program counter logic. It normally increments \\
 // the PC by 1, but when a branch is taken will add the 9-bit immediate      \\
@@ -12,6 +13,9 @@ input clk,rst_n;
 input flow_change_ID_EX;			// asserted from branch boolean on jump or taken branch
 input stall_IM_ID;					// asserted if we need to stall the pipe
 input [15:0] dst_ID_EX;				// branch target address comes in on this bus
+input btb_hit;                // Fetch target PC predicted by Branch Predictor
+input [15:0] btb_nxt_pc;      // target pc from btb
+input btb_hit_ID_EX;
 
 output [15:0] pc;					// the PC, forms address to instruction memory
 output reg [15:0] pc_ID_EX;			// needed in EX stage for Branch instruction
@@ -34,9 +38,15 @@ always @(posedge clk, negedge rst_n)
     pc <= 16'h0000;
   else if (!stall_IM_ID)	// all stalls stall the PC
     if (flow_change_ID_EX)
-      pc <= dst_ID_EX;
+      if (btb_hit_ID_EX)
+        pc <= pc_ID_EX;   // branch misprediction :( -- flush back to og pc
+      else
+        pc <= dst_ID_EX;
+    else if (btb_hit)
+      pc <= btb_nxt_pc;
     else
-	  pc <= nxt_pc;
+	    pc <= nxt_pc;
+
 	  
 ////////////////////////////////////////////////
 // Implement the PC pipelined register IM_ID //

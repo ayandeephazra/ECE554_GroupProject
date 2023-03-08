@@ -9,6 +9,8 @@ initial begin
     rst_n = 0;
     @ (negedge clk)
     rst_n = 1;
+    iCPU.iBTB.en = 1;   // enable btb
+
 
     repeat (100) @ (posedge clk);
     $stop;

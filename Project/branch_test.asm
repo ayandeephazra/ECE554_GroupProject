@@ -12,10 +12,13 @@ llb R4, 0x4
 sub R5, R4, R3
 b eq, FIRST        ## branch taken     -- PC: 9
 
-llb R13, 0x00
+llb R4, 0x5
+llb R4, 0x6
+llb R4, 0x7
+llb R4, 0x8
 
 FIRST:
-llb R14, 0xffo
+llb R14, 0xff
 
 
 END:
