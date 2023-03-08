@@ -15,7 +15,7 @@ b eq, FIRST        ## branch taken     -- PC: 9
 llb R13, 0x00
 
 FIRST:
-llb R14, 0xff
+llb R14, 0xffo
 
 
 END:
