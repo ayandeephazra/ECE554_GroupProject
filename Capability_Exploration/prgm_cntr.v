@@ -11,15 +11,15 @@ module pc(clk,rst_n,stall_IM_ID,dst_ID_EX,
 input clk,rst_n;
 input flow_change_ID_EX;			// asserted from branch boolean on jump or taken branch
 input stall_IM_ID;					// asserted if we need to stall the pipe
-input [16:0] dst_ID_EX;				// branch target address comes in on this bus
+input [15:0] dst_ID_EX;				// branch target address comes in on this bus
 
-output [16:0] pc;					// the PC, forms address to instruction memory
-output reg [16:0] pc_ID_EX;			// needed in EX stage for Branch instruction
-output reg [16:0] pc_EX_DM;			// needed in dst_mux for JAL instruction
+output [15:0] pc;					// the PC, forms address to instruction memory
+output reg [15:0] pc_ID_EX;			// needed in EX stage for Branch instruction
+output reg [15:0] pc_EX_DM;			// needed in dst_mux for JAL instruction
 
-reg [16:0] pc,pc_IM_ID;
+reg [15:0] pc,pc_IM_ID;
 
-wire [16:0] nxt_pc;
+wire [15:0] nxt_pc;
 
 /////////////////////////////////////
 // implement incrementer for PC+1 //
@@ -31,7 +31,7 @@ assign nxt_pc = pc + 1;
 //////////////////////////////
 always @(posedge clk, negedge rst_n)
   if (!rst_n)
-    pc <= 17'h00000;
+    pc <= 16'h00000;
   else if (!stall_IM_ID)	// all stalls stall the PC
     if (flow_change_ID_EX)
       pc <= dst_ID_EX;
