@@ -20,7 +20,7 @@ output reg rf_we_DM_WB;				// set if instruction is writing back to RF
 output reg [3:0] rf_p0_addr;		// normally instr[3:0] but for LHB and SW it is instr[11:8]
 output reg [3:0] rf_p1_addr;		// normally instr[7:4]
 output reg [3:0] rf_dst_addr_DM_WB;	// normally instr[11:8] but for JAL it is forced to 15
-output reg [2:0] alu_func_ID_EX;	// select ALU operation to be performed
+output reg [3:0] alu_func_ID_EX;	// select ALU operation to be performed
 output reg [1:0] src0sel_ID_EX;		// select source for src0 bus
 output reg [1:0] src1sel_ID_EX;		// select source for src1 bus
 output reg dm_re_EX_DM;				// asserted on loads
@@ -45,7 +45,7 @@ reg jmp_reg;
 reg rf_we;
 reg hlt;
 reg [3:0] rf_dst_addr;
-reg [2:0] alu_func;
+reg [3:0] alu_func;
 reg [1:0] src0sel,src1sel;
 reg dm_re;
 reg dm_we;
@@ -79,7 +79,7 @@ wire load_use_hazard,flush;
 /////////////////////////////////
 always @(posedge clk, negedge rst_n)
   if (!rst_n)
-    instr_IM_ID <= 17'hb00000;			// LLB R0, #0000
+    instr_IM_ID <= 16'h0000;			// LLB R0, #0000
   else if (!stall_IM_ID)
     instr_IM_ID <= instr;				// flop raw instruction from IM
 	
@@ -311,7 +311,57 @@ always @(instr_IM_ID) begin
 	HLTi : begin
 	  hlt = 1;
 	end
+	ADDIi: begin
 	
+	end
+	SUBIi: begin
+	
+	end
+	XORIi: begin
+	
+	end
+	ANDNIi: begin
+	
+	end
+	ANDIi: begin
+	
+	end
+	XORNIi: begin
+	
+	end
+	ORIi: begin
+	
+	end
+	ANDNi: begin
+	  rf_re0 = 1;
+	  rf_re1 = 1;
+	  rf_we = 1;
+      alu_func = ANDN;
+	  clk_z = 1;
+	end
+	NOTi: begin
+	  rf_re0 = 1;
+	  rf_re1 = 0;
+	  rf_we = 1;
+      alu_func = NOT;
+	  clk_z = 1;
+	end
+	MOVCi: begin
+	
+	end
+	MULi: begin
+	  rf_re0 = 1;
+	  rf_re1 = 1;
+	  rf_we = 1;
+      alu_func = MUL;
+	  clk_z = 1;	
+	end
+	PUSHi: begin
+	
+	end
+	POPi: begin
+	
+	end
   endcase
 end
 

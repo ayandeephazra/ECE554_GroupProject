@@ -2,14 +2,19 @@
 ///////////////////////////////////////
 // Create defines for ALU functions //
 /////////////////////////////////////
-localparam ADD	= 3'b000;
-localparam SUB 	= 3'b001;
-localparam AND	= 3'b010;
-localparam NOR	= 3'b011; 
-localparam SLL	= 3'b100;
-localparam SRL	= 3'b101;
-localparam SRA	= 3'b110;
-localparam LHB  = 3'b111;
+localparam ADD	= 4'b0000;
+localparam SUB 	= 4'b0001;
+localparam AND	= 4'b0010;
+localparam NOR	= 4'b0011; 
+localparam SLL	= 4'b0100;
+localparam SRL	= 4'b0101;
+localparam SRA	= 4'b0110;
+localparam LHB  = 4'b0111;
+
+// appended - wip
+localparam ANDN = 4'b1000;
+localparam NOT  = 4'b1001;
+localparam MUL  = 4'b1010;
 
 //////////////////////////////////////////
 // Create defines for Opcode encodings //
@@ -33,7 +38,7 @@ localparam HLTi		= 5'b01111;
 
 
 //////////////////////////////////////////
-// Appended Instructions               //
+// Appended Instructions - wip         //
 ////////////////////////////////////////
 localparam ADDIi 	= 5'b10000;
 localparam SUBIi 	= 5'b10001;

@@ -76,7 +76,7 @@ module CapabilityExplore1 (KEY, CLOCK_50, SW, LEDR, TX, RX, VGA_BLANK_N, VGA_B, 
 	/////////////////////////////////////
 	// instantiate rst_n synchronizer //
 	///////////////////////////////////
-	rst_synch iRST(.clk(clk),.RST_n(KEY[0]), .pll_locked(pll_locked), .rst_n(rst_n));
+	rst_synch iRST(.clk(clk),.RST_n(KEY[0]), .rst_n(rst_n)); // .pll_locked(pll_locked),
 	
 	// /////////////////////////////////////
     // // instantiate rst_n synchronizer //
