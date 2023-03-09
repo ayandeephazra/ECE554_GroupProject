@@ -79,7 +79,10 @@ assign dst = (func==AND) ? src1 & src0 :
 			 (func==NOR) ? ~(src1 | src0) :
 			 (func==SLL) ? shft_l :
 			 ((func==SRL) || (func==SRA)) ? shft_r :
-			 (func==LHB) ? {src1[7:0],src0[7:0]} : sum_sat;	 
+			 (func==LHB) ? {src1[7:0],src0[7:0]} :
+			 (func==ANDN)? ~(src1 & src0) :
+			 (func==NOT)? ~(src0) :
+			 (func==MUL)? src1 * src0 : sum_sat; // default to sum_sat in org implem
 			 
 assign zr = ~|dst;
 assign neg = dst[15];
