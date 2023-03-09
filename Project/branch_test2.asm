@@ -39,4 +39,4 @@ llb R4, 0xf
 
 
 END:
-b uncond, END
+b uncond, END       ## branch taken & not predicted
