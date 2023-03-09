@@ -50,7 +50,7 @@ always @(posedge clk)
 
 
 initial begin
-  $readmemh("I:/ece554/ECE554_GroupProject/Project/btb_contents.hex",btb_mem);
+  $readmemh("I:/ece554/ECE554_GroupProject/Project/btb_contents2.hex",btb_mem);
 end
 
     

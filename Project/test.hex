@@ -1,13 +1,27 @@
 @0000 B101	// llb R1, 0x1
 @0001 B203	// llb R2, 0x3
 @0002 0312	// add R3, R1, R2
-@0003 C207	// b eq, FIRST
+@0003 C00A	// b neq, FIRST
 @0004 B401	// llb R4, 0x1
 @0005 B402	// llb R4, 0x2
 @0006 B403	// llb R4, 0x3
 @0007 B404	// llb R4, 0x4
 @0008 2543	// sub R5, R4, R3
-@0009 C201	// b eq, FIRST
-@000a BD00	// llb R13, 0x00
-@000b BEFF	// llb R14, 0xff
-@000c CFFF	// b uncond, END
+@0009 C206	// b eq, SECOND
+@000a B405	// llb R4, 0x5
+@000b B406	// llb R4, 0x6
+@000c B407	// llb R4, 0x7
+@000d B408	// llb R4, 0x8
+@000e BEFF	// llb R14, 0xff
+@000f CFF4	// b uncond, CONT1
+@0010 BE00	// llb R14, 0x00
+@0011 B409	// llb R4, 0x9
+@0012 B40A	// llb R4, 0xa
+@0013 C7FA	// b lt, FIRST
+@0014 B40B	// llb R4, 0xb
+@0015 B40C	// llb R4, 0xc
+@0016 C5F9	// b gt, SECOND
+@0017 B40D	// llb R4, 0xd
+@0018 B40E	// llb R4, 0xe
+@0019 B40F	// llb R4, 0xf
+@001a CFFF	// b uncond, END
