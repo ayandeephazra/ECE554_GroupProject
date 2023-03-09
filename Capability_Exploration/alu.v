@@ -21,7 +21,7 @@ module alu(clk,src0,src1,shamt,func,dst,dst_EX_DM,ov,zr,neg);
 
 input clk;
 input [16:0] src0,src1;
-input [2:0] func;			// selects function to perform
+input [3:0] func;			// selects function to perform
 input [3:0] shamt;			// shift amount
 
 output [16:0] dst;			// ID_EX version for branch/jump targets
