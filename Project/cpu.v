@@ -46,7 +46,9 @@ pc iPC(.clk(clk), .rst_n(rst_n), .stall_IM_ID(stall_IM_ID), .pc(iaddr), .dst_ID_
 ///////////////////////////////////////
 // Instantiate Branch Target Buffer //
 /////////////////////////////////////
-btb iBTB(.clk(clk), .rst_n(rst_n), .PC(iaddr), .target_PC(btb_nxt_pc), .hit(btb_hit), .btb_hit_ID_EX(btb_hit_ID_EX));
+btb iBTB(.clk(clk), .rst_n(rst_n), .PC(iaddr), .target_PC(btb_nxt_pc), .hit(btb_hit), .btb_hit_ID_EX(btb_hit_ID_EX),
+		.flow_change_ID_EX(flow_change_ID_EX), .br_instr_ID_EX(br_instr_ID_EX), .pc_ID_EX(pc_ID_EX),
+		.dst_ID_EX(dst_ID_EX));
 
 /////////////////////////////////////
 // Instantiate instruction memory //

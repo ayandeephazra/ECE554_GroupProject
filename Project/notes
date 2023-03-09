@@ -1,3 +1,5 @@
+READ >>>>>>>>>>
+
 Instructions are flushed only when BRANCH IS TAKEN
 because Erics proc was coded based on an branch not taken assumption
 I need to modify the flushing to depend on what the prediction was
@@ -12,3 +14,10 @@ then flowchange is just ~flowchange
     bt: now it would be ~Z -- if Z then dont flow change (because you already assumed this)
 if it was a miss -- I predicted branch not taken
 then flowchange is the same
+
+
+WRITE >>>>>>>>>
+IN EX stage: whenever theres a branch taken && miss in the btb need to write to btb
+wwhat to write:: <<<< TAG -- PC_ID_EX[15:9] ||| valid 1 ||| strong 0 ||| target_PC -- dst_whatevr from ALU >>>
+where to write:: index -> PC_ID_EX[8:0]
+Ignoring S bit

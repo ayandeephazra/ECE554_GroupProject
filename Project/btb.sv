@@ -3,6 +3,10 @@ module btb (
     input rst_n,
     // input en,         // enable btb default high
     input [15:0] PC,
+    input flow_change_ID_EX,
+    input br_instr_ID_EX,
+    input [15:0] pc_ID_EX,
+    input [15:0] dst_ID_EX,
     output [15:0] target_PC,
     output hit,
     output logic btb_hit_ID_EX
@@ -10,19 +14,21 @@ module btb (
 
 // 512 entries deep
 // <<<   TAG[24:18] || S[17] || V[16] || target_PC[15:0]   >>>
-logic [25:0] btb_mem [0:511];
+logic [24:0] btb_mem [0:511];
 
 logic [8:0] index;
 logic [6:0] tag;
-logic [25:0] btb_out;
+logic [24:0] btb_out;
 logic valid_bit, strong_bit;
 logic en, btb_hit_IF_ID;
 
 assign index = PC[8:0];
 
-always_ff @(negedge clk, negedge rst_n)     // RST TO 0 AFTER TESTING
-    btb_out <= btb_mem[index];
- 
+always_ff @(negedge clk) begin
+  btb_out <= btb_mem[index];
+  if (write)
+    btb_mem[wr_index] <= btb_wr_data;
+end
 
 // Determine hit
 assign valid_bit = btb_out[16];
@@ -32,6 +38,21 @@ assign hit = (valid_bit & en & (PC[15:9] == tag)) ? 1 : 0;
 // output target
 assign target_PC = btb_out[13:0];
 
+/////////////////////////
+// BTB Write logic
+/////////////////////
+logic write, alloc, evict;
+logic [8:0] wr_index;
+logic [25:0] btb_wr_data;
+
+always_comb begin
+  write = alloc | evict;
+  alloc = (~btb_hit_ID_EX & br_instr_ID_EX & flow_change_ID_EX);
+  evict = (btb_hit_ID_EX & flow_change_ID_EX);   // misprediction
+
+  wr_index = pc_ID_EX[8:0];
+  btb_wr_data = (alloc) ? {pc_ID_EX[15:9], 1'b0, 1'b1, dst_ID_EX} : {8'h0, 1'b0, 16'h0};
+end
 
 	  
 /////////////////////////
@@ -45,7 +66,6 @@ always @(posedge clk)
 ///////////////////////
 always @(posedge clk)
   btb_hit_ID_EX <= btb_hit_IF_ID;   // Pipeline to EX to decide if flow change is necessary
-
 
 
 
