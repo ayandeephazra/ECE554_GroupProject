@@ -15,6 +15,8 @@ localparam LHB  = 4'b0111;
 localparam ANDN = 4'b1000;
 localparam NOT  = 4'b1001;
 localparam MUL  = 4'b1010;
+localparam XOR  = 4'b1011;
+localparam OR   = 4'b1100;
 
 //////////////////////////////////////////
 // Create defines for Opcode encodings //
