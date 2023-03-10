@@ -3,7 +3,7 @@ module id(clk,rst_n,instr,zr_EX_DM,br_instr_ID_EX,jmp_imm_ID_EX,jmp_reg_ID_EX,
           rf_we_DM_WB,rf_p0_addr,rf_p1_addr,rf_dst_addr_DM_WB,alu_func_ID_EX,src0sel_ID_EX,
 		  src1sel_ID_EX,dm_re_EX_DM,dm_we_EX_DM,clk_z_ID_EX,clk_nv_ID_EX,instr_ID_EX,
 		  cc_ID_EX, stall_IM_ID,stall_ID_EX,stall_EX_DM,hlt_DM_WB,byp0_EX,byp0_DM,
-		  byp1_EX,byp1_DM,flow_change_ID_EX);
+		  byp1_EX,byp1_DM,flow_change_ID_EX, LWI_instr_EX_DM);
 
 input clk,rst_n;
 input [16:0] instr;					// instruction to decode and execute direct from IM, flop first
@@ -35,6 +35,8 @@ output stall_EX_DM;					// asserted for hazards and halt instruction, stalls EX_
 output reg hlt_DM_WB;				// needed for register dump
 output reg byp0_EX,byp0_DM;			// bypasing controls for RF_p0
 output reg byp1_EX,byp1_DM;			// bypassing controls for RF_p1
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+output reg LWI_instr_EX_DM;			// MOVC/LWI handling
 
 ////////////////////////////////////////////////////////////////
 // Register type needed for assignment in combinational case //
@@ -52,6 +54,8 @@ reg dm_we;
 reg clk_z;
 reg clk_nv;
 reg cond_ex;
+////////////////////////////////////
+reg LWI_instr;
 
 /////////////////////////////////
 // Registers needed for flops //
@@ -65,6 +69,8 @@ reg hlt_ID_EX,hlt_EX_DM;
 reg [11:0] instr_ID_EX;		// only need lower 12-bits for immediate values
 reg flow_change_EX_DM;		// needed to pipeline flow_change_ID_EX
 reg cond_ex_ID_EX;			// needed for ADDZ knock down of rf_we
+reg LWI_instr_ID_EX;		// MOVC/LWI handling
+//reg LWI_instr_EX_DM; 		// MOVC/LWI handling
 
 wire load_use_hazard,flush;
 
@@ -73,6 +79,16 @@ wire load_use_hazard,flush;
 ///////////////////
 `include "common_params.inc"
 	
+///////////////////////////////////
+// Flop the LWI_instr           //
+/////////////////////////////////
+always @(posedge clk, negedge rst_n)
+  if (!rst_n)
+    LWI_instr <= 0;		            	
+  else begin
+    LWI_instr_ID_EX <= LWI_instr;
+	LWI_instr_EX_DM <= LWI_instr_ID_EX;
+  end
 	
 ///////////////////////////////////
 // Flop the instruction from IM //
@@ -179,7 +195,7 @@ assign flush = flow_change_ID_EX | flow_change_EX_DM | hlt_ID_EX | hlt_EX_DM;
 assign load_use_hazard = (((rf_dst_addr_ID_EX==rf_p0_addr) && rf_re0) || 
                           ((rf_dst_addr_ID_EX==rf_p1_addr) && rf_re1)) ? dm_re_ID_EX : 1'b0;
 						  
-assign stall_IM_ID = hlt_ID_EX | load_use_hazard;
+assign stall_IM_ID = hlt_ID_EX | load_use_hazard | LWI_instr; //stall_movc
 assign stall_ID_EX = 1'b0; // hlt_EX_DM;
 assign stall_EX_DM = 1'b0; // hlt_EX_DM;
 
@@ -207,6 +223,7 @@ always @(instr_IM_ID) begin
   clk_nv = 0;
   hlt = 0;
   cond_ex = 0;
+  LWI_instr = 0;
   
   case (instr_IM_ID[16:12])
     ADDi : begin
@@ -347,7 +364,14 @@ always @(instr_IM_ID) begin
 	  clk_z = 1;
 	end
 	MOVCi: begin
-	
+	  src0sel = IMM2SRC0;		// sign extended address offset
+	  rf_re1 = 1;
+	  rf_we = 1;
+	  //signal to kickstart LWI/MOVC
+	  LWI_instr = 1;
+	  // include zero and overflow or neg flags
+	  clk_z = 1;	
+	  clk_nv = 1;
 	end
 	MULi: begin
 	  rf_re0 = 1;
@@ -355,6 +379,7 @@ always @(instr_IM_ID) begin
 	  rf_we = 1;
       alu_func = MUL;
 	  clk_z = 1;	
+	  clk_nv = 1;
 	end
 	PUSHi: begin
 	

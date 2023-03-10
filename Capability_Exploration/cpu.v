@@ -37,7 +37,8 @@ wire [16:0] read_mux_select;    // choosing which signal is read
 // Instantiate program counter //
 ////////////////////////////////
 pc iPC(.clk(clk), .rst_n(rst_n), .stall_IM_ID(stall_IM_ID), .pc(iaddr), .dst_ID_EX(dst_ID_EX),
-       .pc_ID_EX(pc_ID_EX), .pc_EX_DM(pc_EX_DM), .flow_change_ID_EX(flow_change_ID_EX));
+		.pc_ID_EX(pc_ID_EX), .pc_EX_DM(pc_EX_DM), .flow_change_ID_EX(flow_change_ID_EX), 
+		.LWI_instr_EX_DM(LWI_instr_EX_DM), .dst_EX_DM(dst_EX_DM));
 	   
 /////////////////////////////////////
 // Instantiate instruction memory //
@@ -56,7 +57,7 @@ id	iID(.clk(clk), .rst_n(rst_n), .instr(instr), .zr_EX_DM(zr_EX_DM), .br_instr_I
 		.instr_ID_EX(instr_ID_EX), .cc_ID_EX(cc_ID_EX), .stall_IM_ID(stall_IM_ID),
 		.stall_ID_EX(stall_ID_EX), .stall_EX_DM(stall_EX_DM), .hlt_DM_WB(hlt_DM_WB),
 		.byp0_EX(byp0_EX), .byp0_DM(byp0_DM), .byp1_EX(byp1_EX), .byp1_DM(byp1_DM),
-		.flow_change_ID_EX(flow_change_ID_EX));
+		.flow_change_ID_EX(flow_change_ID_EX), .LWI_instr_EX_DM(LWI_instr_EX_DM)); //NEW
 	   
 ////////////////////////////////
 // Instantiate register file //
