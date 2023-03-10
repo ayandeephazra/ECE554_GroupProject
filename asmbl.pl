@@ -45,10 +45,6 @@ use strict;
 if(@ARGV < 1) { print "Usage: asmbl.pl <input assembly file> > outputFile\n"; exit; }
 
 
-
-
-
-# will we be adding any more regs to the cpu?
 my %regs = ("R0" => "0000", "R1" => "0001", "R2" => "0010", "R3" => "0011",
 
 	    "R4" => "0100", "R5" => "0101", "R6" => "0110", "R7" => "0111",
@@ -79,7 +75,8 @@ my %conds = ("NEQ" => "000", "EQ" => "001", "GT" => "010", "LT" => "011", "GTE" 
   PUSH - 1
   POP - 1
 =cut
-my %numArgs = ( qw/ADD 3 ADDZ 3 SUB 3 AND 3 NOR 3 SLL 3 SRL 3 SRA 3 LW 3 SW 3 LHB 2 LLB 2 B 2 JAL 1 JR 1 HLT 0/);
+my %numArgs = ( qw/ADD 3 ADDZ 3 SUB 3 AND 3 NOR 3 XOR 3 SLL 3 SRL 3 SRA 3 LW 3 SW 3 LHB 2 LLB 2 B 2 JAL 1 JR 1 
+                ADDI 3 SUBI 3 XORI 3 ANDNI 3 ANDI 3 XORNI 3 ORI 3 ANDN 3 NOT 2 MOVC 3 MUL 3 PUSH 1 POP 1 HLT 0/);
 
 
 =new opcodes: 
@@ -100,8 +97,9 @@ my %numArgs = ( qw/ADD 3 ADDZ 3 SUB 3 AND 3 NOR 3 SLL 3 SRL 3 SRA 3 LW 3 SW 3 LH
 
 =cut
 # need to add one zero to the original opcodes
-my %opcode = ( qw/ADD 0000 ADDZ 0001 SUB 0010 AND 0011 NOR 0100 SLL 0101 SRL 0110 SRA 0111 LW 1000 SW 1001 LHB 1010 LLB 1011 B 1100 JAL 1101 JR 1110 HLT 1111/);
-# see if I can change the assigns to look %rlookup
+my %opcode = ( qw/ADD 00000000 ADDZ 00000001 SUB 00000010 AND 00000011 NOR 00000100 XOR 00010111 SLL 00000101 SRL 00000110 SRA 00000111 LW 00001000 SW 00001001 
+                  LHB 00001010 LLB 00001011 B 00001100 JAL 00001101 JR 00001110 ADDI 00010000 SUBI 00010001 XORI 00010010 ANDNI 00010011 ANDI 00010100 
+                  XORNI 00010101 ORI 00010110 ANDN 00010111 NOT 00011100 MOVC 00011000 MUL 00011001 PUSH 00011010 POP 00011011 HLT 00001111/);
 
 
 my %rlookup = ( "1111", "F" , "1110", "E" , "1101", "D" , "1100", "C",
@@ -131,7 +129,7 @@ my @source_lines;
 my $addr = 0;
 
 
-
+# ADD STRING SUPPORT!!!!!!!!!!!!
 while(<IN>) {
 
     my $bits = "";
@@ -204,7 +202,6 @@ while(<IN>) {
 	    }
 
       
-
       $bits = "$opcode{$instr}";
 
 
@@ -234,7 +231,7 @@ while(<IN>) {
       MOVC - 3
       MUL - 3
 =cut
-      if($instr =~ /^(AND|NOR|ADD|ADDZ|SUB)$/) {
+      if($instr =~ /^(AND|NOR|ADD|ADDZ|SUB|XOR|MUL)$/) {
 
         foreach my $reg ($args[0], $args[1], $args[2]) {
 
@@ -243,6 +240,51 @@ while(<IN>) {
             $bits .= $regs{$reg};
 
         }
+
+      }
+
+      elsif($instr =~ /^(ADDI|SUBI|XORI|ANDNI|ANDI|XORNI|ORI|ANDN)$/) {
+
+        foreach my $reg ($args[0], $args[1]) {
+
+            if(!$regs{$reg}) { die("Bad register ($reg)\n$_") }
+
+            $bits .= $regs{$reg};
+
+        }
+
+        $bits .= parseImmediate($args[2], 4);
+
+      }
+
+      # move MOVC into its own elsif block - look at slides for implementing
+      elsif($instr =~ /^(NOT|MOVC)$/) {
+
+        foreach my $reg ($args[0], $args[1]) {
+
+            if(!$regs{$reg}) { die("Bad register ($reg)\n$_") }
+
+            $bits .= $regs{$reg};
+
+        }
+
+        $bits .= "0000";
+
+      }
+
+      # this will essential just become a macro most likely, easier to do than in hardware
+      # just a placeholder for now - look at slides when changing
+      elsif($instr =~ /^(PUSH|POP)$/) {
+
+        foreach my $reg ($args[0]) {
+
+            if(!$regs{$reg}) { die("Bad register ($reg)\n$_") }
+
+            $bits .= $regs{$reg};
+
+        }
+        
+        $bits .= "00000000";
 
       }
 
@@ -288,31 +330,33 @@ while(<IN>) {
 
       }
 
-    elsif($instr =~ /^(JAL)$/) {
+      elsif($instr =~ /^(JAL)$/) {
 
-	  if($args[0] !~ /[a-zA-Z]/) { print STDERR "Error: Invalid label name: \"$args[0]\" in line:\n$_"; exit; }
+        if($args[0] !~ /[a-zA-Z]/) { print STDERR "Error: Invalid label name: \"$args[0]\" in line:\n$_"; exit; }
 
-	  $bits .= "|" . $args[0] . "|12|J|";
+        $bits .= "|" . $args[0] . "|12|J|";
 
       }
 
       elsif($instr =~ /^(JR)$/) {
-    foreach my $reg ($args[0]) {
+        
+        foreach my $reg ($args[0]) {
 
-        if(!$regs{$reg}) { die("Bad register ($reg)\n$_") }
+          if(!$regs{$reg}) { die("Bad register ($reg)\n$_") }
 
-        $bits .= "0000" . $regs{$reg} . "0000";
+          $bits .= "0000" . $regs{$reg} . "0000";
 
-    }
+        }
 
       }
 
       elsif($instr =~ /^(HLT)$/) {
-    $bits .= "000000000000";
+        $bits .= "000000000000";
 
       }
 
-      #print $bits;
+      # print $bits;
+      # print"\n";
 
       $mem[$addr] = $bits;
 
@@ -435,8 +479,8 @@ sub decToHex {
 
 sub binToHex {
 
-  $_[0] =~ /(\d{4})(\d{4})(\d{4})(\d{4})/;
+  $_[0] =~ /(\d{4})(\d{4})(\d{4})(\d{4})(\d{4})/;
 
-  return $rlookup{$1} . $rlookup{$2} . $rlookup{$3} . $rlookup{$4}; 
+  return $rlookup{$1} . $rlookup{$2} . $rlookup{$3} . $rlookup{$4} . $rlookup{$5}; 
 
 }
