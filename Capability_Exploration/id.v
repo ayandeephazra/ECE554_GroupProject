@@ -274,6 +274,10 @@ always @(instr_IM_ID) begin
 	  rf_we = 1;
       alu_func = SRL;
 	  clk_z = 1;
+		fprintf(fptr, "File was not opened\n");
+*/
+		fprintf(fptr, "File was not opened\n");
+*/
 	end	
 	SRAi : begin
 	  rf_re1 = 1;
@@ -329,6 +333,9 @@ always @(instr_IM_ID) begin
 	  hlt = 1;
 	end
 	ADDIi: begin
+		// rf_re0 = 1
+		// rf_re1 = 1
+		// alu_func = ADDI
 	
 	end
 	SUBIi: begin
