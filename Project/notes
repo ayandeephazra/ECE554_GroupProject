@@ -21,3 +21,14 @@ IN EX stage: whenever theres a branch taken && miss in the btb need to write to 
 wwhat to write:: <<<< TAG -- PC_ID_EX[15:9] ||| valid 1 ||| strong 0 ||| target_PC -- dst_whatevr from ALU >>>
 where to write:: index -> PC_ID_EX[8:0]
 Ignoring S bit
+
+cmd to generate reset.hex --  
+perl -le 'print "000000\n"x512' > btb_contents_reset.hex
+
+Problem (?)
+1. case -- taken branch followed by another branch -- test3 END, REPEAT
+second branch is flushed in EX stage <<<<<<< WRONG
+but since it's a branch, decision is made and rewritten to btb
+but it's flushed, so should i prevent that write? 
+
+2. why is it writing the same exact thing again anyway. it shouldve hit in btb???
