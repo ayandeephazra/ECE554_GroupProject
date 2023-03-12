@@ -1,13 +1,11 @@
-# testing writes
-# missing case: 
-#   taken not predicted
-#   and then mispredict @ same PC
+# testing writes/reads
 
 llb R1, 0x1
 llb R2, 0x3
 
 REPEAT:
-b neq, FIRST         ## branch taken & not predicted -- PC: 2 -> PC: 7
+b neq, FIRST        ## 1st. branch taken & not predicted -- PC: 2 -> PC: 7
+                    ## 2nd. branch taken & predicted
 
 llb R4, 0x0
 llb R4, 0x1
@@ -19,7 +17,10 @@ llb R4, 0x4
 llb R4, 0x5
 llb R4, 0x6
 llb R4, 0x7
-b gte, SECOND       ## branch taken & not predicted -- PC: 11 -> PC: 16
+sub R5, R2, R1
+sub R5, R5, R1
+b gt, SECOND        ## 1st. branch taken & not predicted -- PC: 11 -> PC: 16
+                    ## 2nd. branch not taken & predicted
 
 llb R4, 0x8
 llb R4, 0x9
@@ -34,7 +35,8 @@ llb R4, 0xf
 
 sub R2, R2, R1      
 sub R5, R2, R1
-b eq, END           ## branch first not taken - not written, then taken, written
+b eq, END           ## 1st. branch first not taken - not written
+                    ## 2nd. branch taken & not predicted
 b gte, REPEAT       ## REPEAT ONCE ----- PC: 23 -> PC: 2
 
 END:
