@@ -274,10 +274,10 @@ always @(instr_IM_ID) begin
 	  rf_we = 1;
       alu_func = SRL;
 	  clk_z = 1;
-		fprintf(fptr, "File was not opened\n");
-*/
-		fprintf(fptr, "File was not opened\n");
-*/
+//		fprintf(fptr, "File was not opened\n");
+//
+//		fprintf(fptr, "File was not opened\n");
+//
 	end	
 	SRAi : begin
 	  rf_re1 = 1;
