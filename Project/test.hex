@@ -1,27 +1,17 @@
 @0000 B101	// llb R1, 0x1
-@0001 B203	// llb R2, 0x3
-@0002 C004	// b neq, FIRST
-@0003 B400	// llb R4, 0x0
-@0004 B401	// llb R4, 0x1
-@0005 B402	// llb R4, 0x2
-@0006 B403	// llb R4, 0x3
-@0007 B404	// llb R4, 0x4
-@0008 B405	// llb R4, 0x5
-@0009 B406	// llb R4, 0x6
-@000a B407	// llb R4, 0x7
-@000b 2521	// sub R5, R2, R1
-@000c 2551	// sub R5, R5, R1
-@000d C404	// b gt, SECOND
-@000e B408	// llb R4, 0x8
-@000f B409	// llb R4, 0x9
-@0010 B40A	// llb R4, 0xa
-@0011 B40B	// llb R4, 0xb
-@0012 B40C	// llb R4, 0xc
-@0013 B40D	// llb R4, 0xd
-@0014 B40E	// llb R4, 0xe
-@0015 B40F	// llb R4, 0xf
-@0016 2221	// sub R2, R2, R1
-@0017 2521	// sub R5, R2, R1
-@0018 C201	// b eq, END
-@0019 C9E8	// b gte, REPEAT
-@001a CFFF	// b uncond, END
+@0001 B204	// llb R2, 0x4
+@0002 B303	// llb R3, 0x3
+@0003 2523	// sub R5, R2, R3
+@0004 C804	// b gte, FIRST
+@0005 B400	// llb R4, 0x0
+@0006 B401	// llb R4, 0x1
+@0007 B402	// llb R4, 0x2
+@0008 B403	// llb R4, 0x3
+@0009 B408	// llb R4, 0x8
+@000a B409	// llb R4, 0x9
+@000b B40A	// llb R4, 0xa
+@000c B40B	// llb R4, 0xb
+@000d 2221	// sub R2, R2, R1
+@000e C201	// b eq, END
+@000f C9F3	// b gte, REPEAT
+@0010 CFFF	// b uncond, END

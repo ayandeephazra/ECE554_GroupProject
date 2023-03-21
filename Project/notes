@@ -2,7 +2,7 @@ READ >>>>>>>>>>
 
 Instructions are flushed only when BRANCH IS TAKEN
 because Erics proc was coded based on an branch not taken assumption
-I need to modify the flushing to depend on what the prediction was
+Need to modify the flushing to depend on what the prediction was
 Example: Need to flush whenevr the prediction is wrong
 Whether that is branch taken or not taken
 
@@ -30,5 +30,15 @@ Problem (?)
 second branch is flushed in EX stage <<<<<<< WRONG
 but since it's a branch, decision is made and rewritten to btb
 but it's flushed, so should i prevent that write? 
+Red herring -- following branch decisions cannot be made before previous branch flow changes
+(BOTH OCCUR IN EX)
 
-2. why is it writing the same exact thing again anyway. it shouldve hit in btb???
+
+STRONG BIT >>>>>>>>
+whenever theres a branch decision, need to update strong bit
+  if branch taken, and was hit then set strong bit
+  else if (branch not taken, and was hit)
+    if strong bit set
+      clear strong bit
+    else
+      invalidate
