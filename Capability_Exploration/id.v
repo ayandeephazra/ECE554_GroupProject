@@ -332,28 +332,38 @@ always @(instr_IM_ID) begin
 	HLTi : begin
 	  hlt = 1;
 	end
+	// rf_re0 = 1
+	// rf_re1 = 1
 	ADDIi: begin
-		// rf_re0 = 1
-		// rf_re1 = 1
-		// alu_func = ADDI
-	
+	  rf_re0 = 1;					// read from reg 
+	  src1sel = IMM2SRC1_4BZE;		// access 4-bit ZE immediate
+	  rf_we = 1;					// write as normal to a reg
+	  alu_func = ADD;				// use the "add" alu functionality but change the src muxes to get from immediates rather than reg file
+      clk_z = 1;                    // include zero flags
+      clk_nv = 1;					// include overflow or neg flags
 	end
 	SUBIi: begin
+	  alu_func = SUB;
 	
 	end
 	XORIi: begin
+	  alu_func = XOR;
 	
 	end
 	ANDNIi: begin
+	  alu_func = ANDN;
 	
 	end
 	ANDIi: begin
+	  alu_func = AND;
 	
 	end
 	XORNIi: begin
+	  alu_func = XOR;
 	
 	end
 	ORIi: begin
+	  alu_func = OR;
 	
 	end
 	ANDNi: begin
@@ -371,13 +381,11 @@ always @(instr_IM_ID) begin
 	  clk_z = 1;
 	end
 	MOVCi: begin
-	  src0sel = IMM2SRC0;		// sign extended address offset
+	  src0sel = IMM2SRC0;			// sign extended address offset
 	  rf_re1 = 1;
 	  rf_we = 1;
-	  //signal to kickstart LWI/MOVC
-	  LWI_instr = 1;
-	  // include zero and overflow or neg flags
-	  clk_z = 1;	
+	  LWI_instr = 1;				// signal to kickstart LWI/MOVC
+	  clk_z = 1;					// include zero and overflow or neg flags
 	  clk_nv = 1;
 	end
 	MULi: begin
