@@ -54,49 +54,13 @@ my %regs = ("R0" => "0000", "R1" => "0001", "R2" => "0010", "R3" => "0011",
 	    "R12"=> "1100", "R13"=> "1101", "R14"=> "1110", "R15"=> "1111");
 
 
-
-# condition codes stay the same
 my %conds = ("NEQ" => "000", "EQ" => "001", "GT" => "010", "LT" => "011", "GTE" => "100", "LTE" => "101", "OVFL" => "110", "UNCOND" => "111");
 
 
-=new instructions:
-  XOR - 3
-  ADDI - 3
-  SUBI - 3
-  XORI - 3
-  ANDNI - 3
-  ANDI - 3
-  XORNI - 3
-  ORI - 3
-  ANDN - 3
-  NOT - 2
-  MOVC - 3
-  MUL - 3
-  PUSH - 1
-  POP - 1
-=cut
 my %numArgs = ( qw/ADD 3 ADDZ 3 SUB 3 AND 3 NOR 3 XOR 3 SLL 3 SRL 3 SRA 3 LW 3 SW 3 LHB 2 LLB 2 B 2 JAL 1 JR 1 
                 ADDI 3 SUBI 3 XORI 3 ANDNI 3 ANDI 3 XORNI 3 ORI 3 ANDN 3 NOT 2 MOVC 3 MUL 3 PUSH 1 POP 1 HLT 0/);
 
 
-=new opcodes: 
-  XOR - 10111
-  ADDI - 10000
-  SUBI - 10001
-  XORI - 10010
-  ANDNI - 10011
-  ANDI - 10100
-  XORNI - 10101
-  ORI - 10110
-  ANDN - 10111
-  NOT - 11100
-  MOVC - 11000
-  MUL - 11001
-  PUSH - 11010
-  POP - 11011
-
-=cut
-# need to add one zero to the original opcodes
 my %opcode = ( qw/ADD 00000000 ADDZ 00000001 SUB 00000010 AND 00000011 NOR 00000100 XOR 00010111 SLL 00000101 SRL 00000110 SRA 00000111 LW 00001000 SW 00001001 
                   LHB 00001010 LLB 00001011 B 00001100 JAL 00001101 JR 00001110 ADDI 00010000 SUBI 00010001 XORI 00010010 ANDNI 00010011 ANDI 00010100 
                   XORNI 00010101 ORI 00010110 ANDN 00010111 NOT 00011100 MOVC 00011000 MUL 00011001 PUSH 00011010 POP 00011011 HLT 00001111/);
@@ -128,8 +92,6 @@ my @source_lines;
 
 my $addr = 0;
 
-
-# ADD STRING SUPPORT!!!!!!!!!!!!
 while(<IN>) {
 
     my $bits = "";
@@ -165,12 +127,35 @@ while(<IN>) {
 
     }
 
+    # this is being wonky, so you have to add an 
+    # extra char since it eliminates the first one
+    if(/STRING\s+(.*)/) {
+
+        my $data = $1;
+
+        my @chars;
+
+        @chars = split(//,$data);
+
+        my $x;
+
+        for ($x = 1; $x < (length($data)-1); $x++) {
+          $mem[$addr] = decToBin(ord($chars[$x]), 20);
+          $source_lines[$addr++] = $chars[$x];
+        }
+
+        $mem[$addr] = decToBin(0,20);
+        $source_lines[$addr++] = "Null terminate";
+
+        next;
+        
+    }
+
     $source_lines[$addr] = $_;
 
     $source_lines[$addr] =~ s/^\s+|\s+$//g;
 
     $_ = uc($_);
-
 
 
   if(s/(.*)://) {  #capture labels
@@ -191,8 +176,6 @@ while(<IN>) {
 
       my @args = split(",", $2);
 
-      
-
       if(!exists($numArgs{$instr})) { die("Unknown instruction\n$_") }
 
       if($numArgs{$instr} != @args) { 
@@ -200,7 +183,6 @@ while(<IN>) {
 	      die("Error:\n$_\nWrong number of arguments (need $numArgs{$instr} args)\n") 
 
 	    }
-
       
       $bits = "$opcode{$instr}";
 
@@ -214,23 +196,7 @@ while(<IN>) {
 
       }
 
-      
-      # for here up to 266 is going to be a pain in the ass to add new instructions and make sure 
-      # that the rest of the script works
 
-=new inst:
-      XOR - 3
-      ADDI - 3
-      SUBI - 3
-      XORI - 3
-      ANDNI - 3
-      ANDI - 3
-      XORNI - 3
-      ORI - 3
-      ANDN - 3
-      MOVC - 3
-      MUL - 3
-=cut
       if($instr =~ /^(AND|NOR|ADD|ADDZ|SUB|XOR|MUL)$/) {
 
         foreach my $reg ($args[0], $args[1], $args[2]) {
@@ -257,8 +223,7 @@ while(<IN>) {
 
       }
 
-      # move MOVC into its own elsif block - look at slides for implementing
-      elsif($instr =~ /^(NOT|MOVC)$/) {
+      elsif($instr =~ /^(NOT)$/) {
 
         foreach my $reg ($args[0], $args[1]) {
 
@@ -272,9 +237,39 @@ while(<IN>) {
 
       }
 
+      elsif($instr =~ /^(MOVC)$/) {
+
+        foreach my $reg ($args[0], $args[1]) {
+
+            if(!$regs{$reg}) { die("Bad register ($reg)\n$_") }
+
+            $bits .= $regs{$reg};
+
+        }
+
+        $bits .= parseImmediate($args[2], 4);
+
+      }
+
+
+
       # this will essential just become a macro most likely, easier to do than in hardware
       # just a placeholder for now - look at slides when changing
-      elsif($instr =~ /^(PUSH|POP)$/) {
+      elsif($instr =~ /^(PUSH)$/) {
+
+        foreach my $reg ($args[0]) {
+
+            if(!$regs{$reg}) { die("Bad register ($reg)\n$_") }
+
+            $bits .= $regs{$reg};
+
+        }
+        
+        $bits .= "00000000";
+
+      }
+
+      elsif($instr =~ /^(POP)$/) {
 
         foreach my $reg ($args[0]) {
 
@@ -354,9 +349,6 @@ while(<IN>) {
         $bits .= "000000000000";
 
       }
-
-      # print $bits;
-      # print"\n";
 
       $mem[$addr] = $bits;
 
