@@ -71,7 +71,7 @@ localparam RF2SRC1	= 2'b00;
 localparam IMM2SRC1 = 2'b01;			// 8-bit data immediate for LLB/LHB
 localparam NPC2SRC1 = 2'b10;			// nxt_pc to src1 for JAL instruction
 //
-localparam IMM2SRC1_4BZE = 2'b11;       // 4-bit zero extended immediate 
+localparam IMM2SRC1_4BSE = 2'b11;       // 4-bit zero extended immediate 
 
 
 

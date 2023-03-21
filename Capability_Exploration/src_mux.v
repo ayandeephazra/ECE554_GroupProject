@@ -65,7 +65,7 @@ assign src0 = (src0sel_ID_EX == RF2SRC0) ? RF_p0 :
 
 assign src1 = (src1sel_ID_EX == RF2SRC1) ? RF_p1 : 
               (src1sel_ID_EX == NPC2SRC1) ? pc_ID_EX :	// for JAL
-			  (src1sel_ID_EX == IMM2SRC1_4BZE) ? {{12'h000},imm_ID_EX[3:0]} : // 4-bit zero extended immediate
+			  (src1sel_ID_EX == IMM2SRC1_4BSE) ? {{12{imm_ID_EX[3]}},imm_ID_EX[3:0]} : // 4-bit S-extended immediate, this is an append from org Hoffman implem
 			  {{8{imm_ID_EX[7]}},imm_ID_EX[7:0]};			// for LHB/LLB (sign extended 8-bit immediate
 			  
 endmodule

@@ -336,7 +336,7 @@ always @(instr_IM_ID) begin
 	// rf_re1 = 1
 	ADDIi: begin
 	  rf_re0 = 1;					// read from reg 
-	  src1sel = IMM2SRC1_4BZE;		// access 4-bit ZE immediate
+	  src1sel = IMM2SRC1_4BSE;		// access 4-bit ZE immediate
 	  rf_we = 1;					// write as normal to a reg
 	  alu_func = ADD;				// use the "add" alu functionality but change the src muxes to get from immediates rather than reg file
       clk_z = 1;                    // include zero flags
@@ -344,7 +344,7 @@ always @(instr_IM_ID) begin
 	end
 	SUBIi: begin
 	 rf_re0 = 1;
-	 src1sel = IMM2SRC1_4BZE;
+	 src1sel = IMM2SRC1_4BSE;
 	 rf_we = 1;
 	 clk_z = 1;
 	 clk_nv = 1;
@@ -353,28 +353,28 @@ always @(instr_IM_ID) begin
 	end
 	XORIi: begin
 	  rf_re0 = 1;
-  	  rf_re1 = 1;
+  	  src1sel = IMM2SRC1_4BSE;
 	  rf_we = 1;
 	  clk_z = 1;	  
 	  alu_func = XOR;
 	end
 	ANDNIi: begin
 	  rf_re0 = 1;
-	  rf_re1 = 1;
+	  src1sel = IMM2SRC1_4BSE;
 	  rf_we = 1;
 	  clk_z = 1;
 	  alu_func = ANDN;
 	end
 	ANDIi: begin
 	 rf_re0 = 1;
-	 rf_re1 = 1;
+	 src1sel = IMM2SRC1_4BSE;
 	 rf_we = 1;
 	 clk_z = 1;
 	  alu_func = AND;
 	end
 	XORNIi: begin
 	  rf_re0 = 1;
-	  rf_re1 = 1;
+	  src1sel = IMM2SRC1_4BSE;
 	  rf_we = 1;
 	  clk_z = 1;
 	  alu_func = XOR;
@@ -382,7 +382,7 @@ always @(instr_IM_ID) begin
 	end
 	ORIi: begin
 	  rf_re0 = 1;
-	  rf_re1 = 1;
+	  src1sel = IMM2SRC1_4BSE;
 	  rf_we = 1;
 	  clk_z = 1;
 	  alu_func = OR;
