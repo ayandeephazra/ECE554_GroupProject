@@ -261,11 +261,18 @@ while(<IN>) {
 
             if(!$regs{$reg}) { die("Bad register ($reg)\n$_") }
 
-            $bits .= $regs{$reg};
+            $bits = "00001001" . $regs{$reg} . "11100000";
 
         }
-        
-        $bits .= "00000000";
+
+        $mem[$addr] = $bits;
+
+        $code[$addr] = $_;
+
+        $addr += 1;
+
+        #         opcode      R14/R14       1
+        $bits = "00010000" . "11101110" . "0001";
 
       }
 
@@ -275,11 +282,18 @@ while(<IN>) {
 
             if(!$regs{$reg}) { die("Bad register ($reg)\n$_") }
 
-            $bits .= $regs{$reg};
+            $bits = "00010001" . "11101110" . "0001";
 
         }
-        
-        $bits .= "00000000";
+
+        $mem[$addr] = $bits;
+
+        $code[$addr] = $_;
+
+        $addr += 1;
+
+        #         opcode                 R14       0
+        $bits = "00001000" . $args[0] . "1110" . "0000";
 
       }
 
@@ -402,8 +416,11 @@ for(my $i=0; $i<scalar(@mem); $i++) {
   #my $j = $i / 2;  #shift from a byte address to a word address
 
   # print decToHex($i) . "  :  " . binToHex($addr) . "  ;\n";
-	
-  print "\@" . decToHex($i, 4) . " " . binToHex($addr) . "\t// " . $source_lines[$i] . "\n";
+  
+  # need to also check if it doesn't contain anything (possibly check the length?)
+  if (!($source_lines[$i] =~ m/PUSH|POP/)) {
+    print "\@" . decToHex($i, 4) . " " . binToHex($addr) . "\t// " . $source_lines[$i] . "\n";
+  }
 
   #if($code[$i]) { print $code[$i] }
 
@@ -411,12 +428,6 @@ for(my $i=0; $i<scalar(@mem); $i++) {
 
 }
 
-
-
-
-
-
-# this is also gonna need to be looked at
 sub parseImmediate {
 
     my $imm = $_[0];
@@ -429,15 +440,11 @@ sub parseImmediate {
 
 }
 
-
-
 sub hexToBin {
 
   return decToBin(hex($_[0]), $_[1]);
 
 }
-
-
 
 sub decToBin {
 
@@ -451,12 +458,6 @@ sub decToBin {
 
 }
 
-
-
-
-
-
-
 sub decToHex {
 
   my $ret = sprintf("%x", $_[0]);
@@ -466,8 +467,6 @@ sub decToHex {
   return $ret;
 
 }
-
-
 
 sub binToHex {
 
