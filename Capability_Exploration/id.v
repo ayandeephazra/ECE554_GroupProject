@@ -343,28 +343,49 @@ always @(instr_IM_ID) begin
       clk_nv = 1;					// include overflow or neg flags
 	end
 	SUBIi: begin
+	 rf_re0 = 1;
+	 src1sel = IMM2SRC1_4BZE;
+	 rf_we = 1;
+	 clk_z = 1;
+	 clk_nv = 1;
 	  alu_func = SUB;
 	
 	end
 	XORIi: begin
+	  rf_re0 = 1;
+  	  rf_re1 = 1;
+	  rf_we = 1;
+	  clk_z = 1;	  
 	  alu_func = XOR;
-	
 	end
 	ANDNIi: begin
+	  rf_re0 = 1;
+	  rf_re1 = 1;
+	  rf_we = 1;
+	  clk_z = 1;
 	  alu_func = ANDN;
-	
 	end
 	ANDIi: begin
+	 rf_re0 = 1;
+	 rf_re1 = 1;
+	 rf_we = 1;
+	 clk_z = 1;
 	  alu_func = AND;
-	
 	end
 	XORNIi: begin
+	  rf_re0 = 1;
+	  rf_re1 = 1;
+	  rf_we = 1;
+	  clk_z = 1;
 	  alu_func = XOR;
 	
 	end
 	ORIi: begin
+	  rf_re0 = 1;
+	  rf_re1 = 1;
+	  rf_we = 1;
+	  clk_z = 1;
 	  alu_func = OR;
-	
 	end
 	ANDNi: begin
 	  rf_re0 = 1;
