@@ -195,7 +195,7 @@ assign flush = flow_change_ID_EX | flow_change_EX_DM | hlt_ID_EX | hlt_EX_DM;
 assign load_use_hazard = (((rf_dst_addr_ID_EX==rf_p0_addr) && rf_re0) || 
                           ((rf_dst_addr_ID_EX==rf_p1_addr) && rf_re1)) ? dm_re_ID_EX : 1'b0;
 						  
-assign stall_IM_ID = hlt_ID_EX | load_use_hazard | LWI_instr; //stall_movc
+assign stall_IM_ID = hlt_ID_EX | load_use_hazard | LWI_instr_EX_DM; //stall_movc
 assign stall_ID_EX = 1'b0; // hlt_EX_DM;
 assign stall_EX_DM = 1'b0; // hlt_EX_DM;
 
@@ -403,7 +403,7 @@ always @(instr_IM_ID) begin
 	end
 	MOVCi: begin
 	  src0sel = IMM2SRC0;			// sign extended address offset
-	  rf_re1 = 1;
+	  rf_re0 = 1;
 	  rf_we = 1;
 	  LWI_instr = 1;				// signal to kickstart LWI/MOVC
 	  clk_z = 1;					// include zero and overflow or neg flags

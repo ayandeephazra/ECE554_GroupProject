@@ -107,7 +107,7 @@ assign read_mux_select = (mm_re)? rdata: dm_rd_data_EX_DM;
 ////////////////////////
 dst_mux iDSTMUX(.clk(clk), .dm_re_EX_DM(dm_re_EX_DM), .dm_rd_data_EX_DM(read_mux_select),
                 .dst_EX_DM(dst_EX_DM), .pc_EX_DM(pc_EX_DM), .rf_w_data_DM_WB(rf_w_data_DM_WB),
-				.jmp_imm_EX_DM(jmp_imm_EX_DM));
+				.jmp_imm_EX_DM(jmp_imm_EX_DM), .instr(instr), .LWI_instr_EX_DM(LWI_instr_EX_DM));
 	
 /////////////////////////////////////////////
 // Instantiate branch determination logic //
