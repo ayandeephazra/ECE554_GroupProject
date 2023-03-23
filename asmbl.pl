@@ -251,10 +251,6 @@ while(<IN>) {
 
       }
 
-
-
-      # this will essential just become a macro most likely, easier to do than in hardware
-      # just a placeholder for now - look at slides when changing
       elsif($instr =~ /^(PUSH)$/) {
 
         foreach my $reg ($args[0]) {
@@ -417,10 +413,10 @@ for(my $i=0; $i<scalar(@mem); $i++) {
 
   # print decToHex($i) . "  :  " . binToHex($addr) . "  ;\n";
   
-  # need to also check if it doesn't contain anything (possibly check the length?)
-  print length($orignal_string) . "\n";
   if (!($source_lines[$i] =~ m/PUSH|POP/)) {
-    print "\@" . decToHex($i, 4) . " " . binToHex($addr) . "\t// " . $source_lines[$i] . "\n";
+    if ($source_lines[$i] ne "") {
+      print "\@" . decToHex($i, 4) . " " . binToHex($addr) . "\t// " . $source_lines[$i] . "\n";
+    }
   }
 
   #if($code[$i]) { print $code[$i] }
