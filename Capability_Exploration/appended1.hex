@@ -1,13 +1,15 @@
-@0000 0B100	// llb R1, 0x00
+@0000 0B108	// llb R1, 0x08
 @0001 0A100	// lhb R1, 0x00
-@0002 15410	// XORNI R4, R1, 0x00
-@0003 0C201	// B eq, PASS
-@0004 0C003	// B neq, FAIL
-@0005 0B655	// llb R6, 0x55
-@0006 0A69A	// lhb R6, 0x9a
-@0007 0CE03	// b uncond, END
-@0008 0B617	// llb R6, 0x17
-@0009 0A6FA	// lhb R6, 0xfa
-@000a 0CE00	// b uncond, END
-@000b 0B94D	// llb R9, 0x4d
-@000c 0A90E	// lhb R9, 0x0e
+@0002 0B310	// llb R3, 0x10
+@0003 0A300	// lhb R3, 0x00
+@0004 11418	// SUBI R4, R1, 0x08
+@0005 0C201	// B eq, PASS
+@0006 0C003	// B neq, FAIL
+@0007 0B655	// llb R6, 0x55
+@0008 0A69A	// lhb R6, 0x9a
+@0009 0CE03	// b uncond, END
+@000a 0B617	// llb R6, 0x17
+@000b 0A6FA	// lhb R6, 0xfa
+@000c 0CE00	// b uncond, END
+@000d 0B94D	// llb R9, 0x4d
+@000e 0A90E	// lhb R9, 0x0e

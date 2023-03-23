@@ -59,10 +59,11 @@ localparam POPi 	= 5'b11011;
 ////////////////////////////////
 // Encodings for src0 select //
 //////////////////////////////
-localparam RF2SRC0 	= 2'b00;
-localparam IMM_BR2SRC0 = 2'b01;			// 7-bit SE for branch target
-localparam IMM_JMP2SRC0 = 2'b10;		// 12-bit SE for jump target
-localparam IMM2SRC0 = 2'b11;			// 4-bit SE Address immediate for LW/SW
+localparam RF2SRC0 	= 3'b000;
+localparam IMM_BR2SRC0 = 3'b001;			// 7-bit SE for branch target
+localparam IMM_JMP2SRC0 = 3'b010;		// 12-bit SE for jump target
+localparam IMM2SRC0 = 3'b011;			// 4-bit SE Address immediate for LW/SW
+localparam IMM2SRC0_4BZE = 3'b100;      // 4-bit ZE Address 
 
 ////////////////////////////////
 // Encodings for src1 select //

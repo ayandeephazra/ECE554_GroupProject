@@ -21,7 +21,7 @@ output reg [3:0] rf_p0_addr;		// normally instr[3:0] but for LHB and SW it is in
 output reg [3:0] rf_p1_addr;		// normally instr[7:4]
 output reg [3:0] rf_dst_addr_DM_WB;	// normally instr[11:8] but for JAL it is forced to 15
 output reg [3:0] alu_func_ID_EX;	// select ALU operation to be performed
-output reg [1:0] src0sel_ID_EX;		// select source for src0 bus
+output reg [2:0] src0sel_ID_EX;		// select source for src0 bus
 output reg [1:0] src1sel_ID_EX;		// select source for src1 bus
 output reg dm_re_EX_DM;				// asserted on loads
 output reg dm_we_EX_DM;				// asserted on stores
@@ -48,7 +48,8 @@ reg rf_we;
 reg hlt;
 reg [3:0] rf_dst_addr;
 reg [3:0] alu_func;
-reg [1:0] src0sel,src1sel;
+reg [2:0] src0sel;
+reg [1:0] src1sel;
 reg dm_re;
 reg dm_we;
 reg clk_z;
@@ -336,15 +337,15 @@ always @(instr_IM_ID) begin
 	// rf_re1 = 1
 	ADDIi: begin
 	  rf_re0 = 1;					// read from reg 
-	  src0sel = IMM2SRC0;		    // access 4-bit SE immediate
+	  src0sel = IMM2SRC0_4BZE;		    // access 4-bit SE immediate
 	  rf_we = 1;					// write as normal to a reg
 	  alu_func = ADD;				// use the "add" alu functionality but change the src muxes to get from immediates rather than reg file
       clk_z = 1;                    // include zero flags
       clk_nv = 1;					// include overflow or neg flags
 	end
 	SUBIi: begin
-	 rf_re0 = 1;
-	 src0sel = IMM2SRC0;
+	 rf_re1 = 1;
+	 src0sel = IMM2SRC0_4BZE;
 	 rf_we = 1;
 	 clk_z = 1;
 	 clk_nv = 1;
