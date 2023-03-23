@@ -353,28 +353,28 @@ always @(instr_IM_ID) begin
 	end
 	XORIi: begin
 	  rf_re0 = 1;
-  	  src1sel = IMM2SRC1_4BSE;
+  	  src0sel = IMM2SRC0;
 	  rf_we = 1;
 	  clk_z = 1;	  
 	  alu_func = XOR;
 	end
 	ANDNIi: begin
 	  rf_re0 = 1;
-	  src1sel = IMM2SRC1_4BSE;
+	  src0sel = IMM2SRC0;
 	  rf_we = 1;
 	  clk_z = 1;
 	  alu_func = ANDN;
 	end
 	ANDIi: begin
 	 rf_re0 = 1;
-	 src1sel = IMM2SRC1_4BSE;
+	 src0sel = IMM2SRC0;
 	 rf_we = 1;
 	 clk_z = 1;
 	  alu_func = AND;
 	end
 	XORNIi: begin
 	  rf_re0 = 1;
-	  src1sel = IMM2SRC1_4BSE;
+	  src0sel = IMM2SRC0;
 	  rf_we = 1;
 	  clk_z = 1;
 	  alu_func = XOR;
@@ -382,7 +382,7 @@ always @(instr_IM_ID) begin
 	end
 	ORIi: begin
 	  rf_re0 = 1;
-	  src1sel = IMM2SRC1_4BSE;
+	  src0sel = IMM2SRC0;
 	  rf_we = 1;
 	  clk_z = 1;
 	  alu_func = OR;

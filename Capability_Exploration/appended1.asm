@@ -1,12 +1,12 @@
-llb R1, 0x10        # R1 holds decimal 1
+llb R1, 0x00        # R1 holds decimal 1
 lhb R1, 0x00
-llb R2, 0x20        # R2 holds decimal 2
-lhb R2, 0x00
-llb R3, 0x1f
-lhb R3, 0x00
+#llb R2, 0xff        # R2 holds decimal 2
+#lhb R2, 0xff
+#llb R3, 0x1f
+#lhb R3, 0x00
 
-SUBI R4, R2, 1
-SUB R5, R4, R3
+XORNI R4, R1, 0x00
+#SUB R5, R4, R3
 B eq, PASS
 B neq, FAIL
 
