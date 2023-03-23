@@ -4,13 +4,13 @@ module rf_mem(
     input clk,
     input [3:0] r_addr,
     input [3:0] w_addr,
-    input [16:0] wdata,
+    input [15:0] wdata,
     input we,
-    output logic [16:0] rdata
+    output logic [15:0] rdata
 );
 
     // 16 wide 16-bit rf memory
-    reg [16:0] mem [0:15];
+    reg [15:0] mem [0:15];
 
     always_ff @ (negedge clk) begin
         // if write is high and addr is valid, write to address

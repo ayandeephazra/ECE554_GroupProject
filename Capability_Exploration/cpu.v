@@ -11,18 +11,18 @@ output mm_we, mm_re;
 wire [16:0] instr;				// instruction from IM
 wire [11:0] instr_ID_EX;		// immediate bus
 wire [15:0] src0,src1;			// operand busses into ALU
-wire [16:0] dst_EX_DM;			// result from ALU
-wire [16:0] dst_ID_EX;			// result from ALU for branch destination
-wire [16:0] pc_ID_EX;			// nxt_pc to source mux for JR
-wire [16:0] pc_EX_DM;			// nxt_pc to store in reg15 for JAL
+wire [15:0] dst_EX_DM;			// result from ALU
+wire [15:0] dst_ID_EX;			// result from ALU for branch destination
+wire [15:0] pc_ID_EX;			// nxt_pc to source mux for JR
+wire [15:0] pc_EX_DM;			// nxt_pc to store in reg15 for JAL
 wire [15:0] iaddr;				// instruction address
 wire [15:0] dm_rd_data_EX_DM;	// data memory read data
-wire [16:0] rf_w_data_DM_WB;	// register file write data
+wire [15:0] rf_w_data_DM_WB;	// register file write data
 wire [15:0] p0,p1;				// read ports from RF
 wire [3:0] rf_p0_addr;			// address for port 0 reads
 wire [3:0] rf_p1_addr;			// address for port 1 reads
 wire [3:0] rf_dst_addr_DM_WB;	// address for RF write port
-wire [2:0] alu_func_ID_EX;		// specifies operation ALU should perform
+wire [3:0] alu_func_ID_EX;		// specifies operation ALU should perform
 wire [1:0] src0sel_ID_EX;		// select for src0 bus
 wire [1:0] src1sel_ID_EX;		// select for src1 bus
 wire [2:0] cc_ID_EX;			// condition code pipeline from instr[11:9]
@@ -31,7 +31,7 @@ wire [15:0] p0_EX_DM;			// data to be stored for SW
 ///////////////////////////////////////////////////////////////////////////////
 wire mm_re, mm_we;              // external read and write
 wire DM_we;                     // internal data memory write
-wire [16:0] read_mux_select;    // choosing which signal is read 
+wire [15:0] read_mux_select;    // choosing which signal is read 
 
 //////////////////////////////////
 // Instantiate program counter //

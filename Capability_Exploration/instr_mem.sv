@@ -1,7 +1,7 @@
 module IM(clk,addr,rd_en,instr);
 
 input clk;
-input [10:0] addr; 
+input [15:0] addr; 
 input rd_en;			// asserted when instruction read desired
 //input LWI_instr_EX_DM;
 
@@ -23,7 +23,7 @@ always_ff @ (negedge clk)
 ////////////////////////////////////
 
 initial begin
-  $readmemh("C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Capability Explore/BMP_display/test.hex",instr_mem);
+  $readmemh("C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/appended1.hex",instr_mem);
 end
 
 endmodule
