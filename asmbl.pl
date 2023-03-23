@@ -418,6 +418,7 @@ for(my $i=0; $i<scalar(@mem); $i++) {
   # print decToHex($i) . "  :  " . binToHex($addr) . "  ;\n";
   
   # need to also check if it doesn't contain anything (possibly check the length?)
+  print length($orignal_string) . "\n";
   if (!($source_lines[$i] =~ m/PUSH|POP/)) {
     print "\@" . decToHex($i, 4) . " " . binToHex($addr) . "\t// " . $source_lines[$i] . "\n";
   }
