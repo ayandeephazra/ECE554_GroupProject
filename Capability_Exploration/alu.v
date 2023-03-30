@@ -21,7 +21,7 @@ module alu(clk,src0,src1,shamt,func,dst,dst_EX_DM,ov,zr,neg);
 
 input clk;
 input [15:0] src0,src1;
-input [2:0] func;			// selects function to perform
+input [3:0] func;			// selects function to perform
 input [3:0] shamt;			// shift amount
 
 output [15:0] dst;			// ID_EX version for branch/jump targets
@@ -54,6 +54,14 @@ assign sum_sat = (sat_pos) ? 16'h7fff :
 				 sum;
 				 
 assign ov = sat_pos | sat_neg;
+
+///////////////////////////
+// Now for signed multpl//
+/////////////////////////
+wire signed [7:0] smul0 = src0[7:0];
+wire signed [7:0] smul1 = src1[7:0];
+wire signed [15:0] smul_res;
+assign smul_res = smul0 * smul1;
 				 
 ///////////////////////////
 // Now for left shifter //
@@ -79,7 +87,13 @@ assign dst = (func==AND) ? src1 & src0 :
 			 (func==NOR) ? ~(src1 | src0) :
 			 (func==SLL) ? shft_l :
 			 ((func==SRL) || (func==SRA)) ? shft_r :
-			 (func==LHB) ? {src1[7:0],src0[7:0]} : sum_sat;	 
+			 (func==LHB) ? {src1[7:0],src0[7:0]} :
+			 (func==ANDN)? ~(src1 & src0) :
+			 (func==SMUL)? smul_res[15:0] :
+			 (func==UMUL)? src1 * src0 : 
+			 (func==XOR)? src1 ^ src0 : 
+			 (func==OR)? src1 | src0: 
+			 (func==XORN)? ~(src1 ^ src0): sum_sat; 			// default to sum_sat in org implem
 			 
 assign zr = ~|dst;
 assign neg = dst[15];

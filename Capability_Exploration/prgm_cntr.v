@@ -1,4 +1,5 @@
-module pc(clk,rst_n,stall_IM_ID,dst_ID_EX,
+module pc(clk,rst_n,stall_IM_ID,dst_ID_EX, 
+		  LWI_instr_EX_DM, dst_EX_DM,
           pc,pc_ID_EX,flow_change_ID_EX,pc_EX_DM);
 ////////////////////////////////////////////////////////////////////////////\
 // This module implements the program counter logic. It normally increments \\
@@ -13,31 +14,62 @@ input flow_change_ID_EX;			// asserted from branch boolean on jump or taken bran
 input stall_IM_ID;					// asserted if we need to stall the pipe
 input [15:0] dst_ID_EX;				// branch target address comes in on this bus
 
-output [15:0] pc;					// the PC, forms address to instruction memory
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+input LWI_instr_EX_DM; 				// pipelined movc select signal
+input [15:0] dst_EX_DM;
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+output reg [15:0] pc;				// the PC, forms address to instruction memory, muxed with movc control
 output reg [15:0] pc_ID_EX;			// needed in EX stage for Branch instruction
 output reg [15:0] pc_EX_DM;			// needed in dst_mux for JAL instruction
 
-reg [15:0] pc,pc_IM_ID;
+reg [15:0] pc_IM_ID;
 
 wire [15:0] nxt_pc;
+reg [15:0] pc_pre_movc_mux;
 
 /////////////////////////////////////
 // implement incrementer for PC+1 //
 ///////////////////////////////////
+
 assign nxt_pc = pc + 1;
 
 ////////////////////////////////
 // Implement the PC register //
 //////////////////////////////
+/////////////////////////////////////////////////
+// Implement the mux that selects the movc pc //
+///////////////////////////////////////////////
+
 always @(posedge clk, negedge rst_n)
-  if (!rst_n)
-    pc <= 16'h0000;
+  if (!rst_n) begin
+    pc_pre_movc_mux <= 16'h0000;
+	pc <= 16'h0000;
+  end
   else if (!stall_IM_ID)	// all stalls stall the PC
-    if (flow_change_ID_EX)
-      pc <= dst_ID_EX;
-    else
-	  pc <= nxt_pc;
-	  
+    if (flow_change_ID_EX) begin
+      pc_pre_movc_mux <= dst_ID_EX;
+	  pc <= dst_ID_EX;
+	end
+    else begin
+	  pc_pre_movc_mux <= nxt_pc;
+	  pc <= pc_pre_movc_mux;
+	end
+  else if (LWI_instr_EX_DM)
+    pc <= dst_EX_DM;
+	 
+
+/*
+always @ (posedge clk, negedge rst_n)
+  if (!rst_n)
+	pc <= 16'h0000;
+  else if (LWI_instr_EX_DM)
+	pc <= LWI_instr_EX_DM;
+  else
+	pc <= pc_pre_movc_mux;
+*/
+//assign pc = (LWI_instr_EX_DM)? dst_EX_DM: pc_pre_movc_mux;
+
 ////////////////////////////////////////////////
 // Implement the PC pipelined register IM_ID //
 //////////////////////////////////////////////

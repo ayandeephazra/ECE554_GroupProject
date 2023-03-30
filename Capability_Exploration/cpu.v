@@ -8,7 +8,7 @@ output [15:0] wdata;
 output [15:0] addr;
 output mm_we, mm_re;
 
-wire [15:0] instr;				// instruction from IM
+wire [16:0] instr;				// instruction from IM
 wire [11:0] instr_ID_EX;		// immediate bus
 wire [15:0] src0,src1;			// operand busses into ALU
 wire [15:0] dst_EX_DM;			// result from ALU
@@ -22,8 +22,8 @@ wire [15:0] p0,p1;				// read ports from RF
 wire [3:0] rf_p0_addr;			// address for port 0 reads
 wire [3:0] rf_p1_addr;			// address for port 1 reads
 wire [3:0] rf_dst_addr_DM_WB;	// address for RF write port
-wire [2:0] alu_func_ID_EX;		// specifies operation ALU should perform
-wire [1:0] src0sel_ID_EX;		// select for src0 bus
+wire [3:0] alu_func_ID_EX;		// specifies operation ALU should perform
+wire [2:0] src0sel_ID_EX;		// select for src0 bus
 wire [1:0] src1sel_ID_EX;		// select for src1 bus
 wire [2:0] cc_ID_EX;			// condition code pipeline from instr[11:9]
 wire [15:0] p0_EX_DM;			// data to be stored for SW
@@ -37,7 +37,8 @@ wire [15:0] read_mux_select;    // choosing which signal is read
 // Instantiate program counter //
 ////////////////////////////////
 pc iPC(.clk(clk), .rst_n(rst_n), .stall_IM_ID(stall_IM_ID), .pc(iaddr), .dst_ID_EX(dst_ID_EX),
-       .pc_ID_EX(pc_ID_EX), .pc_EX_DM(pc_EX_DM), .flow_change_ID_EX(flow_change_ID_EX));
+		.pc_ID_EX(pc_ID_EX), .pc_EX_DM(pc_EX_DM), .flow_change_ID_EX(flow_change_ID_EX), 
+		.LWI_instr_EX_DM(LWI_instr_EX_DM), .dst_EX_DM(dst_EX_DM));
 	   
 /////////////////////////////////////
 // Instantiate instruction memory //
@@ -56,7 +57,7 @@ id	iID(.clk(clk), .rst_n(rst_n), .instr(instr), .zr_EX_DM(zr_EX_DM), .br_instr_I
 		.instr_ID_EX(instr_ID_EX), .cc_ID_EX(cc_ID_EX), .stall_IM_ID(stall_IM_ID),
 		.stall_ID_EX(stall_ID_EX), .stall_EX_DM(stall_EX_DM), .hlt_DM_WB(hlt_DM_WB),
 		.byp0_EX(byp0_EX), .byp0_DM(byp0_DM), .byp1_EX(byp1_EX), .byp1_DM(byp1_DM),
-		.flow_change_ID_EX(flow_change_ID_EX));
+		.flow_change_ID_EX(flow_change_ID_EX), .LWI_instr_EX_DM(LWI_instr_EX_DM)); //NEW
 	   
 ////////////////////////////////
 // Instantiate register file //
@@ -106,7 +107,7 @@ assign read_mux_select = (mm_re)? rdata: dm_rd_data_EX_DM;
 ////////////////////////
 dst_mux iDSTMUX(.clk(clk), .dm_re_EX_DM(dm_re_EX_DM), .dm_rd_data_EX_DM(read_mux_select),
                 .dst_EX_DM(dst_EX_DM), .pc_EX_DM(pc_EX_DM), .rf_w_data_DM_WB(rf_w_data_DM_WB),
-				.jmp_imm_EX_DM(jmp_imm_EX_DM));
+				.jmp_imm_EX_DM(jmp_imm_EX_DM), .instr(instr), .LWI_instr_EX_DM(LWI_instr_EX_DM));
 	
 /////////////////////////////////////////////
 // Instantiate branch determination logic //

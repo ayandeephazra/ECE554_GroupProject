@@ -3,10 +3,10 @@ module id(clk,rst_n,instr,zr_EX_DM,br_instr_ID_EX,jmp_imm_ID_EX,jmp_reg_ID_EX,
           rf_we_DM_WB,rf_p0_addr,rf_p1_addr,rf_dst_addr_DM_WB,alu_func_ID_EX,src0sel_ID_EX,
 		  src1sel_ID_EX,dm_re_EX_DM,dm_we_EX_DM,clk_z_ID_EX,clk_nv_ID_EX,instr_ID_EX,
 		  cc_ID_EX, stall_IM_ID,stall_ID_EX,stall_EX_DM,hlt_DM_WB,byp0_EX,byp0_DM,
-		  byp1_EX,byp1_DM,flow_change_ID_EX);
+		  byp1_EX,byp1_DM,flow_change_ID_EX, LWI_instr_EX_DM);
 
 input clk,rst_n;
-input [15:0] instr;					// instruction to decode and execute direct from IM, flop first
+input [16:0] instr;					// instruction to decode and execute direct from IM, flop first
 input zr_EX_DM;						// zero flag from ALU (used for ADDZ)
 input flow_change_ID_EX;
 
@@ -20,8 +20,8 @@ output reg rf_we_DM_WB;				// set if instruction is writing back to RF
 output reg [3:0] rf_p0_addr;		// normally instr[3:0] but for LHB and SW it is instr[11:8]
 output reg [3:0] rf_p1_addr;		// normally instr[7:4]
 output reg [3:0] rf_dst_addr_DM_WB;	// normally instr[11:8] but for JAL it is forced to 15
-output reg [2:0] alu_func_ID_EX;	// select ALU operation to be performed
-output reg [1:0] src0sel_ID_EX;		// select source for src0 bus
+output reg [3:0] alu_func_ID_EX;	// select ALU operation to be performed
+output reg [2:0] src0sel_ID_EX;		// select source for src0 bus
 output reg [1:0] src1sel_ID_EX;		// select source for src1 bus
 output reg dm_re_EX_DM;				// asserted on loads
 output reg dm_we_EX_DM;				// asserted on stores
@@ -35,6 +35,8 @@ output stall_EX_DM;					// asserted for hazards and halt instruction, stalls EX_
 output reg hlt_DM_WB;				// needed for register dump
 output reg byp0_EX,byp0_DM;			// bypasing controls for RF_p0
 output reg byp1_EX,byp1_DM;			// bypassing controls for RF_p1
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+output reg LWI_instr_EX_DM;			// MOVC/LWI handling
 
 ////////////////////////////////////////////////////////////////
 // Register type needed for assignment in combinational case //
@@ -45,18 +47,21 @@ reg jmp_reg;
 reg rf_we;
 reg hlt;
 reg [3:0] rf_dst_addr;
-reg [2:0] alu_func;
-reg [1:0] src0sel,src1sel;
+reg [3:0] alu_func;
+reg [2:0] src0sel;
+reg [1:0] src1sel;
 reg dm_re;
 reg dm_we;
 reg clk_z;
 reg clk_nv;
 reg cond_ex;
+////////////////////////////////////
+reg LWI_instr;
 
 /////////////////////////////////
 // Registers needed for flops //
 ///////////////////////////////
-reg [15:0] instr_IM_ID;			// flop capturing the instruction to be decoded
+reg [16:0] instr_IM_ID;			// flop capturing the instruction to be decoded
 reg	rf_we_ID_EX,rf_we_EX_DM;
 reg [3:0] rf_dst_addr_ID_EX,rf_dst_addr_EX_DM;
 reg	dm_re_ID_EX;
@@ -65,6 +70,8 @@ reg hlt_ID_EX,hlt_EX_DM;
 reg [11:0] instr_ID_EX;		// only need lower 12-bits for immediate values
 reg flow_change_EX_DM;		// needed to pipeline flow_change_ID_EX
 reg cond_ex_ID_EX;			// needed for ADDZ knock down of rf_we
+reg LWI_instr_ID_EX;		// MOVC/LWI handling
+//reg LWI_instr_EX_DM; 		// MOVC/LWI handling
 
 wire load_use_hazard,flush;
 
@@ -73,13 +80,23 @@ wire load_use_hazard,flush;
 ///////////////////
 `include "common_params.inc"
 	
+///////////////////////////////////
+// Flop the LWI_instr           //
+/////////////////////////////////
+always @(posedge clk, negedge rst_n)
+  if (!rst_n)
+    LWI_instr <= 0;		            	
+  else begin
+    LWI_instr_ID_EX <= LWI_instr;
+	LWI_instr_EX_DM <= LWI_instr_ID_EX;
+  end
 	
 ///////////////////////////////////
 // Flop the instruction from IM //
 /////////////////////////////////
 always @(posedge clk, negedge rst_n)
   if (!rst_n)
-    instr_IM_ID <= 16'hb000;			// LLB R0, #0000
+    instr_IM_ID <= 16'h0000;			// LLB R0, #0000
   else if (!stall_IM_ID)
     instr_IM_ID <= instr;				// flop raw instruction from IM
 	
@@ -179,7 +196,7 @@ assign flush = flow_change_ID_EX | flow_change_EX_DM | hlt_ID_EX | hlt_EX_DM;
 assign load_use_hazard = (((rf_dst_addr_ID_EX==rf_p0_addr) && rf_re0) || 
                           ((rf_dst_addr_ID_EX==rf_p1_addr) && rf_re1)) ? dm_re_ID_EX : 1'b0;
 						  
-assign stall_IM_ID = hlt_ID_EX | load_use_hazard;
+assign stall_IM_ID = hlt_ID_EX | load_use_hazard | LWI_instr_EX_DM; //stall_movc
 assign stall_ID_EX = 1'b0; // hlt_EX_DM;
 assign stall_EX_DM = 1'b0; // hlt_EX_DM;
 
@@ -207,8 +224,9 @@ always @(instr_IM_ID) begin
   clk_nv = 0;
   hlt = 0;
   cond_ex = 0;
+  LWI_instr = 0;
   
-  case (instr_IM_ID[15:12])
+  case (instr_IM_ID[16:12])
     ADDi : begin
 	  rf_re0 = 1;
 	  rf_re1 = 1;
@@ -257,6 +275,10 @@ always @(instr_IM_ID) begin
 	  rf_we = 1;
       alu_func = SRL;
 	  clk_z = 1;
+//		fprintf(fptr, "File was not opened\n");
+//
+//		fprintf(fptr, "File was not opened\n");
+//
 	end	
 	SRAi : begin
 	  rf_re1 = 1;
@@ -308,10 +330,105 @@ always @(instr_IM_ID) begin
 	  rf_re1 = 1;					// read register to jump to on src1
 	  jmp_reg = 1;
 	end
-	HLTi : begin
-	  hlt = 1;
+	NOOPi : begin
+	  hlt = 0;
 	end
+	// rf_re0 = 1
+	// rf_re1 = 1
+	ADDIi: begin
+	  rf_re0 = 1;					// read from reg 
+	  src0sel = IMM2SRC0_4BZE;		    // access 4-bit SE immediate
+	  rf_we = 1;					// write as normal to a reg
+	  alu_func = ADD;				// use the "add" alu functionality but change the src muxes to get from immediates rather than reg file
+      clk_z = 1;                    // include zero flags
+      clk_nv = 1;					// include overflow or neg flags
+	end
+	SUBIi: begin
+	 rf_re1 = 1;
+	 src0sel = IMM2SRC0_4BZE;
+	 rf_we = 1;
+	 clk_z = 1;
+	 clk_nv = 1;
+	  alu_func = SUB;
 	
+	end
+	XORIi: begin
+	  rf_re0 = 1;
+  	  src0sel = IMM2SRC0;
+	  rf_we = 1;
+	  clk_z = 1;	  
+	  alu_func = XOR;
+	end
+	ANDNIi: begin
+	  rf_re0 = 1;
+	  src0sel = IMM2SRC0;
+	  rf_we = 1;
+	  clk_z = 1;
+	  alu_func = ANDN;
+	end
+	ANDIi: begin
+	 rf_re0 = 1;
+	 src0sel = IMM2SRC0;
+	 rf_we = 1;
+	 clk_z = 1;
+	  alu_func = AND;
+	end
+	XORNIi: begin
+	  rf_re0 = 1;
+	  src0sel = IMM2SRC0;
+	  rf_we = 1;
+	  clk_z = 1;
+	  alu_func = XORN;
+	
+	end
+	ORIi: begin
+	  rf_re0 = 1;
+	  src0sel = IMM2SRC0;
+	  rf_we = 1;
+	  clk_z = 1;
+	  alu_func = OR;
+	end
+	ANDNi: begin
+	  rf_re0 = 1;
+	  rf_re1 = 1;
+	  rf_we = 1;
+      alu_func = ANDN;
+	  clk_z = 1;
+	end
+	/*
+	NOTi: begin
+	  rf_re0 = 1;
+	  rf_re1 = 0;
+	  rf_we = 1;
+      alu_func = NOT;
+	  clk_z = 1;
+	end */
+	// MUL till assembler is updated
+	SMULi: begin
+	  rf_re0 = 1;
+	  rf_re1 = 1;
+	  rf_we = 1;
+      alu_func = SMUL;
+	  clk_z = 1;	
+	  clk_nv = 1;
+	end
+	MOVCi: begin
+	  src0sel = IMM2SRC0;			// sign extended address offset
+	  rf_re0 = 1;
+	  rf_we = 1;
+	  LWI_instr = 1;				// signal to kickstart LWI/MOVC
+	  clk_z = 1;					// include zero and overflow or neg flags
+	  clk_nv = 1;
+	end
+	UMULi: begin
+	  rf_re0 = 1;
+	  rf_re1 = 1;
+	  rf_we = 1;
+      alu_func = UMUL;
+	  clk_z = 1;	
+	  clk_nv = 1;
+	end
+
   endcase
 end
 
