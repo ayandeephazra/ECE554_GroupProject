@@ -58,12 +58,12 @@ my %conds = ("NEQ" => "000", "EQ" => "001", "GT" => "010", "LT" => "011", "GTE" 
 
 
 my %numArgs = ( qw/ADD 3 ADDZ 3 SUB 3 AND 3 NOR 3 XOR 3 SLL 3 SRL 3 SRA 3 LW 3 SW 3 LHB 2 LLB 2 B 2 JAL 1 JR 1 
-                ADDI 3 SUBI 3 XORI 3 ANDNI 3 ANDI 3 XORNI 3 ORI 3 ANDN 3 NOT 2 MOVC 3 MUL 3 PUSH 1 POP 1 HLT 0/);
+                ADDI 3 SUBI 3 XORI 3 ANDNI 3 ANDI 3 XORNI 3 ORI 3 ANDN 3 SMUL 3 MOVC 3 UMUL 3 PUSH 1 POP 1 NOOP 0/);
 
 
 my %opcode = ( qw/ADD 00000000 ADDZ 00000001 SUB 00000010 AND 00000011 NOR 00000100 XOR 00010111 SLL 00000101 SRL 00000110 SRA 00000111 LW 00001000 SW 00001001 
                   LHB 00001010 LLB 00001011 B 00001100 JAL 00001101 JR 00001110 ADDI 00010000 SUBI 00010001 XORI 00010010 ANDNI 00010011 ANDI 00010100 
-                  XORNI 00010101 ORI 00010110 ANDN 00010111 NOT 00011100 MOVC 00011000 MUL 00011001 PUSH 00011010 POP 00011011 HLT 00001111/);
+                  XORNI 00010101 ORI 00010110 ANDN 00010111 SMUL 00011010 MOVC 00011000 UMUL 00011001 PUSH 00000000 POP 00000000 NOOP 00001111/);
 
 
 my %rlookup = ( "1111", "F" , "1110", "E" , "1101", "D" , "1100", "C",
@@ -127,8 +127,6 @@ while(<IN>) {
 
     }
 
-    # this is being wonky, so you have to add an 
-    # extra char since it eliminates the first one
     if(/STRING\s+(.*)/) {
 
         my $data = $1;
@@ -139,7 +137,7 @@ while(<IN>) {
 
         my $x;
 
-        for ($x = 1; $x < (length($data)-1); $x++) {
+        for ($x = 0; $x < (length($data)-1); $x++) {
           $mem[$addr] = decToBin(ord($chars[$x]), 20);
           $source_lines[$addr++] = $chars[$x];
         }
@@ -197,7 +195,7 @@ while(<IN>) {
       }
 
 
-      if($instr =~ /^(AND|NOR|ADD|ADDZ|SUB|XOR|MUL)$/) {
+      if($instr =~ /^(AND|NOR|ADD|ADDZ|SUB|XOR)$/) {
 
         foreach my $reg ($args[0], $args[1], $args[2]) {
 
@@ -223,17 +221,15 @@ while(<IN>) {
 
       }
 
-      elsif($instr =~ /^(NOT)$/) {
+      elsif($instr =~ /^(SMUL|UMUL)$/) {
 
-        foreach my $reg ($args[0], $args[1]) {
+        foreach my $reg ($args[0], $args[1], $args[2]) {
 
             if(!$regs{$reg}) { die("Bad register ($reg)\n$_") }
 
             $bits .= $regs{$reg};
 
         }
-
-        $bits .= "0000";
 
       }
 
@@ -251,6 +247,10 @@ while(<IN>) {
 
       }
 
+
+
+      # this will essential just become a macro most likely, easier to do than in hardware
+      # just a placeholder for now - look at slides when changing
       elsif($instr =~ /^(PUSH)$/) {
 
         foreach my $reg ($args[0]) {
@@ -355,7 +355,7 @@ while(<IN>) {
 
       }
 
-      elsif($instr =~ /^(HLT)$/) {
+      elsif($instr =~ /^(NOOP)$/) {
         $bits .= "000000000000";
 
       }
@@ -413,6 +413,8 @@ for(my $i=0; $i<scalar(@mem); $i++) {
 
   # print decToHex($i) . "  :  " . binToHex($addr) . "  ;\n";
   
+  # need to also check if it doesn't contain anything (possibly check the length?)
+  # ($source_lines[$i] ne "")
   if (!($source_lines[$i] =~ m/PUSH|POP/)) {
     if ($source_lines[$i] ne "") {
       print "\@" . decToHex($i, 4) . " " . binToHex($addr) . "\t// " . $source_lines[$i] . "\n";
