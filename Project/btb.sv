@@ -9,7 +9,12 @@ module btb (
     input [15:0] dst_ID_EX,
     output [15:0] target_PC,
     output hit,
-    output logic btb_hit_ID_EX
+    output logic btb_hit_ID_EX,
+    
+    // stat collection signals
+    output inc_br_cnt,
+    output inc_hit_cnt,
+    output inc_mispr_cnt
 );
 
 // 512 entries deep
@@ -63,7 +68,7 @@ always_comb begin
                 {8'h0, 1'b0, 16'h0};    // invalidate line
 end
 
-	  
+
 /////////////////////////
 // Pipeline reg IF_ID //
 ///////////////////////
@@ -72,7 +77,7 @@ always @(posedge clk) begin
   sbit_IF_ID <= strong_bit;
   target_PC_IF_ID <= target_PC;
 end
-  
+
 	
 /////////////////////////
 // Pipeline reg ID_EX //
@@ -82,6 +87,16 @@ always @(posedge clk) begin
   sbit_ID_EX <= sbit_IF_ID;
   target_PC_ID_EX <= target_PC_IF_ID;
 end
+
+
+////////////////////////////////////
+// Branch stats collection logic //
+//////////////////////////////////
+assign inc_br_cnt = br_instr_ID_EX;   // count branches that make it to EX
+assign inc_hit_cnt = hit;             // count btb hits immediately
+assign inc_mispr_cnt = btb_hit_ID_EX & flow_change_ID_EX;   // misprediction
+
+
   
 
 

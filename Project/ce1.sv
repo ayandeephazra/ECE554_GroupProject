@@ -69,6 +69,9 @@ module ce1(
 
 	////////////////// REMOVE
 	logic [7:0] status;
+
+	// mmap reg signals
+	logic inc_br_cnt, inc_hit_cnt, inc_mispr_cnt; 	// branch pred stats
 	
 	// FF logic for LEDR ---- DEBUG
 	always_ff @ (negedge CLOCK_50) begin
@@ -114,7 +117,8 @@ module ce1(
 	/////////////////////////////////////
     // instantiate cpu topl level mod //
     ///////////////////////////////////
-	cpu cpu1(.clk(clk), .rst_n(rst_n), .wdata(wdata), .mm_we(mm_we), .addr(addr), .mm_re(mm_re), .rdata(rdata));
+	cpu cpu1(.clk(clk), .rst_n(rst_n), .wdata(wdata), .mm_we(mm_we), .addr(addr), .mm_re(mm_re), .rdata(rdata),
+			.inc_br_cnt(inc_br_cnt), .inc_hit_cnt(inc_hit_cnt), .inc_mispr_cnt(inc_mispr_cnt));
 
 	//////////////////////////////////////////////////
   	// Instantiate Logic that includes internal    //
@@ -122,6 +126,11 @@ module ce1(
   	///////////////////////////////////////////////	
 	// spart spart1(.clk(clk), .rst_n(rst_n), .iocs_n(iocs_n), .iorw_n(iorw_n), .tx_q_full(tx_q_full), .rx_q_empty(rx_q_empty),
 	// 			 .ioaddr(addr[1:0]), .databus(databus[7:0]), .TX(TX), .RX(RX));
+
+	//////////////////////////////////////////
+	// Instantiate memory mapped registers //
+	////////////////////////////////////////
+	mmap_regs immap_regs(.clk(clk), .rst_n(rst_n), .inc_br_cnt(inc_br_cnt), .inc_hit_cnt(inc_hit_cnt), .inc_mispr_cnt(inc_mispr_cnt));
 
 	////////////////////////////////
     // instantiate BMP_display	 //

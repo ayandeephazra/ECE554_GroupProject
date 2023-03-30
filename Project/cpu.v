@@ -1,4 +1,4 @@
-module cpu(clk,rst_n, wdata, mm_we, addr, mm_re, rdata);
+module cpu(clk,rst_n, wdata, mm_we, addr, mm_re, rdata, inc_br_cnt, inc_hit_cnt, inc_mispr_cnt);
 
 //rdata added to original input signals
 input clk,rst_n;
@@ -7,6 +7,10 @@ input [15:0] rdata;
 output [15:0] wdata;
 output [15:0] addr;
 output mm_we, mm_re;
+// branch prediciton stats collection
+output inc_br_cnt;
+output inc_hit_cnt;
+output inc_mispr_cnt;
 
 wire [15:0] instr;				// instruction from IM
 wire [11:0] instr_ID_EX;		// immediate bus
@@ -48,7 +52,7 @@ pc iPC(.clk(clk), .rst_n(rst_n), .stall_IM_ID(stall_IM_ID), .pc(iaddr), .dst_ID_
 /////////////////////////////////////
 btb iBTB(.clk(clk), .rst_n(rst_n), .PC(iaddr), .target_PC(btb_nxt_pc), .hit(btb_hit), .btb_hit_ID_EX(btb_hit_ID_EX),
 		.flow_change_ID_EX(flow_change_ID_EX), .br_instr_ID_EX(br_instr_ID_EX), .pc_ID_EX(pc_ID_EX),
-		.dst_ID_EX(dst_ID_EX));
+		.dst_ID_EX(dst_ID_EX), .inc_br_cnt(inc_br_cnt), .inc_hit_cnt(inc_hit_cnt), .inc_mispr_cnt(inc_mispr_cnt));
 
 /////////////////////////////////////
 // Instantiate instruction memory //

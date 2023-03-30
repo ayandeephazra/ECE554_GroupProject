@@ -42,3 +42,8 @@ whenever theres a branch decision, need to update strong bit
       clear strong bit
     else
       invalidate
+
+
+BRANCH STATS >>>>>>>>>>>>>>
+all br stats logic in btb.sv
+in br cnt if a branch instruction makes it to EX stage. (Dont count flushed branches)
