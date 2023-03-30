@@ -15,14 +15,15 @@ cpu iCPU(.clk(clk), .rst_n(rst_n), .rdata(rdata), .wdata(), .mm_we(), .addr(), .
 initial begin
   clk = 0;
   rst_n = 0;
-  #2 rst_n = 1;
+  @ (posedge clk);
+  rst_n = 1;
   rdata = 16'haaaa;
-  repeat (30) @ (posedge clk);
+  repeat (100) @ (posedge clk);
   $stop();
   
 end
   
 always
-  #1 clk = ~clk;
+  #5 clk = ~clk;
   
 endmodule

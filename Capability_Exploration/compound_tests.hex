@@ -1,0 +1,58 @@
+@0000 0B108	// llb R1, 0x08
+@0001 0A100	// lhb R1, 0x00
+@0002 0B310	// llb R3, 0x10
+@0003 0A300	// lhb R3, 0x00
+@0004 10218	// ADDI R2, R1, 0x08
+@0005 02423	// SUB R4, R2, R3
+@0006 0C201	// B eq, PASS_1
+@0007 0C010	// B neq, FAIL_2
+@0008 0B655	// llb R6, 0x55
+@0009 0A69A	// lhb R6, 0x9a
+@000a 0CE03	// b uncond, TEST_2
+@000b 0B617	// llb R6, 0x17
+@000c 0A6FA	// lhb R6, 0xfa
+@000d 0CE00	// b uncond, TEST_2
+@000e 0B600	// llb R6, 0x00
+@000f 0A600	// lhb R6, 0x00
+@0010 0B108	// llb R1, 0x08
+@0011 0A100	// lhb R1, 0x00
+@0012 11218	// SUBI R2, R1, 0x08
+@0013 0C201	// B eq, PASS_2
+@0014 0C003	// B neq, FAIL_2
+@0015 0B655	// llb R6, 0x55
+@0016 0A69A	// lhb R6, 0x9a
+@0017 0CE03	// b uncond, TEST_3
+@0018 0B617	// llb R6, 0x17
+@0019 0A6FA	// lhb R6, 0xfa
+@001a 0CE00	// b uncond, TEST_3
+@001b 0B600	// llb R6, 0x00
+@001c 0A600	// lhb R6, 0x00
+@001d 0B1FF	// llb R1, 0xff
+@001e 0A1FF	// lhb R1, 0xff
+@001f 15210	// XORNI R2, R1, 0x00
+@0020 0C201	// B eq, PASS_3
+@0021 0C003	// B neq, FAIL_3
+@0022 0B655	// llb R6, 0x55
+@0023 0A69A	// lhb R6, 0x9a
+@0024 0CE03	// b uncond, TEST_4
+@0025 0B617	// llb R6, 0x17
+@0026 0A6FA	// lhb R6, 0xfa
+@0027 0CE00	// b uncond, TEST_4
+@0028 0B1FF	// llb R1, 0xff
+@0029 0A100	// lhb R1, 0x00
+@002a 0B3FF	// llb R3, 0xff
+@002b 0A300	// lhb R3, 0x00
+@002c 0B401	// llb R4, 0x01
+@002d 0A400	// lhb R4, 0x00
+@002e 1C213	// SMUL R2, R1, R3
+@002f 02524	// SUB R5, R2, R4
+@0030 0C201	// B eq, PASS_4
+@0031 0C003	// B neq, FAIL_4
+@0032 0B855	// llb R8, 0x55
+@0033 0A89A	// lhb R8, 0x9a
+@0034 0CE03	// b uncond, END
+@0035 0B817	// llb R8, 0x17
+@0036 0A8FA	// lhb R8, 0xfa
+@0037 0CE00	// b uncond, END
+@0038 0B94D	// llb R9, 0x4d
+@0039 0A90E	// lhb R9, 0x0e
