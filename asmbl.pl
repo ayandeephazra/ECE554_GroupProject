@@ -248,9 +248,6 @@ while(<IN>) {
       }
 
 
-
-      # this will essential just become a macro most likely, easier to do than in hardware
-      # just a placeholder for now - look at slides when changing
       elsif($instr =~ /^(PUSH)$/) {
 
         foreach my $reg ($args[0]) {
