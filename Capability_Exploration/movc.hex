@@ -1,18 +1,29 @@
 @0000 0B155	// llb R1, 0x55
 @0001 0A155	// lhb R1, 0x55
-@0002 0B210	// llb R2, 0x10
-@0003 0A200	// lhb R2, 0x00
-@0004 0B30E	// llb R3, 0x0e
-@0005 0A3A9	// lhb R3, 0xa9
-@0006 18421	// MOVC R4, R2, 0x01
+@0002 0B200	// llb R2, 0x00
+@0003 0A201	// lhb R2, 0x01
+@0004 0B349	// llb R3, 0x49
+@0005 0A300	// lhb R3, 0x00
+@0006 18420	// MOVC R4, R2, 0x00
 @0007 02543	// SUB R5, R4, R3
 @0008 0C201	// B eq, PASS
 @0009 0C003	// B neq, FAIL
 @000a 0B655	// llb R6, 0x55
-@000b 0A6BA	// lhb R6, 0xba
+@000b 0A69A	// lhb R6, 0x9a
 @000c 0CE03	// b uncond, END
 @000d 0B617	// llb R6, 0x17
 @000e 0A6FA	// lhb R6, 0xfa
 @000f 0CE00	// b uncond, END
 @0010 0B94D	// llb R9, 0x4d
 @0011 0A90E	// lhb R9, 0x0e
+@0012 0CFFD	// b uncond, END
+@0100 00049	// I
+@0101 00020	//  
+@0102 00061	// a
+@0103 0006D	// m
+@0104 00020	//  
+@0105 00048	// H
+@0106 00065	// e
+@0107 00072	// r
+@0108 00065	// e
+@0109 00000	// Null terminate
