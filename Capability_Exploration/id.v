@@ -330,8 +330,8 @@ always @(instr_IM_ID) begin
 	  rf_re1 = 1;					// read register to jump to on src1
 	  jmp_reg = 1;
 	end
-	HLTi : begin
-	  hlt = 1;
+	NOOPi : begin
+	  hlt = 0;
 	end
 	// rf_re0 = 1
 	// rf_re1 = 1

@@ -13,8 +13,8 @@ localparam LHB  = 4'b0111;
 
 // appended - wip
 localparam ANDN = 4'b1000;
-localparam SMUL  = 4'b1001; // change to SMUL when assembler is updated
-localparam UMUL  = 4'b1010;
+localparam SMUL = 4'b1001; // change to SMUL when assembler is updated
+localparam UMUL = 4'b1010;
 localparam XOR  = 4'b1011;
 localparam OR   = 4'b1100;
 localparam XORN = 4'b1101;
@@ -37,7 +37,7 @@ localparam LLBi		= 5'b01011;
 localparam BRi		= 5'b01100;
 localparam JALi		= 5'b01101;
 localparam JRi		= 5'b01110;
-localparam HLTi		= 5'b01111;
+localparam NOOPi	= 5'b01111;
 
 
 //////////////////////////////////////////
@@ -51,9 +51,9 @@ localparam ANDIi	= 5'b10100;
 localparam XORNIi 	= 5'b10101;
 localparam ORIi 	= 5'b10110;
 localparam ANDNi 	= 5'b10111;
-localparam SMULi 	= 5'b11100; // change to SMUL when assembler is updated
 localparam MOVCi 	= 5'b11000;
 localparam UMULi 	= 5'b11001;
+localparam SMULi 	= 5'b11010; // change to SMUL when assembler is updated
 //localparam PUSHi 	= 5'b11010;
 //localparam POPi 	= 5'b11011;
 
