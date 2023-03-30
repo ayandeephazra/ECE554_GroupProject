@@ -54,6 +54,14 @@ assign sum_sat = (sat_pos) ? 16'h7fff :
 				 sum;
 				 
 assign ov = sat_pos | sat_neg;
+
+///////////////////////////
+// Now for signed multpl//
+/////////////////////////
+wire signed [7:0] smul0 = src0[7:0];
+wire signed [7:0] smul1 = src1[7:0];
+wire signed [15:0] smul_res;
+assign smul_res = smul0 * smul1;
 				 
 ///////////////////////////
 // Now for left shifter //
@@ -81,10 +89,11 @@ assign dst = (func==AND) ? src1 & src0 :
 			 ((func==SRL) || (func==SRA)) ? shft_r :
 			 (func==LHB) ? {src1[7:0],src0[7:0]} :
 			 (func==ANDN)? ~(src1 & src0) :
-			 (func==NOT)? ~(src1) :            			// our immediate is src1, lots of bugs cuz this was src0 formerly
-			 (func==MUL)? src1 * src0 : 
+			 (func==SMUL)? smul_res[15:0] :
+			 (func==UMUL)? src1 * src0 : 
 			 (func==XOR)? src1 ^ src0 : 
-			 (func==OR)? src1 | src0: sum_sat; 			// default to sum_sat in org implem
+			 (func==OR)? src1 | src0: 
+			 (func==XORN)? ~(src1 ^ src0): sum_sat; 			// default to sum_sat in org implem
 			 
 assign zr = ~|dst;
 assign neg = dst[15];

@@ -13,10 +13,11 @@ localparam LHB  = 4'b0111;
 
 // appended - wip
 localparam ANDN = 4'b1000;
-localparam NOT  = 4'b1001;
-localparam MUL  = 4'b1010;
+localparam SMUL  = 4'b1001; // change to SMUL when assembler is updated
+localparam UMUL  = 4'b1010;
 localparam XOR  = 4'b1011;
 localparam OR   = 4'b1100;
+localparam XORN = 4'b1101;
 
 //////////////////////////////////////////
 // Create defines for Opcode encodings //
@@ -50,11 +51,11 @@ localparam ANDIi	= 5'b10100;
 localparam XORNIi 	= 5'b10101;
 localparam ORIi 	= 5'b10110;
 localparam ANDNi 	= 5'b10111;
-localparam NOTi 	= 5'b11100;
+localparam SMULi 	= 5'b11100; // change to SMUL when assembler is updated
 localparam MOVCi 	= 5'b11000;
-localparam MULi 	= 5'b11001;
-localparam PUSHi 	= 5'b11010;
-localparam POPi 	= 5'b11011;
+localparam UMULi 	= 5'b11001;
+//localparam PUSHi 	= 5'b11010;
+//localparam POPi 	= 5'b11011;
 
 ////////////////////////////////
 // Encodings for src0 select //

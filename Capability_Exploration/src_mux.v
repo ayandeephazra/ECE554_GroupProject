@@ -62,7 +62,7 @@ always @(posedge clk)
 assign src0 = (src0sel_ID_EX == RF2SRC0) ? RF_p0 : 
               (src0sel_ID_EX == IMM_BR2SRC0) ? {{7{imm_ID_EX[8]}},imm_ID_EX[8:0]} :		// branch immediates
 			  (src0sel_ID_EX == IMM_JMP2SRC0) ? {{4{imm_ID_EX[11]}},imm_ID_EX[11:0]} :	// JMP immediates
-			  (src0sel_ID_EX == IMM2SRC0_4BZE) ? {12'b0,imm_ID_EX[3:0]} :	            // arithmetic immediates
+			  (src0sel_ID_EX == IMM2SRC0_4BZE) ? {12'b0,imm_ID_EX[3:0]} :	            // arithmetic immediates, this is an append from org Hoffman implem
               {{12{imm_ID_EX[3]}},imm_ID_EX[3:0]};		// for address immediates for DM operations
 
 assign src1 = (src1sel_ID_EX == RF2SRC1) ? RF_p1 : 

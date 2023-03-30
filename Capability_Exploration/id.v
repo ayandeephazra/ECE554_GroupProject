@@ -378,7 +378,7 @@ always @(instr_IM_ID) begin
 	  src0sel = IMM2SRC0;
 	  rf_we = 1;
 	  clk_z = 1;
-	  alu_func = XOR;
+	  alu_func = XORN;
 	
 	end
 	ORIi: begin
@@ -395,12 +395,22 @@ always @(instr_IM_ID) begin
       alu_func = ANDN;
 	  clk_z = 1;
 	end
+	/*
 	NOTi: begin
 	  rf_re0 = 1;
 	  rf_re1 = 0;
 	  rf_we = 1;
       alu_func = NOT;
 	  clk_z = 1;
+	end */
+	// MUL till assembler is updated
+	SMULi: begin
+	  rf_re0 = 1;
+	  rf_re1 = 1;
+	  rf_we = 1;
+      alu_func = SMUL;
+	  clk_z = 1;	
+	  clk_nv = 1;
 	end
 	MOVCi: begin
 	  src0sel = IMM2SRC0;			// sign extended address offset
@@ -410,20 +420,15 @@ always @(instr_IM_ID) begin
 	  clk_z = 1;					// include zero and overflow or neg flags
 	  clk_nv = 1;
 	end
-	MULi: begin
+	UMULi: begin
 	  rf_re0 = 1;
 	  rf_re1 = 1;
 	  rf_we = 1;
-      alu_func = MUL;
+      alu_func = UMUL;
 	  clk_z = 1;	
 	  clk_nv = 1;
 	end
-	PUSHi: begin
-	
-	end
-	POPi: begin
-	
-	end
+
   endcase
 end
 
