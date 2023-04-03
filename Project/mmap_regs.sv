@@ -10,26 +10,32 @@ module mmap_regs(
     logic [15:0] timer;
     // LFSR
     // Branch count
-    always_ff @(posedge clk, negedge rst_n) begin
+    always_ff @(posedge clk, negedge rst_n)
         if (!rst_n)
             br_cnt <= '0;
         else if (inc_br_cnt)
             br_cnt <= br_cnt + 1;
-    end
+
     // Misprediction count
-    always_ff @(posedge clk, negedge rst_n) begin
+    always_ff @(posedge clk, negedge rst_n)
         if (!rst_n)
             mispr_cnt <= '0;
         else if (inc_mispr_cnt)
             mispr_cnt <= mispr_cnt + 1;
-    end
+
     // Branch HIT count
-    always_ff @(posedge clk, negedge rst_n) begin
+    always_ff @(posedge clk, negedge rst_n)
         if (!rst_n)
             hit_cnt <= '0;
         else if (inc_hit_cnt)
             hit_cnt <= hit_cnt + 1;
-    end
+    
     // Timer
+    always_ff @(posedge clk, negedge rst_n)
+        if (!rst_n)
+            timer <= '0;
+        else
+            timer <= timer + 1;
+    
 
 endmodule
