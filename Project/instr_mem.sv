@@ -22,7 +22,7 @@ always_ff @ (negedge clk)
 ////////////////////////////////////
 
 initial begin
-  $readmemh("I:/ece554/ECE554_GroupProject/Project/branch_test3.hex",instr_mem);
+  $readmemh("I:/ece554/ECE554_GroupProject/Project/branch_test4.hex",instr_mem);
 end
 
 endmodule

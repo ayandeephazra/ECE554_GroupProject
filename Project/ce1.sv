@@ -72,6 +72,7 @@ module ce1(
 
 	// mmap reg signals
 	logic inc_br_cnt, inc_hit_cnt, inc_mispr_cnt; 	// branch pred stats
+	logic br_stats_wr;
 	
 	// FF logic for LEDR ---- DEBUG
 	always_ff @ (negedge CLOCK_50) begin
@@ -87,16 +88,17 @@ module ce1(
 	always_comb begin
 		rdata = (mm_re & (addr==16'hc001)) ? {{6{1'b0}},SW} :
 				(mm_re & (addr==16'hc004 | addr==16'hc005)) ? databus : 
-				16'ha5a5; 
+				16'ha5a5;
 
 		iocs_n = ~((addr==16'hc004 | addr==16'hc005 | addr==16'hc006 | addr==16'hc007) & (mm_we | mm_re));		// selects C004/5/6/7
 		iorw_n = (~iocs_n) & mm_re;
 
 		bmp_sel = ((addr==16'hc008 | addr==16'hc009 | addr==16'hc00A) & mm_we);
+		br_stats_wr = ((addr == 16'hc00b) & mm_we);
 	end
 
 	// assign databus = (~iorw_n | bmp_sel) ? wdata[7:0] : 8'hzz;	// infer tri state for driving bus from proc to spart
-	assign databus = (mm_we) ? wdata : 8'hzz;	// infer tri state for driving bus from proc to spart
+	assign databus = (mm_we) ? wdata : 8'hzz;	// infer tri state for driving bus from proc
 
 	////////////////////////////////////////////////////////
 	// Instantiate PLL to generate clk and 25MHz VGA_CLK //
@@ -130,7 +132,7 @@ module ce1(
 	//////////////////////////////////////////
 	// Instantiate memory mapped registers //
 	////////////////////////////////////////
-	mmap_regs immap_regs(.clk(clk), .rst_n(rst_n), .inc_br_cnt(inc_br_cnt), .inc_hit_cnt(inc_hit_cnt), .inc_mispr_cnt(inc_mispr_cnt));
+	mmap_regs immap_regs(.clk(clk), .rst_n(rst_n), .inc_br_cnt(inc_br_cnt), .inc_hit_cnt(inc_hit_cnt), .inc_mispr_cnt(inc_mispr_cnt), .br_stats_wr(br_stats_wr), .databus(databus));
 
 	////////////////////////////////
     // instantiate BMP_display	 //
