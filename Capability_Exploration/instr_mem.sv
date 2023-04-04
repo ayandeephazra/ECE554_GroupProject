@@ -8,7 +8,7 @@ input rd_en;			// asserted when instruction read desired
 output reg [16:0] instr;	//output of insturction memory
 
 // 4k 17-bit instruction memory
-reg [16:0]instr_mem[0:2047];
+reg [16:0]instr_mem[0:8192];
 
 ////////////////////////////////////////////////////////////////
 //// Instruction is loaded on clock low when read is enabled //

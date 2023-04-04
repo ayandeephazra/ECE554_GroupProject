@@ -84,8 +84,10 @@ wire load_use_hazard,flush;
 // Flop the LWI_instr           //
 /////////////////////////////////
 always @(posedge clk, negedge rst_n)
-  if (!rst_n)
-    LWI_instr <= 0;		            	
+  if (!rst_n) begin
+    LWI_instr_ID_EX <= 0;
+	LWI_instr_EX_DM <= 0;	
+  end
   else begin
     LWI_instr_ID_EX <= LWI_instr;
 	LWI_instr_EX_DM <= LWI_instr_ID_EX;

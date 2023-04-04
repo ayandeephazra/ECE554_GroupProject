@@ -11,6 +11,14 @@ module BMP_display(
   input bmp_sel,
   input [15:0] addr,
   input [15:0] databus,
+  
+  input [15:0] mm_addr,
+  input mm_we,
+  input [15:0] mm_wdata,
+  
+  //output reg [18:0] waddr,		// write address to videoMem
+  //output logic [5:0] wdata,		// write 9-bit pixel to videoMem
+  //output reg we,
 
 	//////////// VGA ////////// ----> PASSED OUT TO TOP LEVEL
 	output		          		VGA_BLANK_N,
@@ -66,9 +74,9 @@ module BMP_display(
 					.xpix(xpix), .ypix(ypix), .addr_lead(raddr));
 					
   /////////////////////////////////////
-  // Instantiate 9-bit video memory //
+  // Instantiate 6-bit video memory //
   ///////////////////////////////////
-  videoMem ivm(.clk(clk),.we(we),.waddr(waddr),.wdata(wdata),.raddr(raddr),.rdata(rdata));
+  videoMem6bit ivm(.clk(clk),.we(we),.waddr(waddr),.wdata(wdata),.raddr(raddr),.rdata(rdata));
   
   assign VGA_R = {rdata[8:6],5'b00000};
   assign VGA_G = {rdata[5:3],5'b00000};
@@ -78,9 +86,12 @@ module BMP_display(
   // Instantiate Logic that determines pixel //
   // colors based on BMP placement          //
   ///////////////////////////////////////////					
-  PlaceBMP iplace(.clk(clk),.rst_n(rst_n),.add_fnt(add_fnt),.fnt_indx(fnt_indx),
-           .add_img(add_img),.rem_img(1'b0),.image_indx(image_indx),
-           .xloc(xloc),.yloc(yloc),.waddr(waddr),.wdata(wdata),.we(we));
+  PlaceBMP6bit_mm iplace(.clk(clk),.rst_n(rst_n),.mm_addr(mm_addr),.mm_we(mm_we),.mm_wdata(mm_wdata),
+	.waddr(waddr),.wdata(wdata),.we(we));
+  
+  //,.add_fnt(add_fnt),.fnt_indx(fnt_indx),
+  //         .add_img(add_img),.rem_img(1'b0),.image_indx(image_indx),
+  //         .xloc(xloc),.yloc(yloc),.waddr(waddr),.wdata(wdata),.we(we));
 
   ///////////////////////////////////////////////
   // What follows is a super cheese ball method

@@ -14,7 +14,7 @@ input [15:0] wrt_data;	// data to be written
 output reg [15:0] rd_data;	//output of data memory
 
 // 2K 16-bit memory
-reg [15:0]data_mem[0:1023];
+reg [15:0]data_mem[0:8192];
 
 // ///////////////////////////////////////////////
 // // Model read, data is flopped on clock low //
