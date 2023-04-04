@@ -12,7 +12,7 @@ module GroupProject(
 	input 		          		CLOCK_50,
 
 	//////////// KEY //////////
-	input 		     [3:0]		KEY,
+	input 		     		RST_n,
 
 	//////////// LED //////////
 	output		     [9:0]		LEDR,
@@ -103,12 +103,12 @@ module GroupProject(
 	////////////////////////////////////////////////////////
 	// Instantiate PLL to generate clk and 25MHz VGA_CLK //
 	//////////////////////////////////////////////////////
-	PLL iPLL(.refclk(CLOCK_50), .rst(~KEY[0]),.outclk_0(clk),.outclk_1(VGA_CLK), .locked(pll_locked));
+	PLL iPLL(.refclk(CLOCK_50), .rst(~RST_n),.outclk_0(clk),.outclk_1(VGA_CLK), .locked(pll_locked));
 
 	/////////////////////////////////////
 	// instantiate rst_n synchronizer //
 	///////////////////////////////////
-	rst_synch iRST(.clk(clk),.RST_n(KEY[0]), .pll_locked(pll_locked), .rst_n(rst_n));
+	rst_synch iRST(.clk(clk),.RST_n(RST_n), .pll_locked(pll_locked), .rst_n(rst_n));
 	
 	// /////////////////////////////////////
     // // instantiate rst_n synchronizer //

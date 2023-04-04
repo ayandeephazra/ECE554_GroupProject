@@ -105,7 +105,7 @@ module PlaceBMP6bit_mm(clk,rst_n,mm_addr,mm_we,mm_wdata,
 	else if (captureXwid2)
 	  bmp_addr_end <= xwid + bmp_read;		// bmp_read is currently = xwidth
     else if (captureYwid2)
-      bmp_addr_end <= bmp_addr_end*(ywid_upper+bmp_read) + 16'd2;	
+      bmp_addr_end <= bmp_addr_end*(ywid_upper+bmp_read) + 16'd5;	
 	  
   always_ff @(posedge clk, negedge rst_n)
       if (!rst_n)
@@ -270,8 +270,8 @@ module PlaceBMP6bit_mm(clk,rst_n,mm_addr,mm_we,mm_wdata,
   // BMP ROMs and mux are below //
   ///////////////////////////////
   BMP_ROM_Font  iROM0(.clk(clk),.addr(font_addr),.dout(bmp_read0));
-  BMP_ROM_Mario24 iROM1(.clk(clk),.addr(bmp_addr),.dout(bmp_read1));
-  BMP_ROM_Bucky iROM2(.clk(clk),.addr(bmp_addr),.dout(bmp_read2));
+  BMP_ROM_spaceship iROM1(.clk(clk),.addr(bmp_addr),.dout(bmp_read1));
+  BMP_ROM_asteroid iROM2(.clk(clk),.addr(bmp_addr),.dout(bmp_read2));
   assign bmp_read = (fnt_addr_inc) ? bmp_read0 :
                     (indx==5'd01) ? bmp_read1 :
 					bmp_read2;

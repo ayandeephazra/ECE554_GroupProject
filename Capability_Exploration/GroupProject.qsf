@@ -27,11 +27,11 @@ set_location_assignment PIN_AF14 -to CLOCK_50
 #============================================================
 # KEY
 #============================================================
-set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to KEY[0]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to RST_n
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to KEY[1]
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to KEY[2]
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to KEY[3]
-set_location_assignment PIN_AA14 -to KEY[0]
+set_location_assignment PIN_AA14 -to RST_n
 set_location_assignment PIN_AA15 -to KEY[1]
 set_location_assignment PIN_W15 -to KEY[2]
 set_location_assignment PIN_Y16 -to KEY[3]
@@ -240,7 +240,6 @@ set_global_assignment -name SYSTEMVERILOG_FILE PlaceBMP6bit_mm.sv
 set_global_assignment -name SYSTEMVERILOG_FILE ce1.sv
 set_global_assignment -name VERILOG_FILE rst_synch.v
 set_global_assignment -name SYSTEMVERILOG_FILE CapabilityExplore1.sv
-set_global_assignment -name SIP_FILE PLL.sip
 set_global_assignment -name SDC_FILE GroupProject.sdc
 set_global_assignment -name SYSTEMVERILOG_FILE VGA_timing.sv
 set_global_assignment -name SYSTEMVERILOG_FILE UART_tx_nq.sv
@@ -254,9 +253,7 @@ set_global_assignment -name SYSTEMVERILOG_FILE spart.sv
 set_global_assignment -name SYSTEMVERILOG_FILE rf_mem.sv
 set_global_assignment -name SYSTEMVERILOG_FILE rf.sv
 set_global_assignment -name VERILOG_FILE prgm_cntr.v
-set_global_assignment -name VERILOG_FILE PLL.v -library PLL
 set_global_assignment -name QIP_FILE PLL.qip
-set_global_assignment -name SOURCE_FILE PLL.cmp
 set_global_assignment -name SYSTEMVERILOG_FILE instr_mem.sv
 set_global_assignment -name VERILOG_FILE id.v
 set_global_assignment -name VERILOG_FILE dst_mux.v

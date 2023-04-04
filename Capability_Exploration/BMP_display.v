@@ -40,9 +40,9 @@ module BMP_display(
   wire [9:0] xpix;					// current X coordinate of VGA
   wire [8:0] ypix;					// current Y coordinate of VGA
   wire [18:0] raddr;				// address into videoMem for reads
-  wire [8:0] rdata;					// 9-bit color
+  wire [5:0] rdata;					// 6-bit color
   wire [18:0] waddr;				// write address to videoMem
-  wire [8:0] wdata;					// write data to videoMem
+  wire [5:0] wdata;					// write data to videoMem
   wire [4:0] image_indx;
   wire [9:0] xloc;
   wire [8:0] yloc;
@@ -78,9 +78,9 @@ module BMP_display(
   ///////////////////////////////////
   videoMem6bit ivm(.clk(clk),.we(we),.waddr(waddr),.wdata(wdata),.raddr(raddr),.rdata(rdata));
   
-  assign VGA_R = {rdata[8:6],5'b00000};
-  assign VGA_G = {rdata[5:3],5'b00000};
-  assign VGA_B = {rdata[2:0],5'b00000};
+  assign VGA_R = {rdata[5:4],6'b000000};
+  assign VGA_G = {rdata[3:2],6'b000000}; //(ypix>9'd240) ?  8'h80 :
+  assign VGA_B = {rdata[1:0],6'b000000};
   
   //////////////////////////////////////////////
   // Instantiate Logic that determines pixel //
