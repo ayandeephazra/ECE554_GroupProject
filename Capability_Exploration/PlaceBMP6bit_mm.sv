@@ -5,9 +5,9 @@ module PlaceBMP6bit_mm(clk,rst_n,mm_addr,mm_we,mm_wdata,
   wire [15:0] BMP_CTL;
   wire [15:0] BMP_XLOC;
   wire [15:0] BMP_YLOC;
-  assign BMP_CTL = {add_fnt,fnt_indx[5:0],2'b00,add_img,rem_img,image_indx[4:0]}; 
-  assign BMP_XLOC = {6'h00,xloc[9:0]};
-  assign BMP_YLOC = {7'h00,yloc[8:0]};
+  //assign BMP_CTL = //{add_fnt,fnt_indx[5:0],2'b00,add_img,rem_img,image_indx[4:0]}; 
+  //assign BMP_XLOC = //{6'h00,xloc[9:0]};
+  //assign BMP_YLOC = //{7'h00,yloc[8:0]};
   //////////////////////////////////////////////////////////////////////////
   
   input clk,rst_n;
@@ -65,9 +65,9 @@ module PlaceBMP6bit_mm(clk,rst_n,mm_addr,mm_we,mm_wdata,
   ////////////////////////////////////////////////////////////
   // Grab immediate control signals from mm_wdata on write //
   //////////////////////////////////////////////////////////
-  assign add_fnt = (mm_addr==BMP_CTL) ? mm_we&mm_wdata[15] : 1'b0;
-  assign add_img = (mm_addr==BMP_CTL) ? mm_we&mm_wdata[6] : 1'b0;
-  assign rem_img = (mm_addr==BMP_CTL) ? mm_we&mm_wdata[5] : 1'b0;
+  assign add_fnt = (mm_addr==16'hc00a) ? mm_we&mm_wdata[15] : 1'b0; //CTL
+  assign add_img = (mm_addr==16'hc00a) ? mm_we&mm_wdata[6] : 1'b0;  //CTL
+  assign rem_img = (mm_addr==16'hc00a) ? mm_we&mm_wdata[5] : 1'b0;  //CTL
   assign image_indx = mm_wdata[4:0];
   assign fnt_indx = mm_wdata[14:9];
  
@@ -75,11 +75,11 @@ module PlaceBMP6bit_mm(clk,rst_n,mm_addr,mm_we,mm_wdata,
   // Store xloc & yloc on writes //
   ////////////////////////////////  
   always_ff @(posedge clk)
-    if ((mm_addr==BMP_XLOC) && (mm_we))
+    if ((mm_addr==16'hc008) && (mm_we)) //XLOC
 	  xloc <= mm_wdata[9:0];
 
   always_ff @(posedge clk)
-    if ((mm_addr==BMP_YLOC) && (mm_we))
+    if ((mm_addr==16'hc009) && (mm_we)) // YLOC
 	  yloc <= mm_wdata[8:0];
 
   ////////////////////////////////////////////////////
