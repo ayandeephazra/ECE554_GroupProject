@@ -195,6 +195,42 @@
 #B eq, PASS
 #B neq, FAIL
 
+###########################
+# TEST 2, ANDI operations #
+###########################
+
+# Test a, ABCD & 0xFFFA = 0xABC8
+#LLB R1, 0xCD
+#LHB R1, 0xAB
+#LLB R3, 0xC8
+#LHB R3, 0xAB
+
+#ANDI R4, R1, 0x0A
+#SUB R5, R4, R3
+#B eq, PASS
+#B neq, FAIL
+
+# Test b, 0xAFFA & 0xFFF8 = AFF8
+#llb R1, 0xFA
+#lhb R1, 0xAF
+#llb R3, 0xF8
+#lhb R3, 0xAF
+
+#ANDI R4, R1, 0x08
+#SUB R5, R4, R3
+#B eq, PASS
+#B neq, FAIL
+
+# Test c, DECA & 0x0007 = 0x0002
+#llb R1, 0xCA
+#lhb R1, 0xDE
+#llb R3, 0x02
+
+#ANDI R4, R1, 0x02
+#SUB R5, R4, R3
+#B eq, PASS
+#B neq, FAIL
+
 ################################
 # TEST 1, ORI basic operations #
 ################################
@@ -208,27 +244,61 @@
 #B eq, PASS
 #B neq, FAIL
 
-# Test b, 00AB | 000F = 00AF  FAILS, sign extension
+# Test b, 00AB | FFFF = FFFF 
 #llb R1, 0xAB
 #lhb R1, 0x00
-#llb R3, 0xAF
-#lhb R3, 0x00
+#llb R3, 0xFF
 
 #ORI R4, R1, 0x0F
 #SUB R5, R4, R3
 #B eq, PASS
 #B neq, FAIL
 
-# Test c, 0012 | 0008 = 001A, ff1A
-llb R1, 0x12
-lhb R1, 0x00
-llb R3, 0x1A
-llb R3, 0x00
+# Test c, 0012 | 0008 = FFFA
+#llb R1, 0x12
+#lhb R1, 0xFF
+#llb R3, 0xFA
 
-ORI R4, R1, 0x08
-SUB R5, R4, R3
-B eq, PASS
-B neq, FAIL
+#ORI R4, R1, 0x08
+#SUB R5, R4, R3
+#B eq, PASS
+#B neq, FAIL
+
+#################################
+# TEST 2, more ORI instructions #
+#################################
+
+# Test a, ABCD | FFFA = FFFF
+#llb R1, 0xCD
+#lhb R1, 0xAB
+#llb R3, 0xFF
+#lhb R3, 0xFF
+
+#ORI R4, R1, 0x0A
+#SUB R5, R4, R3
+#B eq, PASS
+#B neq, FAIL
+
+# Test b, CCCC | 0007 = CCCF
+#llb R1, 0xCC
+#lhb R1, 0xCC
+#llb R3, 0xCF
+#lhb R3, 0xCC
+
+#ORI R4, R1, 0x07
+#SUB R5, R4, R3
+#B eq, PASS
+#B neq, FAIL
+
+# Test c, BA12 | FFFB = FFFB
+#llb R1, 0x12
+#lhb R1, 0xBA
+#llb R3, 0xFB
+
+#ORI R4, R1, 0x0B
+#SUB R5, R4, R3
+#B eq, PASS
+#B neq, FAIL
 
 ################################
 # TEST 1, MUL basic operations #
@@ -267,67 +337,149 @@ B neq, FAIL
 ##################################
 
 # test a ~(0x00 & 0xFF) = FF
-llb R1, 0xFF
-llb R3, 0xFF
+#llb R1, 0xFF
+#llb R3, 0xFF
 
-ANDNI R4, R1, 0x00
-SUB R5, R4, R3
-B eq, PASS
-B neq, FAIL
+#ANDNI R4, R1, 0x00
+#SUB R5, R4, R3
+#B eq, PASS
+#B neq, FAIL
 
-# test b ~(0xFC & 0A) = F7
-llb R1, 0xFC
-llb R3, 0xF7
+# test b ~(0xFFFC & FFFA) = 0007
+#llb R1, 0xFC
+#llb R3, 0x07
 
-ANDNI R4, R1, 0x0A
-SUB R5, R4, R3
-B eq, PASS
-B neq, FAIL
+#ANDNI R4, R1, 0x0A
+#SUB R5, R4, R3
+#B eq, PASS
+#B neq, FAIL
 
 # test c = ~(0xDA & 07) = FD
-llb R1, 0xDA
-llb R3, 0xFD
+#llb R1, 0xDA
+#llb R3, 0xFD
 
-ANDNI R4, R1, 0x07
-SUB R5, R4, R3
-B eq, PASS
-B neq, FAIL
+#ANDNI R4, R1, 0x07
+#SUB R5, R4, R3
+#B eq, PASS
+#B neq, FAIL
+
+#################################
+# TEST 2, more ANDNI operations #
+#################################
+
+# Test a, ~(ABCD & FFFA) = 5437
+
+#llb R1, 0xCD
+#lhb R1, 0xAB
+#llb R3, 0x37
+#lhb R3, 0x54
+
+#ANDNI R4, R1, 0x0A
+#SUB R5, R4, R3
+#B eq, PASS
+#B neq, FAIL
+
+# Test b, ~(DECA & FFFB) = 2135
+#llb R1, 0xCA
+#lhb R1, 0xDE
+#llb R3, 0x35
+#lhb R3, 0x21
+
+#ANDNI R4, R1, 0x0B
+#SUB R5, R4, R3
+#B eq, PASS
+#B neq, FAIL
+
+# Test c, ~(AFFB & FFF9) = 5006
+#llb R1, 0xFB
+#lhb R1, 0xAF
+#llb R3, 0x06
+#lhb R3, 0x50
+
+#ANDNI R4, R1, 0x09
+#SUB R5, R4, R3
+#B eq, PASS
+#B neq, FAIL
 
 ##################################
 # TEST 1, XORNI basic operations #
 ##################################
 
 # test a ~(0x00 ^ 0x00) = FF
-llb R1, 0x00
-llb R3, 0xFF
+#llb R1, 0x00
+#llb R3, 0xFF
 
-XORNI R4, R1, 0x00
-SUB R5, R4, R3
-B eq, PASS
-B neq, FAIL
+#XORNI R4, R1, 0x00
+#SUB R5, R4, R3
+#B eq, PASS
+#B neq, FAIL
 
 # test b ~(0xFF ^ 0x01) = 01
-llb R1, 0xFF
-llb R3, 0x01
+#llb R1, 0xFF
+#llb R3, 0x01
 
-XORNI R4, R1, 0x01
-SUB R5, R4, R3
-B eq, PASS
-B neq, FAIL
+#XORNI R4, R1, 0x01
+#SUB R5, R4, R3
+#B eq, PASS
+#B neq, FAIL
 
 # test c ~(0xFF ^ 0x00) = 00
-llb R1, 0xFF
-llb R3, 0x00
+#llb R1, 0xFF
+#llb R3, 0x00
 
-XORNI R4, R1, 0x00
-SUB R5, R4, R3
-B eq, PASS
-B neq, FAIL
+#XORNI R4, R1, 0x00
+#SUB R5, R4, R3
+#B eq, PASS
+#B neq, FAIL
+
+#################################
+# TEST 2, XORNI more operations #
+#################################
+
+# Test a, ~(ABCD ^ FFFA) = ABC8
+
+#LLB R1, 0xCD
+#LHB R1, 0xAB
+#LLB R3, 0xC8
+#LHB R3, 0xAB
+
+#XORNI R4, R1, 0x0A
+#SUB R5, R4, R3
+#B eq, PASS
+#B neq, FAIL
+
+# Test b, ~(FFFF ^ FFFF) = FFFF
+#llb R1, 0xFF
+#llb R3, 0xFF
+
+#XORNI R4, R1, 0x0F
+#SUB R5, R4, R3
+#B eq, PASS
+#B neq, FAIL
+
+# Test c, ~(123F ^ 0004) = EDC4
+#llb R1, 0x3F
+#lhb R1, 0x12
+#llb R3, 0xC4
+#lhb R3, 0xED
+
+#XORNI R4, R1, 0x04
+#SUB R5, R4, R3
+#B eq, PASS
+#B neq, FAIL
 
 ############################################################################################
 # 				END OF IMMEDIATE TESTING				   #
 ############################################################################################
 
+#LLB R1, 0x00
+#LLB R3, 0x02
+
+#ADDI R4, R1, 0x01
+#ADDI R4, R4, 0x01
+#SUB R5, R4, R3
+#B eq, PASS
+#B neq, FAIL
 
 #SUBI R4, R1, 0x08
 #SUB R5, R4, R3
