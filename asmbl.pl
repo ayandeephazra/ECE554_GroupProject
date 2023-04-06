@@ -112,6 +112,35 @@ while(<IN>) {
 	    next;
 
     }
+    
+    if(/STRING\s+(.*)/) {
+
+        my $data = $1;
+
+        my @chars;
+
+        @chars = split(//,$data);
+        
+        # print $data;
+        # print "\n";
+        # print @chars;
+        # print "\n";
+
+        my $x;
+
+        for ($x = 0; $x < (length($data)); $x++) {
+          $mem[$addr] = decToBin(ord($chars[$x]), 20);
+          $source_lines[$addr++] = $chars[$x];
+          # print $chars[$x];
+          # print "\n";
+        }
+
+        $mem[$addr] = decToBin(0,20);
+        $source_lines[$addr++] = "Null terminate";
+
+        next;
+        
+    }
 
     if(/DATA\s+(.*)/) {
 
@@ -127,27 +156,6 @@ while(<IN>) {
 
     }
 
-    if(/STRING\s+(.*)/) {
-
-        my $data = $1;
-
-        my @chars;
-
-        @chars = split(//,$data);
-
-        my $x;
-
-        for ($x = 0; $x < (length($data)-1); $x++) {
-          $mem[$addr] = decToBin(ord($chars[$x]), 20);
-          $source_lines[$addr++] = $chars[$x];
-        }
-
-        $mem[$addr] = decToBin(0,20);
-        $source_lines[$addr++] = "Null terminate";
-
-        next;
-        
-    }
 
     $source_lines[$addr] = $_;
 
@@ -248,6 +256,9 @@ while(<IN>) {
       }
 
 
+
+      # this will essential just become a macro most likely, easier to do than in hardware
+      # just a placeholder for now - look at slides when changing
       elsif($instr =~ /^(PUSH)$/) {
 
         foreach my $reg ($args[0]) {
