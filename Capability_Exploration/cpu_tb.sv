@@ -18,7 +18,7 @@ initial begin
   @ (posedge clk);
   rst_n = 1;
   rdata = 16'haaaa;
-  repeat (100) @ (posedge clk);
+  repeat (10000000) @ (posedge clk);
   $stop();
   
 end

@@ -50,10 +50,11 @@ assign RF_p0 = (byp0_EX) ? dst_EX_DM :		// EX gets priority because it represent
 /////////////////////////////
 // Bypass Muxes for port1 //
 ///////////////////////////
-assign RF_p1 = (LWI_instr_EX_DM)? instr:    // instr gets more priority
-			   (byp1_EX) ? dst_EX_DM :		// EX gets priority because it represents more recent data
+assign RF_p1 = // instr gets more priority than bypass_1 but not if LWI is not high, then we default to byp1 and so forth
+			   (byp1_EX) ? {(LWI_instr_EX_DM)? instr: dst_EX_DM }:		// EX gets priority because it represents more recent data
                (byp1_DM) ? dst_DM_WB :
-			    p1_ID_EX;	
+			   p1_ID_EX;	
+			   // //(LWI_instr_EX_DM)? instr: 
 			   
 ////////////////////////////////////////////////////
 // Need to pipeline the data to be stored for SW //

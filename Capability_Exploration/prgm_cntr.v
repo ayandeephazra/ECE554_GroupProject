@@ -35,13 +35,6 @@ reg [15:0] pc_pre_mux;
 
 assign nxt_pc = pc + 1;
 
-////////////////////////////////
-// Implement the PC register //
-//////////////////////////////
-/////////////////////////////////////////////////
-// Implement the mux that selects the movc pc //
-///////////////////////////////////////////////
-
 /*
 always @(posedge clk, negedge rst_n)
   if (!rst_n) begin
@@ -60,6 +53,11 @@ always @(posedge clk, negedge rst_n)
   else if (LWI_instr_EX_DM)
     pc <= dst_EX_DM;
 */
+
+////////////////////////////////
+// Implement the PC register //
+//////////////////////////////
+
 always @(posedge clk, negedge rst_n)
   if (!rst_n) begin
     pc_pre_mux <= 16'h0000;
@@ -70,19 +68,12 @@ always @(posedge clk, negedge rst_n)
       pc_pre_mux <= dst_ID_EX;
     else
 	  pc_pre_mux <= nxt_pc;
+	  
+/////////////////////////////////////////////////
+// Implement the mux that selects the movc pc //
+///////////////////////////////////////////////
 
 assign pc = (LWI_instr_EX_DM)? dst_EX_DM: pc_pre_mux;
-
-/*
-always @ (posedge clk, negedge rst_n)
-  if (!rst_n)
-	pc <= 16'h0000;
-  else if (LWI_instr_EX_DM)
-	pc <= LWI_instr_EX_DM;
-  else
-	pc <= pc_pre_movc_mux;
-*/
-//assign pc = (LWI_instr_EX_DM)? dst_EX_DM: pc_pre_movc_mux;
 
 ////////////////////////////////////////////////
 // Implement the PC pipelined register IM_ID //

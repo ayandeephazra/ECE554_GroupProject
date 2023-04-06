@@ -397,14 +397,6 @@ always @(instr_IM_ID) begin
       alu_func = ANDN;
 	  clk_z = 1;
 	end
-	/*
-	NOTi: begin
-	  rf_re0 = 1;
-	  rf_re1 = 0;
-	  rf_we = 1;
-      alu_func = NOT;
-	  clk_z = 1;
-	end */
 	// MUL till assembler is updated
 	SMULi: begin
 	  rf_re0 = 1;

@@ -39,10 +39,11 @@ llb R7, 0x49
 lhb R7, 0x00
 # second MOVC instruction
 MOVC R4, R2, 0x05
-NOOP
-NOOP
-NOOP
-NOOP
+#NOOP
+#NOOP
+#NOOP
+#NOOP
+#MOVC R4, R2, 0x05
 MOVC R4, R2, 0x05
 SUB R5, R4, R3
 B eq, PASS_2
