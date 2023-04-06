@@ -19,7 +19,7 @@ input LWI_instr_EX_DM; 				// pipelined movc select signal
 input [15:0] dst_EX_DM;
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
-output reg [15:0] pc;				// the PC, forms address to instruction memory, muxed with movc control
+output [15:0] pc;				// the PC, forms address to instruction memory, muxed with movc control
 output reg [15:0] pc_ID_EX;			// needed in EX stage for Branch instruction
 output reg [15:0] pc_EX_DM;			// needed in dst_mux for JAL instruction
 
@@ -27,6 +27,7 @@ reg [15:0] pc_IM_ID;
 
 wire [15:0] nxt_pc;
 reg [15:0] pc_pre_movc_mux;
+reg [15:0] pc_pre_mux;
 
 /////////////////////////////////////
 // implement incrementer for PC+1 //
@@ -41,6 +42,7 @@ assign nxt_pc = pc + 1;
 // Implement the mux that selects the movc pc //
 ///////////////////////////////////////////////
 
+/*
 always @(posedge clk, negedge rst_n)
   if (!rst_n) begin
     pc_pre_movc_mux <= 16'h0000;
@@ -57,7 +59,19 @@ always @(posedge clk, negedge rst_n)
 	end
   else if (LWI_instr_EX_DM)
     pc <= dst_EX_DM;
-	 
+	*/ 
+always @(posedge clk, negedge rst_n)
+  if (!rst_n) begin
+    pc_pre_mux <= 16'h0000;
+	//pc <= 16'h0000;
+ end
+  else if (!stall_IM_ID)	// all stalls stall the PC
+    if (flow_change_ID_EX)
+      pc_pre_mux <= dst_ID_EX;
+    else
+	  pc_pre_mux <= nxt_pc;
+	  
+assign pc = (LWI_instr_EX_DM)? dst_EX_DM: pc_pre_mux;
 
 /*
 always @ (posedge clk, negedge rst_n)
