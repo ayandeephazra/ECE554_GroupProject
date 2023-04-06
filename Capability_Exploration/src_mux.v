@@ -1,6 +1,6 @@
 module src_mux(clk,stall_ID_EX,stall_EX_DM,src0sel_ID_EX,src1sel_ID_EX,p0,p1,
                imm_ID_EX,pc_ID_EX,p0_EX_DM,src0,src1,dst_EX_DM,dst_DM_WB,
-			   byp0_EX,byp0_DM,byp1_EX,byp1_DM);
+			   byp0_EX,byp0_DM,byp1_EX,byp1_DM, LWI_instr_EX_DM, instr);
 
 input clk;
 input stall_ID_EX,stall_EX_DM;		// stall signal
@@ -16,6 +16,8 @@ input byp0_EX,byp1_EX;				// From ID, selects EX results to bypass RF sources
 input byp0_DM,byp1_DM;				// From ID, selects DM results to bypass RF sources
 output reg [15:0] p0_EX_DM;			// need to output this as data for SW instructions
 output [15:0] src0,src1;			// source busses
+input LWI_instr_EX_DM;
+input [16:0] instr;
 
 /////////////////////////////////
 // registers needed for flops //
@@ -48,9 +50,10 @@ assign RF_p0 = (byp0_EX) ? dst_EX_DM :		// EX gets priority because it represent
 /////////////////////////////
 // Bypass Muxes for port1 //
 ///////////////////////////
-assign RF_p1 = (byp1_EX) ? dst_EX_DM :		// EX gets priority because it represents more recent data
+assign RF_p1 = (LWI_instr_EX_DM)? instr:    // instr gets more priority
+			   (byp1_EX) ? dst_EX_DM :		// EX gets priority because it represents more recent data
                (byp1_DM) ? dst_DM_WB :
-			   p1_ID_EX;	
+			    p1_ID_EX;	
 			   
 ////////////////////////////////////////////////////
 // Need to pipeline the data to be stored for SW //
