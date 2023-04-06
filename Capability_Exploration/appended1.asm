@@ -45,10 +45,10 @@
 # TEST 2, ADDI featuring negitive values     #
 ##############################################
 
-# Test a, 0A + FF = 0B
+# Test a, 000A + FF = 0009
 
 #llb R1, 0xFF
-#llb R3, 0x0B
+#llb R3, 0x09
 
 #ADDI R4, R1, 0x0A
 #SUB R5, R4, R3
@@ -65,9 +65,9 @@
 #B eq, PASS
 #B neq, FAIL
 
-# Test c, C0 + 0F = -25 = (E7)
+# Test c, D8 + 0F = -25 = (E7)
 
-#llb R1, 0x40
+#llb R1, 0xD8
 #llb R3, 0xE7
 
 #ADDI R4, R1, 0x0F
@@ -83,7 +83,6 @@
 
 #llb R1, 0xFF
 #llb R3, 0x0E
-#lhb R3, 0x01
 
 #ADDI R4, R1, 0x0F
 #SUB R5, R4, R3
@@ -104,33 +103,33 @@
 
 # Test a, 0x05 - 0x02 = 0x03
 
-#llb R1, 0x05
-#llb R3, 0x03
+llb R1, 0x05
+llb R3, 0x03
 
-#SUBI R4, R1, 0x02
-#SUB R5, R4, R3
+SUBI R4, R1, 0x02
+SUB R5, R4, R3
 #B eq, PASS
-#B neq, FAIL
+B neq, FAIL
 
 # Test b, 0x0A - 0x05 = 0x05
 
-#llb R1, 0x0A
-#llb R3, 0x05
+llb R1, 0x0A
+llb R3, 0x05
 
-#SUBI R4, R1, 0x05
-#SUB R5, R4, R3
+SUBI R4, R1, 0x05
+SUB R5, R4, R3
 #B eq, PASS
-#B neq, FAIL
+B neq, FAIL
 
 # Test c, 0xFF - 0x02 = 0xFd
 
-#llb R1, 0x0FF
-#llb R3, 0xFD
+llb R1, 0x0FF
+llb R3, 0xFD
 
-#SUBI R4, R1, 0x02
-#SUB R5, R4, R3
-#B eq, PASS
-#B neq, FAIL
+SUBI R4, R1, 0x02
+SUB R5, R4, R3
+B eq, PASS
+B neq, FAIL
 
 #################################
 # TEST 1, XORI basic operations #
@@ -497,5 +496,4 @@ lhb R6, 0xfa
 b uncond, END
 
 END:
-llb R9, 0x4d
-lhb R9, 0x0e
+
