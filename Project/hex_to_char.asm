@@ -7,7 +7,7 @@
 
 llb R11, 0x04       # R11 holds spart addr
 lhb R11, 0xC0
-llb R10, 0xe3       # R10 holds VALUE
+llb R10, 0x9f       # R10 holds VALUE
 lhb R10, 0x00
 llb R12, 9          # R12 contains 9 for comparing
 

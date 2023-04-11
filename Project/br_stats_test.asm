@@ -50,10 +50,12 @@ b uncond, END
 ###############################
 
 PRINT_STATS:
-llb R1, 0x10
-lhb R1, 0xc0        # R1 contains mmap_reg base (br_cnt)
-llb R2, 0x04
-lhb R2, 0xC0	    # R2 contains spart addr
+llb R1, 0x10        # R1 contains mmap_reg base (br_cnt)
+lhb R1, 0xc0        
+llb R2, 0x04        # R2 contains spart addr
+lhb R2, 0xC0	    
+llb R4, 0x80        # R4 holds bit mask to poll tx q
+lhb R4, 0x00
 
 lw R5, R1, 0        # R5 holds stats
 
@@ -73,7 +75,7 @@ llb R3, 0x20        # ' '
 sw R3, R2, 0
 
 L_WAIT_EMP:         # wait for TX q to empty
-lw R3, R1, 1        # read from 0xc005 (status reg) --> R3
+lw R3, R2, 1        # read from 0xc005 (status reg) --> R3
 and R3, R3, R4      # look for R3 == 1XXX_XXXX (tx_queue is empty)
 b eq, L_WAIT_EMP    # if result is zero => MSB of status_reg is not 1 => not empty keep waiting
 
@@ -84,6 +86,55 @@ sw R3, R2, 0
 
 
 llb R14, 0xff       # DEBUG
+#### sw R5, R2, 0        # ******** OUTPUT STATS ******** (WONT WORK NEED TO CONVERT)
 
-sw R5, R2, 0        # ******** OUTPUT STATS ********
+##########################################
+#   HEX --> CHAR CONVERSION
+##########################################
+
+    
+    lhb R5, 0x00
+    llb R12, 9          # R12 contains 9 for comparing
+
+    #####################
+    # UPPER NIBBLE
+    #####################
+
+    srl R13, R5, 4      # R13 contains upper nibble
+
+    sub R14, R13, R12   # R14 is junk reg for comparison subtraction
+    b gt, LETTER_1      # value > 9 -- needs letter char
+    llb R9, 0x30       # R9 contains addition offset
+    b uncond, CONVERT_1
+
+    LETTER_1:
+    llb R9, 0x57       # R9 -- offset to ascii lowercase chars
+
+    CONVERT_1:
+    add R13, R13, R9   # R13 contains converted value
+
+    sw R13, R2, 0      # PRINT
+
+    #####################
+    # LOWER NIBBLE
+    #####################
+
+    llb R14, 0x0f
+    and R13, R14, R5    # R13 now conatians lower nibble
+
+    sub R14, R13, R12   # R14 is junk reg for comparison subtraction
+    b gt, LETTER_2      # value > 9 -- needs letter char
+    llb R9, 0x30       # R9 contains addition offset
+    b uncond, CONVERT_2
+
+    LETTER_2:
+    llb R9, 0x57       # R9 -- offset to ascii lowercase chars
+
+    CONVERT_2:
+    add R13, R13, R9   # R13 contains converted value
+
+    sw R13, R2, 0      # PRINT
+
+
+
 jr R15

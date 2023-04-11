@@ -1,5 +1,5 @@
 Fitter report for BranchPrediction
-Tue Apr 11 16:13:49 2023
+Tue Apr 11 18:20:00 2023
 Quartus Prime Version 21.1.0 Build 842 10/21/2021 SJ Lite Edition
 
 
@@ -66,7 +66,7 @@ https://fpgasoftware.intel.com/eula.
 +-------------------------------------------------------------------------------+
 ; Fitter Summary                                                                ;
 +---------------------------------+---------------------------------------------+
-; Fitter Status                   ; Successful - Tue Apr 11 16:13:49 2023       ;
+; Fitter Status                   ; Successful - Tue Apr 11 18:20:00 2023       ;
 ; Quartus Prime Version           ; 21.1.0 Build 842 10/21/2021 SJ Lite Edition ;
 ; Revision Name                   ; BranchPrediction                            ;
 ; Top-level Entity Name           ; BranchPrediction                            ;
@@ -161,11 +161,11 @@ https://fpgasoftware.intel.com/eula.
 ;                            ;             ;
 ; Usage by Processor         ; % Time Used ;
 ;     Processor 1            ; 100.0%      ;
-;     Processor 2            ;   0.6%      ;
-;     Processor 3            ;   0.5%      ;
-;     Processor 4            ;   0.5%      ;
-;     Processor 5            ;   0.5%      ;
-;     Processor 6            ;   0.5%      ;
+;     Processor 2            ;   0.7%      ;
+;     Processor 3            ;   0.6%      ;
+;     Processor 4            ;   0.6%      ;
+;     Processor 5            ;   0.6%      ;
+;     Processor 6            ;   0.6%      ;
 +----------------------------+-------------+
 
 
@@ -2392,7 +2392,7 @@ Info (332111): Found 8 clocks
 Info (176233): Starting register packing
 Info (176235): Finished register packing
     Extra Info (176219): No registers were packed into other blocks
-Info (11798): Fitter preparation operations ending: elapsed time is 00:00:11
+Info (11798): Fitter preparation operations ending: elapsed time is 00:00:12
 Info (170189): Fitter placement preparation operations beginning
 Info (14951): The Fitter is using Advanced Physical Optimization.
 Info (170190): Fitter placement preparation operations ending: elapsed time is 00:00:28
@@ -2452,9 +2452,9 @@ Warning (169064): Following 36 pins have no output enable or a GND or VCC output
 Info (144001): Generated suppressed messages file I:/ece554/ECE554_GroupProject/Project/BranchPrediction.fit.smsg
 Info: Quartus Prime Fitter was successful. 0 errors, 19 warnings
     Info: Peak virtual memory: 6750 megabytes
-    Info: Processing ended: Tue Apr 11 16:13:51 2023
-    Info: Elapsed time: 00:01:40
-    Info: Total CPU time (on all processors): 00:04:43
+    Info: Processing ended: Tue Apr 11 18:20:03 2023
+    Info: Elapsed time: 00:01:41
+    Info: Total CPU time (on all processors): 00:04:42
 
 
 +----------------------------+
