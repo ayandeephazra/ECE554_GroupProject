@@ -1,29 +1,22 @@
-module PlaceBMP6bit_mm(clk,rst_n,mm_addr,mm_we,mm_wdata,
-                   waddr,wdata,we);
-  //import common::*;				// import all encoding definitions
-  /////////////// Register Maps ////////////////////////////////////////////////
-  wire [15:0] BMP_CTL;
-  wire [15:0] BMP_XLOC;
-  wire [15:0] BMP_YLOC;
-  //assign BMP_CTL = //{add_fnt,fnt_indx[5:0],2'b00,add_img,rem_img,image_indx[4:0]}; 
-  //assign BMP_XLOC = //{6'h00,xloc[9:0]};
-  //assign BMP_YLOC = //{7'h00,yloc[8:0]};
-  //////////////////////////////////////////////////////////////////////////
+module PlaceBMP6bit_mm(clk,rst_n, waddr,wdata,we, add_fnt, add_img, rem_img, image_indx, fnt_indx, xloc, yloc);
+
+  input add_fnt;
+  input add_img;
+  input rem_img;
+  input image_indx;
+  input fnt_indx;               // one of 42 characters
+  // 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ =>,()
+  input [9:0] xloc;
+  input [8:0] yloc;
   
   input clk,rst_n;
-  input [15:0] mm_addr;
-  input mm_we;
-  input [15:0] mm_wdata;
-
   output reg [18:0] waddr;		// write address to videoMem
   output logic [5:0] wdata;		// write 9-bit pixel to videoMem
   output reg we;
-  
+    
   //////////////////////////////////////////
   // Declare any internal registers next //
   ////////////////////////////////////////
-  reg [9:0] xloc;
-  reg [8:0] yloc;
   reg [15:0] bmp_addr;				// address to local ROMs that contain images
   reg [15:0] bmp_addr_end;
   reg [13:0] font_addr;
@@ -51,37 +44,13 @@ module PlaceBMP6bit_mm(clk,rst_n,mm_addr,mm_we,mm_wdata,
   ///////////////////////////
   // Internal nets follow //
   /////////////////////////
-  wire [5:0] fnt_indx; 	// one of 42 characters
-  // 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ =>,()
-  wire [4:0] image_indx;
   wire [5:0] bmp_read0;
   wire [5:0] bmp_read1;
   wire [5:0] bmp_read2;			// add more for more images
   wire [5:0] bmp_read;			// muxed output from BMP ROM
   wire waddr_wrap_en;
   wire fnt_wrap;
-  wire add_fnt,add_img,rem_img;	
  
-  ////////////////////////////////////////////////////////////
-  // Grab immediate control signals from mm_wdata on write //
-  //////////////////////////////////////////////////////////
-  assign add_fnt = (mm_addr==16'hc00a) ? mm_we&mm_wdata[15] : 1'b0; //CTL
-  assign add_img = (mm_addr==16'hc00a) ? mm_we&mm_wdata[6] : 1'b0;  //CTL
-  assign rem_img = (mm_addr==16'hc00a) ? mm_we&mm_wdata[5] : 1'b0;  //CTL
-  assign image_indx = mm_wdata[4:0];
-  assign fnt_indx = mm_wdata[14:9];
- 
-  //////////////////////////////////
-  // Store xloc & yloc on writes //
-  ////////////////////////////////  
-  always_ff @(posedge clk)
-    if ((mm_addr==16'hc008) && (mm_we)) //XLOC
-	  xloc <= mm_wdata[9:0];
-
-  always_ff @(posedge clk)
-    if ((mm_addr==16'hc009) && (mm_we)) // YLOC
-	  yloc <= mm_wdata[8:0];
-
   ////////////////////////////////////////////////////
   // capture x image width as read from image file //
   //////////////////////////////////////////////////  
