@@ -1,5 +1,5 @@
 Fitter report for BranchPrediction
-Mon Apr 10 18:25:39 2023
+Tue Apr 11 16:13:49 2023
 Quartus Prime Version 21.1.0 Build 842 10/21/2021 SJ Lite Edition
 
 
@@ -66,7 +66,7 @@ https://fpgasoftware.intel.com/eula.
 +-------------------------------------------------------------------------------+
 ; Fitter Summary                                                                ;
 +---------------------------------+---------------------------------------------+
-; Fitter Status                   ; Successful - Mon Apr 10 18:25:39 2023       ;
+; Fitter Status                   ; Successful - Tue Apr 11 16:13:49 2023       ;
 ; Quartus Prime Version           ; 21.1.0 Build 842 10/21/2021 SJ Lite Edition ;
 ; Revision Name                   ; BranchPrediction                            ;
 ; Top-level Entity Name           ; BranchPrediction                            ;
@@ -161,11 +161,11 @@ https://fpgasoftware.intel.com/eula.
 ;                            ;             ;
 ; Usage by Processor         ; % Time Used ;
 ;     Processor 1            ; 100.0%      ;
-;     Processor 2            ;   0.7%      ;
-;     Processor 3            ;   0.6%      ;
-;     Processor 4            ;   0.6%      ;
-;     Processor 5            ;   0.6%      ;
-;     Processor 6            ;   0.6%      ;
+;     Processor 2            ;   0.6%      ;
+;     Processor 3            ;   0.5%      ;
+;     Processor 4            ;   0.5%      ;
+;     Processor 5            ;   0.5%      ;
+;     Processor 6            ;   0.5%      ;
 +----------------------------+-------------+
 
 
@@ -2395,7 +2395,7 @@ Info (176235): Finished register packing
 Info (11798): Fitter preparation operations ending: elapsed time is 00:00:11
 Info (170189): Fitter placement preparation operations beginning
 Info (14951): The Fitter is using Advanced Physical Optimization.
-Info (170190): Fitter placement preparation operations ending: elapsed time is 00:00:27
+Info (170190): Fitter placement preparation operations ending: elapsed time is 00:00:28
 Info (170191): Fitter placement operations beginning
 Info (170137): Fitter placement was successful
 Info (170192): Fitter placement operations ending: elapsed time is 00:00:01
@@ -2406,7 +2406,7 @@ Info (170199): The Fitter performed an Auto Fit compilation.  Optimizations were
     Info (170201): Optimizations that may affect the design's routability were skipped
     Info (170200): Optimizations that may affect the design's timing were skipped
 Info (170194): Fitter routing operations ending: elapsed time is 00:00:01
-Info (11888): Total time spent on timing analysis during the Fitter is 1.53 seconds.
+Info (11888): Total time spent on timing analysis during the Fitter is 1.55 seconds.
 Info (334003): Started post-fitting delay annotation
 Info (334004): Delay annotation completed successfully
 Info (334003): Started post-fitting delay annotation
@@ -2451,10 +2451,10 @@ Warning (169064): Following 36 pins have no output enable or a GND or VCC output
     Info (169065): Pin GPIO[5] has a permanently disabled output enable File: I:/ece554/ECE554_GroupProject/Project/BranchPrediction.sv Line: 24
 Info (144001): Generated suppressed messages file I:/ece554/ECE554_GroupProject/Project/BranchPrediction.fit.smsg
 Info: Quartus Prime Fitter was successful. 0 errors, 19 warnings
-    Info: Peak virtual memory: 6751 megabytes
-    Info: Processing ended: Mon Apr 10 18:25:41 2023
-    Info: Elapsed time: 00:01:39
-    Info: Total CPU time (on all processors): 00:04:45
+    Info: Peak virtual memory: 6750 megabytes
+    Info: Processing ended: Tue Apr 11 16:13:51 2023
+    Info: Elapsed time: 00:01:40
+    Info: Total CPU time (on all processors): 00:04:43
 
 
 +----------------------------+
