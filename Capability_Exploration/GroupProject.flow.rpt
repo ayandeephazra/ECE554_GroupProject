@@ -1,5 +1,5 @@
 Flow report for GroupProject
-Tue Apr 11 17:37:06 2023
+Tue Apr 11 17:47:27 2023
 Quartus Prime Version 22.1std.0 Build 915 10/25/2022 SC Lite Edition
 
 
@@ -41,7 +41,7 @@ https://fpgasoftware.intel.com/eula.
 +----------------------------------------------------------------------------------+
 ; Flow Summary                                                                     ;
 +---------------------------------+------------------------------------------------+
-; Flow Status                     ; Successful - Tue Apr 11 17:36:50 2023          ;
+; Flow Status                     ; Successful - Tue Apr 11 17:47:10 2023          ;
 ; Quartus Prime Version           ; 22.1std.0 Build 915 10/25/2022 SC Lite Edition ;
 ; Revision Name                   ; GroupProject                                   ;
 ; Top-level Entity Name           ; GroupProject                                   ;
@@ -68,7 +68,7 @@ https://fpgasoftware.intel.com/eula.
 +-------------------+---------------------+
 ; Option            ; Setting             ;
 +-------------------+---------------------+
-; Start date & time ; 04/11/2023 17:34:24 ;
+; Start date & time ; 04/11/2023 17:44:38 ;
 ; Main task         ; Compilation         ;
 ; Revision Name     ; GroupProject        ;
 +-------------------+---------------------+
@@ -79,7 +79,7 @@ https://fpgasoftware.intel.com/eula.
 +-------------------------------------+----------------------------------------+---------------+-------------+------------+
 ; Assignment Name                     ; Value                                  ; Default Value ; Entity Name ; Section Id ;
 +-------------------------------------+----------------------------------------+---------------+-------------+------------+
-; COMPILER_SIGNATURE_ID               ; 193569099404651.168125246424308        ; --            ; --          ; --         ;
+; COMPILER_SIGNATURE_ID               ; 193569099404651.168125307822840        ; --            ; --          ; --         ;
 ; MAX_CORE_JUNCTION_TEMP              ; 85                                     ; --            ; --          ; --         ;
 ; MIN_CORE_JUNCTION_TEMP              ; 0                                      ; --            ; --          ; --         ;
 ; MISC_FILE                           ; PLL_sim/PLL.vo                         ; --            ; --          ; --         ;
@@ -99,11 +99,11 @@ https://fpgasoftware.intel.com/eula.
 +----------------------+--------------+-------------------------+---------------------+------------------------------------+
 ; Module Name          ; Elapsed Time ; Average Processors Used ; Peak Virtual Memory ; Total CPU Time (on all processors) ;
 +----------------------+--------------+-------------------------+---------------------+------------------------------------+
-; Analysis & Synthesis ; 00:00:22     ; 1.0                     ; 4898 MB             ; 00:00:37                           ;
-; Fitter               ; 00:01:48     ; 1.2                     ; 6591 MB             ; 00:05:39                           ;
+; Analysis & Synthesis ; 00:00:25     ; 1.0                     ; 4898 MB             ; 00:00:45                           ;
+; Fitter               ; 00:01:47     ; 1.2                     ; 6583 MB             ; 00:05:32                           ;
 ; Assembler            ; 00:00:10     ; 1.0                     ; 4918 MB             ; 00:00:10                           ;
-; Timing Analyzer      ; 00:00:15     ; 2.2                     ; 5265 MB             ; 00:00:30                           ;
-; Total                ; 00:02:35     ; --                      ; --                  ; 00:06:56                           ;
+; Timing Analyzer      ; 00:00:16     ; 2.2                     ; 5265 MB             ; 00:00:31                           ;
+; Total                ; 00:02:38     ; --                      ; --                  ; 00:06:58                           ;
 +----------------------+--------------+-------------------------+---------------------+------------------------------------+
 
 

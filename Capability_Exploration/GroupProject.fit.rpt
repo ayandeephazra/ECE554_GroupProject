@@ -1,5 +1,5 @@
 Fitter report for GroupProject
-Tue Apr 11 17:36:38 2023
+Tue Apr 11 17:46:57 2023
 Quartus Prime Version 22.1std.0 Build 915 10/25/2022 SC Lite Edition
 
 
@@ -70,7 +70,7 @@ https://fpgasoftware.intel.com/eula.
 +----------------------------------------------------------------------------------+
 ; Fitter Summary                                                                   ;
 +---------------------------------+------------------------------------------------+
-; Fitter Status                   ; Successful - Tue Apr 11 17:36:38 2023          ;
+; Fitter Status                   ; Successful - Tue Apr 11 17:46:57 2023          ;
 ; Quartus Prime Version           ; 22.1std.0 Build 915 10/25/2022 SC Lite Edition ;
 ; Revision Name                   ; GroupProject                                   ;
 ; Top-level Entity Name           ; GroupProject                                   ;
@@ -165,9 +165,9 @@ https://fpgasoftware.intel.com/eula.
 ;                            ;             ;
 ; Usage by Processor         ; % Time Used ;
 ;     Processor 1            ; 100.0%      ;
-;     Processor 2            ;   7.1%      ;
-;     Processor 3            ;   6.8%      ;
-;     Processor 4            ;   6.6%      ;
+;     Processor 2            ;   7.0%      ;
+;     Processor 3            ;   6.6%      ;
+;     Processor 4            ;   6.4%      ;
 +----------------------------+-------------+
 
 
@@ -2551,7 +2551,7 @@ Warning (15705): Ignored locations or region assignments to the following nodes
     Warning (15706): Node "KEY[1]" is assigned to location or region, but does not exist in design
     Warning (15706): Node "KEY[2]" is assigned to location or region, but does not exist in design
     Warning (15706): Node "KEY[3]" is assigned to location or region, but does not exist in design
-Info (11798): Fitter preparation operations ending: elapsed time is 00:00:14
+Info (11798): Fitter preparation operations ending: elapsed time is 00:00:15
 Info (170189): Fitter placement preparation operations beginning
 Info (14951): The Fitter is using Advanced Physical Optimization.
 Info (170190): Fitter placement preparation operations ending: elapsed time is 00:00:17
@@ -2563,13 +2563,13 @@ Info (170195): Router estimated average interconnect usage is 2% of the availabl
     Info (170196): Router estimated peak interconnect usage is 16% of the available device resources in the region that extends from location X11_Y46 to location X21_Y57
 Info (170199): The Fitter performed an Auto Fit compilation.  Optimizations were skipped to reduce compilation time.
     Info (170201): Optimizations that may affect the design's routability were skipped
-Info (170194): Fitter routing operations ending: elapsed time is 00:00:13
-Info (11888): Total time spent on timing analysis during the Fitter is 8.40 seconds.
+Info (170194): Fitter routing operations ending: elapsed time is 00:00:12
+Info (11888): Total time spent on timing analysis during the Fitter is 8.27 seconds.
 Info (334003): Started post-fitting delay annotation
 Info (334004): Delay annotation completed successfully
 Info (334003): Started post-fitting delay annotation
 Info (334004): Delay annotation completed successfully
-Info (11801): Fitter post-fit operations ending: elapsed time is 00:00:15
+Info (11801): Fitter post-fit operations ending: elapsed time is 00:00:14
 Warning (171167): Found invalid Fitter assignments. See the Ignored Assignments panel in the Fitter Compilation Report for more information.
 Warning (169064): Following 36 pins have no output enable or a GND or VCC output enable - later changes to this connectivity may change fitting results
     Info (169065): Pin GPIO[0] has a permanently disabled output enable File: C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/GroupProject.sv Line: 35
@@ -2610,10 +2610,10 @@ Warning (169064): Following 36 pins have no output enable or a GND or VCC output
     Info (169065): Pin GPIO[5] has a permanently disabled output enable File: C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/GroupProject.sv Line: 35
 Info (144001): Generated suppressed messages file C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/GroupProject.fit.smsg
 Info: Quartus Prime Fitter was successful. 0 errors, 24 warnings
-    Info: Peak virtual memory: 6591 megabytes
-    Info: Processing ended: Tue Apr 11 17:36:39 2023
+    Info: Peak virtual memory: 6583 megabytes
+    Info: Processing ended: Tue Apr 11 17:46:59 2023
     Info: Elapsed time: 00:01:49
-    Info: Total CPU time (on all processors): 00:05:40
+    Info: Total CPU time (on all processors): 00:05:33
 
 
 +----------------------------+
