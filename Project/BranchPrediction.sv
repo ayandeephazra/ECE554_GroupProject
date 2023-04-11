@@ -70,7 +70,7 @@ module BranchPrediction(
 
 	// mmap reg signals
 	logic inc_br_cnt, inc_hit_cnt, inc_mispr_cnt; 	// branch pred stats
-	logic br_stats_wr;
+	logic br_stats_wr, mmap_re;
 	
 	// FF logic for LEDR ---- DEBUG
 	always_ff @ (negedge CLOCK_50) begin
@@ -85,7 +85,7 @@ module BranchPrediction(
 	// Memory Mappings
 	always_comb begin
 		rdata = (mm_re & (addr==16'hc001)) ? {{6{1'b0}},SW} :
-				(mm_re & (addr==16'hc004 | addr==16'hc005)) ? databus : 
+				(mm_re & (addr==16'hc004 | addr==16'hc005 | addr[15:4]==12'hc01)) ? databus : 
 				16'ha5a5;
 
 		iocs_n = ~((addr==16'hc004 | addr==16'hc005 | addr==16'hc006 | addr==16'hc007) & (mm_we | mm_re));		// selects C004/5/6/7
@@ -93,6 +93,8 @@ module BranchPrediction(
 
 		bmp_sel = ((addr==16'hc008 | addr==16'hc009 | addr==16'hc00A) & mm_we);
 		br_stats_wr = ((addr == 16'hc00b) & mm_we);
+
+		mmap_re = (mm_re & (addr==16'hc010 | addr==16'hc011 | addr==16'hc012 | addr==16'hc013));
 	end
 
 	// assign databus = (~iorw_n | bmp_sel) ? wdata[7:0] : 8'hzz;	// infer tri state for driving bus from proc to spart
@@ -130,7 +132,8 @@ module BranchPrediction(
 	//////////////////////////////////////////
 	// Instantiate memory mapped registers //
 	////////////////////////////////////////
-	mmap_regs immap_regs(.clk(clk), .rst_n(rst_n), .inc_br_cnt(inc_br_cnt), .inc_hit_cnt(inc_hit_cnt), .inc_mispr_cnt(inc_mispr_cnt), .br_stats_wr(br_stats_wr), .databus(databus));
+	mmap_regs immap_regs(.clk(clk), .rst_n(rst_n), .inc_br_cnt(inc_br_cnt), .inc_hit_cnt(inc_hit_cnt), .inc_mispr_cnt(inc_mispr_cnt),
+						 .br_stats_wr(br_stats_wr), .databus(databus), .mmap_addr(addr[3:0]), .mmap_re(mmap_re));
 
 	// ////////////////////////////////
     // // instantiate BMP_display	 //

@@ -34,29 +34,56 @@ b gte, REPEAT       ## REPEAT FOUR TIMES ----- PC: 15 -> PC: 3
                     ## 2nd. branch taken & predicted (SET STRONG BIT)
                     ## 3rd. .......
 
-
-
 END_STATS:
 llb R1, 0x0
 llb R2, 0x0b
 lhb R2, 0xc0
-sw R1, R2, 0    # stop stats -- clear mem[0xc00b]
+sw R1, R2, 0        # stop stats -- clear mem[0xc00b]
 jal PRINT_STATS
 
 END:
 b uncond, END
 
 
+###############################
+# Print stats
+###############################
+
 PRINT_STATS:
-llb R1, 0x04        # R1 holds RX/TX mmap address
-lhb R1, 0xC0
-llb R2, 0x48        # H
-sw R2, R1, 0
-llb R2, 0x65        # e
-sw R2, R1, 0
-llb R2, 0x6c        # l
-sw R2, R1, 0
-llb R2, 0x6c        # l
-sw R2, R1, 0
-llb R2, 0x6f        # o
+llb R1, 0x10
+lhb R1, 0xc0        # R1 contains mmap_reg base (br_cnt)
+llb R2, 0x04
+lhb R2, 0xC0	    # R2 contains spart addr
+
+lw R5, R1, 0        # R5 holds stats
+
+llb R3, 0x53        # S
+sw R3, R2, 0
+llb R3, 0x74        # t
+sw R3, R2, 0
+llb R3, 0x61        # a
+sw R3, R2, 0
+llb R3, 0x74        # t
+sw R3, R2, 0
+llb R3, 0x73        # s
+sw R3, R2, 0
+llb R3, 0x3a        # :
+sw R3, R2, 0
+llb R3, 0x20        # ' '
+sw R3, R2, 0
+
+L_WAIT_EMP:         # wait for TX q to empty
+lw R3, R1, 1        # read from 0xc005 (status reg) --> R3
+and R3, R3, R4      # look for R3 == 1XXX_XXXX (tx_queue is empty)
+b eq, L_WAIT_EMP    # if result is zero => MSB of status_reg is not 1 => not empty keep waiting
+
+llb R3, 0x30        # 0
+sw R3, R2, 0
+llb R3, 0x78        # x
+sw R3, R2, 0
+
+
+llb R14, 0xff       # DEBUG
+
+sw R5, R2, 0        # ******** OUTPUT STATS ********
 jr R15

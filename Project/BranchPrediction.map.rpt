@@ -1,5 +1,5 @@
 Analysis & Synthesis report for BranchPrediction
-Thu Apr  6 18:36:41 2023
+Mon Apr 10 18:23:59 2023
 Quartus Prime Version 21.1.0 Build 842 10/21/2021 SJ Lite Edition
 
 
@@ -72,13 +72,13 @@ https://fpgasoftware.intel.com/eula.
 +-------------------------------------------------------------------------------+
 ; Analysis & Synthesis Summary                                                  ;
 +---------------------------------+---------------------------------------------+
-; Analysis & Synthesis Status     ; Successful - Thu Apr  6 18:36:41 2023       ;
+; Analysis & Synthesis Status     ; Successful - Mon Apr 10 18:23:59 2023       ;
 ; Quartus Prime Version           ; 21.1.0 Build 842 10/21/2021 SJ Lite Edition ;
 ; Revision Name                   ; BranchPrediction                            ;
 ; Top-level Entity Name           ; BranchPrediction                            ;
 ; Family                          ; Cyclone V                                   ;
 ; Logic utilization (in ALMs)     ; N/A                                         ;
-; Total registers                 ; 369                                         ;
+; Total registers                 ; 402                                         ;
 ; Total pins                      ; 93                                          ;
 ; Total virtual pins              ; 0                                           ;
 ; Total block memory bits         ; 49,792                                      ;
@@ -243,7 +243,7 @@ https://fpgasoftware.intel.com/eula.
 ; db/altsyncram_q8q1.tdf                  ; yes             ; Auto-Generated Megafunction                           ; I:/ece554/ECE554_GroupProject/Project/db/altsyncram_q8q1.tdf                  ;         ;
 ; db/altsyncram_43n1.tdf                  ; yes             ; Auto-Generated Megafunction                           ; I:/ece554/ECE554_GroupProject/Project/db/altsyncram_43n1.tdf                  ;         ;
 ; db/altsyncram_n9d1.tdf                  ; yes             ; Auto-Generated Megafunction                           ; I:/ece554/ECE554_GroupProject/Project/db/altsyncram_n9d1.tdf                  ;         ;
-; db/branchprediction.ram0_im_936.hdl.mif ; yes             ; Auto-Generated Auto-Found Memory Initialization File  ; I:/ece554/ECE554_GroupProject/Project/db/branchprediction.ram0_im_936.hdl.mif ;         ;
+; db/BranchPrediction.ram0_IM_936.hdl.mif ; yes             ; Auto-Generated Auto-Found Memory Initialization File  ; I:/ece554/ECE554_GroupProject/Project/db/BranchPrediction.ram0_IM_936.hdl.mif ;         ;
 +-----------------------------------------+-----------------+-------------------------------------------------------+-------------------------------------------------------------------------------+---------+
 
 
@@ -252,16 +252,16 @@ https://fpgasoftware.intel.com/eula.
 +---------------------------------------------+-------------------------------------------------------------------+
 ; Resource                                    ; Usage                                                             ;
 +---------------------------------------------+-------------------------------------------------------------------+
-; Estimate of Logic utilization (ALMs needed) ; 375                                                               ;
+; Estimate of Logic utilization (ALMs needed) ; 444                                                               ;
 ;                                             ;                                                                   ;
-; Combinational ALUT usage for logic          ; 515                                                               ;
-;     -- 7 input functions                    ; 21                                                                ;
-;     -- 6 input functions                    ; 164                                                               ;
-;     -- 5 input functions                    ; 108                                                               ;
-;     -- 4 input functions                    ; 51                                                                ;
-;     -- <=3 input functions                  ; 171                                                               ;
+; Combinational ALUT usage for logic          ; 622                                                               ;
+;     -- 7 input functions                    ; 18                                                                ;
+;     -- 6 input functions                    ; 197                                                               ;
+;     -- 5 input functions                    ; 120                                                               ;
+;     -- 4 input functions                    ; 53                                                                ;
+;     -- <=3 input functions                  ; 234                                                               ;
 ;                                             ;                                                                   ;
-; Dedicated logic registers                   ; 369                                                               ;
+; Dedicated logic registers                   ; 402                                                               ;
 ;                                             ;                                                                   ;
 ; I/O pins                                    ; 93                                                                ;
 ; Total MLAB memory bits                      ; 0                                                                 ;
@@ -273,9 +273,9 @@ https://fpgasoftware.intel.com/eula.
 ;     -- PLLs                                 ; 2                                                                 ;
 ;                                             ;                                                                   ;
 ; Maximum fan-out node                        ; PLL:iPLL|PLL_0002:pll_inst|altera_pll:altera_pll_i|outclk_wire[0] ;
-; Maximum fan-out                             ; 441                                                               ;
-; Total fan-out                               ; 4502                                                              ;
-; Average fan-out                             ; 3.79                                                              ;
+; Maximum fan-out                             ; 474                                                               ;
+; Total fan-out                               ; 5006                                                              ;
+; Average fan-out                             ; 3.77                                                              ;
 +---------------------------------------------+-------------------------------------------------------------------+
 
 
@@ -284,11 +284,11 @@ https://fpgasoftware.intel.com/eula.
 +-------------------------------------------------+---------------------+---------------------------+-------------------+------------+------+--------------+-----------------------------------------------------------------------------------------------------+------------------+--------------+
 ; Compilation Hierarchy Node                      ; Combinational ALUTs ; Dedicated Logic Registers ; Block Memory Bits ; DSP Blocks ; Pins ; Virtual Pins ; Full Hierarchy Name                                                                                 ; Entity Name      ; Library Name ;
 +-------------------------------------------------+---------------------+---------------------------+-------------------+------------+------+--------------+-----------------------------------------------------------------------------------------------------+------------------+--------------+
-; |BranchPrediction                               ; 515 (16)            ; 369 (10)                  ; 49792             ; 0          ; 93   ; 0            ; |BranchPrediction                                                                                   ; BranchPrediction ; work         ;
+; |BranchPrediction                               ; 622 (74)            ; 402 (10)                  ; 49792             ; 0          ; 93   ; 0            ; |BranchPrediction                                                                                   ; BranchPrediction ; work         ;
 ;    |PLL:iPLL|                                   ; 0 (0)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |BranchPrediction|PLL:iPLL                                                                          ; PLL              ; work         ;
 ;       |PLL_0002:pll_inst|                       ; 0 (0)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |BranchPrediction|PLL:iPLL|PLL_0002:pll_inst                                                        ; PLL_0002         ; PLL          ;
 ;          |altera_pll:altera_pll_i|              ; 0 (0)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |BranchPrediction|PLL:iPLL|PLL_0002:pll_inst|altera_pll:altera_pll_i                                ; altera_pll       ; work         ;
-;    |cpu:cpu1|                                   ; 352 (2)             ; 236 (0)                   ; 49664             ; 0          ; 0    ; 0            ; |BranchPrediction|cpu:cpu1                                                                          ; cpu              ; work         ;
+;    |cpu:cpu1|                                   ; 365 (1)             ; 236 (0)                   ; 49664             ; 0          ; 0    ; 0            ; |BranchPrediction|cpu:cpu1                                                                          ; cpu              ; work         ;
 ;       |DM:iDM|                                  ; 2 (2)               ; 0 (0)                     ; 16384             ; 0          ; 0    ; 0            ; |BranchPrediction|cpu:cpu1|DM:iDM                                                                   ; DM               ; work         ;
 ;          |altsyncram:data_mem_rtl_0|            ; 0 (0)               ; 0 (0)                     ; 16384             ; 0          ; 0    ; 0            ; |BranchPrediction|cpu:cpu1|DM:iDM|altsyncram:data_mem_rtl_0                                         ; altsyncram       ; work         ;
 ;             |altsyncram_q8q1:auto_generated|    ; 0 (0)               ; 0 (0)                     ; 16384             ; 0          ; 0    ; 0            ; |BranchPrediction|cpu:cpu1|DM:iDM|altsyncram:data_mem_rtl_0|altsyncram_q8q1:auto_generated          ; altsyncram_q8q1  ; work         ;
@@ -296,8 +296,8 @@ https://fpgasoftware.intel.com/eula.
 ;          |altsyncram:instr_mem_rtl_0|           ; 0 (0)               ; 0 (0)                     ; 32768             ; 0          ; 0    ; 0            ; |BranchPrediction|cpu:cpu1|IM:iIM|altsyncram:instr_mem_rtl_0                                        ; altsyncram       ; work         ;
 ;             |altsyncram_n9d1:auto_generated|    ; 0 (0)               ; 0 (0)                     ; 32768             ; 0          ; 0    ; 0            ; |BranchPrediction|cpu:cpu1|IM:iIM|altsyncram:instr_mem_rtl_0|altsyncram_n9d1:auto_generated         ; altsyncram_n9d1  ; work         ;
 ;       |alu:iALU|                                ; 160 (160)           ; 16 (16)                   ; 0                 ; 0          ; 0    ; 0            ; |BranchPrediction|cpu:cpu1|alu:iALU                                                                 ; alu              ; work         ;
-;       |br_bool:iBRL|                            ; 9 (9)               ; 3 (3)                     ; 0                 ; 0          ; 0    ; 0            ; |BranchPrediction|cpu:cpu1|br_bool:iBRL                                                             ; br_bool          ; work         ;
-;       |dst_mux:iDSTMUX|                         ; 43 (43)             ; 16 (16)                   ; 0                 ; 0          ; 0    ; 0            ; |BranchPrediction|cpu:cpu1|dst_mux:iDSTMUX                                                          ; dst_mux          ; work         ;
+;       |br_bool:iBRL|                            ; 10 (10)             ; 3 (3)                     ; 0                 ; 0          ; 0    ; 0            ; |BranchPrediction|cpu:cpu1|br_bool:iBRL                                                             ; br_bool          ; work         ;
+;       |dst_mux:iDSTMUX|                         ; 56 (56)             ; 16 (16)                   ; 0                 ; 0          ; 0    ; 0            ; |BranchPrediction|cpu:cpu1|dst_mux:iDSTMUX                                                          ; dst_mux          ; work         ;
 ;       |id:iID|                                  ; 46 (46)             ; 68 (68)                   ; 0                 ; 0          ; 0    ; 0            ; |BranchPrediction|cpu:cpu1|id:iID                                                                   ; id               ; work         ;
 ;       |pc:iPC|                                  ; 16 (16)             ; 64 (64)                   ; 0                 ; 0          ; 0    ; 0            ; |BranchPrediction|cpu:cpu1|pc:iPC                                                                   ; pc               ; work         ;
 ;       |rf:iRF|                                  ; 7 (6)               ; 21 (21)                   ; 512               ; 0          ; 0    ; 0            ; |BranchPrediction|cpu:cpu1|rf:iRF                                                                   ; rf               ; work         ;
@@ -308,12 +308,13 @@ https://fpgasoftware.intel.com/eula.
 ;             |altsyncram:mem_rtl_0|              ; 0 (0)               ; 0 (0)                     ; 256               ; 0          ; 0    ; 0            ; |BranchPrediction|cpu:cpu1|rf:iRF|rf_mem:RF1|altsyncram:mem_rtl_0                                   ; altsyncram       ; work         ;
 ;                |altsyncram_43n1:auto_generated| ; 0 (0)               ; 0 (0)                     ; 256               ; 0          ; 0    ; 0            ; |BranchPrediction|cpu:cpu1|rf:iRF|rf_mem:RF1|altsyncram:mem_rtl_0|altsyncram_43n1:auto_generated    ; altsyncram_43n1  ; work         ;
 ;       |src_mux:ISRCMUX|                         ; 67 (67)             ; 48 (48)                   ; 0                 ; 0          ; 0    ; 0            ; |BranchPrediction|cpu:cpu1|src_mux:ISRCMUX                                                          ; src_mux          ; work         ;
+;    |mmap_regs:immap_regs|                       ; 37 (37)             ; 33 (33)                   ; 0                 ; 0          ; 0    ; 0            ; |BranchPrediction|mmap_regs:immap_regs                                                              ; mmap_regs        ; work         ;
 ;    |rst_synch:iRST|                             ; 0 (0)               ; 2 (2)                     ; 0                 ; 0          ; 0    ; 0            ; |BranchPrediction|rst_synch:iRST                                                                    ; rst_synch        ; work         ;
-;    |spart:spart1|                               ; 147 (10)            ; 121 (13)                  ; 128               ; 0          ; 0    ; 0            ; |BranchPrediction|spart:spart1                                                                      ; spart            ; work         ;
+;    |spart:spart1|                               ; 146 (8)             ; 121 (13)                  ; 128               ; 0          ; 0    ; 0            ; |BranchPrediction|spart:spart1                                                                      ; spart            ; work         ;
 ;       |UART_rx:iRX|                             ; 65 (65)             ; 46 (46)                   ; 64                ; 0          ; 0    ; 0            ; |BranchPrediction|spart:spart1|UART_rx:iRX                                                          ; UART_rx          ; work         ;
 ;          |altsyncram:rx_queue_rtl_0|            ; 0 (0)               ; 0 (0)                     ; 64                ; 0          ; 0    ; 0            ; |BranchPrediction|spart:spart1|UART_rx:iRX|altsyncram:rx_queue_rtl_0                                ; altsyncram       ; work         ;
 ;             |altsyncram_jfk1:auto_generated|    ; 0 (0)               ; 0 (0)                     ; 64                ; 0          ; 0    ; 0            ; |BranchPrediction|spart:spart1|UART_rx:iRX|altsyncram:rx_queue_rtl_0|altsyncram_jfk1:auto_generated ; altsyncram_jfk1  ; work         ;
-;       |UART_tx:iTX|                             ; 72 (72)             ; 62 (62)                   ; 64                ; 0          ; 0    ; 0            ; |BranchPrediction|spart:spart1|UART_tx:iTX                                                          ; UART_tx          ; work         ;
+;       |UART_tx:iTX|                             ; 73 (73)             ; 62 (62)                   ; 64                ; 0          ; 0    ; 0            ; |BranchPrediction|spart:spart1|UART_tx:iTX                                                          ; UART_tx          ; work         ;
 ;          |altsyncram:tx_queue_rtl_0|            ; 0 (0)               ; 0 (0)                     ; 64                ; 0          ; 0    ; 0            ; |BranchPrediction|spart:spart1|UART_tx:iTX|altsyncram:tx_queue_rtl_0                                ; altsyncram       ; work         ;
 ;             |altsyncram_lsj1:auto_generated|    ; 0 (0)               ; 0 (0)                     ; 64                ; 0          ; 0    ; 0            ; |BranchPrediction|spart:spart1|UART_tx:iTX|altsyncram:tx_queue_rtl_0|altsyncram_lsj1:auto_generated ; altsyncram_lsj1  ; work         ;
 +-------------------------------------------------+---------------------+---------------------------+-------------------+------------+------+--------------+-----------------------------------------------------------------------------------------------------+------------------+--------------+
@@ -346,64 +347,66 @@ Encoding Type:  One-Hot
 +--------------+--------------+-------------+-----------------------+
 
 
-+-----------------------------------------------------------------------------------+
-; Registers Removed During Synthesis                                                ;
-+------------------------------------------+----------------------------------------+
-; Register name                            ; Reason for Removal                     ;
-+------------------------------------------+----------------------------------------+
-; cpu:cpu1|rf:iRF|dst_addr_ff[4..15]       ; Stuck at GND due to stuck port data_in ;
-; cpu:cpu1|btb:iBTB|target_PC_IF_ID[15]    ; Stuck at GND due to stuck port data_in ;
-; cpu:cpu1|btb:iBTB|btb_hit_IF_ID          ; Stuck at GND due to stuck port data_in ;
-; cpu:cpu1|btb:iBTB|target_PC_IF_ID[14]    ; Stuck at GND due to stuck port data_in ;
-; cpu:cpu1|btb:iBTB|btb_hit_ID_EX          ; Stuck at GND due to stuck port data_in ;
-; cpu:cpu1|btb:iBTB|target_PC_ID_EX[14,15] ; Stuck at GND due to stuck port data_in ;
-; cpu:cpu1|btb:iBTB|sbit_ID_EX             ; Lost fanout                            ;
-; cpu:cpu1|btb:iBTB|sbit_IF_ID             ; Lost fanout                            ;
-; cpu:cpu1|btb:iBTB|btb_out[17]            ; Lost fanout                            ;
-; cpu:cpu1|btb:iBTB|target_PC_ID_EX[13]    ; Lost fanout                            ;
-; cpu:cpu1|btb:iBTB|target_PC_IF_ID[13]    ; Lost fanout                            ;
-; cpu:cpu1|btb:iBTB|btb_out[13]            ; Lost fanout                            ;
-; cpu:cpu1|btb:iBTB|target_PC_ID_EX[12]    ; Lost fanout                            ;
-; cpu:cpu1|btb:iBTB|target_PC_IF_ID[12]    ; Lost fanout                            ;
-; cpu:cpu1|btb:iBTB|btb_out[12]            ; Lost fanout                            ;
-; cpu:cpu1|btb:iBTB|target_PC_ID_EX[11]    ; Lost fanout                            ;
-; cpu:cpu1|btb:iBTB|target_PC_IF_ID[11]    ; Lost fanout                            ;
-; cpu:cpu1|btb:iBTB|btb_out[11]            ; Lost fanout                            ;
-; cpu:cpu1|btb:iBTB|target_PC_ID_EX[10]    ; Lost fanout                            ;
-; cpu:cpu1|btb:iBTB|target_PC_IF_ID[10]    ; Lost fanout                            ;
-; cpu:cpu1|btb:iBTB|btb_out[10]            ; Lost fanout                            ;
-; cpu:cpu1|btb:iBTB|target_PC_ID_EX[9]     ; Lost fanout                            ;
-; cpu:cpu1|btb:iBTB|target_PC_IF_ID[9]     ; Lost fanout                            ;
-; cpu:cpu1|btb:iBTB|btb_out[9]             ; Lost fanout                            ;
-; cpu:cpu1|btb:iBTB|target_PC_ID_EX[8]     ; Lost fanout                            ;
-; cpu:cpu1|btb:iBTB|target_PC_IF_ID[8]     ; Lost fanout                            ;
-; cpu:cpu1|btb:iBTB|btb_out[8]             ; Lost fanout                            ;
-; cpu:cpu1|btb:iBTB|target_PC_ID_EX[7]     ; Lost fanout                            ;
-; cpu:cpu1|btb:iBTB|target_PC_IF_ID[7]     ; Lost fanout                            ;
-; cpu:cpu1|btb:iBTB|btb_out[7]             ; Lost fanout                            ;
-; cpu:cpu1|btb:iBTB|target_PC_ID_EX[6]     ; Lost fanout                            ;
-; cpu:cpu1|btb:iBTB|target_PC_IF_ID[6]     ; Lost fanout                            ;
-; cpu:cpu1|btb:iBTB|btb_out[6]             ; Lost fanout                            ;
-; cpu:cpu1|btb:iBTB|target_PC_ID_EX[5]     ; Lost fanout                            ;
-; cpu:cpu1|btb:iBTB|target_PC_IF_ID[5]     ; Lost fanout                            ;
-; cpu:cpu1|btb:iBTB|btb_out[5]             ; Lost fanout                            ;
-; cpu:cpu1|btb:iBTB|target_PC_ID_EX[4]     ; Lost fanout                            ;
-; cpu:cpu1|btb:iBTB|target_PC_IF_ID[4]     ; Lost fanout                            ;
-; cpu:cpu1|btb:iBTB|btb_out[4]             ; Lost fanout                            ;
-; cpu:cpu1|btb:iBTB|target_PC_ID_EX[3]     ; Lost fanout                            ;
-; cpu:cpu1|btb:iBTB|target_PC_IF_ID[3]     ; Lost fanout                            ;
-; cpu:cpu1|btb:iBTB|btb_out[3]             ; Lost fanout                            ;
-; cpu:cpu1|btb:iBTB|target_PC_ID_EX[2]     ; Lost fanout                            ;
-; cpu:cpu1|btb:iBTB|target_PC_IF_ID[2]     ; Lost fanout                            ;
-; cpu:cpu1|btb:iBTB|btb_out[2]             ; Lost fanout                            ;
-; cpu:cpu1|btb:iBTB|target_PC_ID_EX[1]     ; Lost fanout                            ;
-; cpu:cpu1|btb:iBTB|target_PC_IF_ID[1]     ; Lost fanout                            ;
-; cpu:cpu1|btb:iBTB|btb_out[1]             ; Lost fanout                            ;
-; cpu:cpu1|btb:iBTB|target_PC_ID_EX[0]     ; Lost fanout                            ;
-; cpu:cpu1|btb:iBTB|target_PC_IF_ID[0]     ; Lost fanout                            ;
-; cpu:cpu1|btb:iBTB|btb_out[0]             ; Lost fanout                            ;
-; Total Number of Removed Registers = 63   ;                                        ;
-+------------------------------------------+----------------------------------------+
++----------------------------------------------------------------------------------------+
+; Registers Removed During Synthesis                                                     ;
++------------------------------------------+---------------------------------------------+
+; Register name                            ; Reason for Removal                          ;
++------------------------------------------+---------------------------------------------+
+; mmap_regs:immap_regs|hit_cnt[0..15]      ; Stuck at GND due to stuck port clock_enable ;
+; cpu:cpu1|rf:iRF|dst_addr_ff[4..15]       ; Stuck at GND due to stuck port data_in      ;
+; cpu:cpu1|btb:iBTB|target_PC_IF_ID[15]    ; Stuck at GND due to stuck port data_in      ;
+; cpu:cpu1|btb:iBTB|btb_hit_IF_ID          ; Stuck at GND due to stuck port data_in      ;
+; cpu:cpu1|btb:iBTB|target_PC_IF_ID[14]    ; Stuck at GND due to stuck port data_in      ;
+; cpu:cpu1|btb:iBTB|btb_hit_ID_EX          ; Stuck at GND due to stuck port data_in      ;
+; cpu:cpu1|btb:iBTB|target_PC_ID_EX[14,15] ; Stuck at GND due to stuck port data_in      ;
+; mmap_regs:immap_regs|mispr_cnt[0..15]    ; Stuck at GND due to stuck port clock_enable ;
+; cpu:cpu1|btb:iBTB|sbit_ID_EX             ; Lost fanout                                 ;
+; cpu:cpu1|btb:iBTB|sbit_IF_ID             ; Lost fanout                                 ;
+; cpu:cpu1|btb:iBTB|btb_out[17]            ; Lost fanout                                 ;
+; cpu:cpu1|btb:iBTB|target_PC_ID_EX[13]    ; Lost fanout                                 ;
+; cpu:cpu1|btb:iBTB|target_PC_IF_ID[13]    ; Lost fanout                                 ;
+; cpu:cpu1|btb:iBTB|btb_out[13]            ; Lost fanout                                 ;
+; cpu:cpu1|btb:iBTB|target_PC_ID_EX[12]    ; Lost fanout                                 ;
+; cpu:cpu1|btb:iBTB|target_PC_IF_ID[12]    ; Lost fanout                                 ;
+; cpu:cpu1|btb:iBTB|btb_out[12]            ; Lost fanout                                 ;
+; cpu:cpu1|btb:iBTB|target_PC_ID_EX[11]    ; Lost fanout                                 ;
+; cpu:cpu1|btb:iBTB|target_PC_IF_ID[11]    ; Lost fanout                                 ;
+; cpu:cpu1|btb:iBTB|btb_out[11]            ; Lost fanout                                 ;
+; cpu:cpu1|btb:iBTB|target_PC_ID_EX[10]    ; Lost fanout                                 ;
+; cpu:cpu1|btb:iBTB|target_PC_IF_ID[10]    ; Lost fanout                                 ;
+; cpu:cpu1|btb:iBTB|btb_out[10]            ; Lost fanout                                 ;
+; cpu:cpu1|btb:iBTB|target_PC_ID_EX[9]     ; Lost fanout                                 ;
+; cpu:cpu1|btb:iBTB|target_PC_IF_ID[9]     ; Lost fanout                                 ;
+; cpu:cpu1|btb:iBTB|btb_out[9]             ; Lost fanout                                 ;
+; cpu:cpu1|btb:iBTB|target_PC_ID_EX[8]     ; Lost fanout                                 ;
+; cpu:cpu1|btb:iBTB|target_PC_IF_ID[8]     ; Lost fanout                                 ;
+; cpu:cpu1|btb:iBTB|btb_out[8]             ; Lost fanout                                 ;
+; cpu:cpu1|btb:iBTB|target_PC_ID_EX[7]     ; Lost fanout                                 ;
+; cpu:cpu1|btb:iBTB|target_PC_IF_ID[7]     ; Lost fanout                                 ;
+; cpu:cpu1|btb:iBTB|btb_out[7]             ; Lost fanout                                 ;
+; cpu:cpu1|btb:iBTB|target_PC_ID_EX[6]     ; Lost fanout                                 ;
+; cpu:cpu1|btb:iBTB|target_PC_IF_ID[6]     ; Lost fanout                                 ;
+; cpu:cpu1|btb:iBTB|btb_out[6]             ; Lost fanout                                 ;
+; cpu:cpu1|btb:iBTB|target_PC_ID_EX[5]     ; Lost fanout                                 ;
+; cpu:cpu1|btb:iBTB|target_PC_IF_ID[5]     ; Lost fanout                                 ;
+; cpu:cpu1|btb:iBTB|btb_out[5]             ; Lost fanout                                 ;
+; cpu:cpu1|btb:iBTB|target_PC_ID_EX[4]     ; Lost fanout                                 ;
+; cpu:cpu1|btb:iBTB|target_PC_IF_ID[4]     ; Lost fanout                                 ;
+; cpu:cpu1|btb:iBTB|btb_out[4]             ; Lost fanout                                 ;
+; cpu:cpu1|btb:iBTB|target_PC_ID_EX[3]     ; Lost fanout                                 ;
+; cpu:cpu1|btb:iBTB|target_PC_IF_ID[3]     ; Lost fanout                                 ;
+; cpu:cpu1|btb:iBTB|btb_out[3]             ; Lost fanout                                 ;
+; cpu:cpu1|btb:iBTB|target_PC_ID_EX[2]     ; Lost fanout                                 ;
+; cpu:cpu1|btb:iBTB|target_PC_IF_ID[2]     ; Lost fanout                                 ;
+; cpu:cpu1|btb:iBTB|btb_out[2]             ; Lost fanout                                 ;
+; cpu:cpu1|btb:iBTB|target_PC_ID_EX[1]     ; Lost fanout                                 ;
+; cpu:cpu1|btb:iBTB|target_PC_IF_ID[1]     ; Lost fanout                                 ;
+; cpu:cpu1|btb:iBTB|btb_out[1]             ; Lost fanout                                 ;
+; cpu:cpu1|btb:iBTB|target_PC_ID_EX[0]     ; Lost fanout                                 ;
+; cpu:cpu1|btb:iBTB|target_PC_IF_ID[0]     ; Lost fanout                                 ;
+; cpu:cpu1|btb:iBTB|btb_out[0]             ; Lost fanout                                 ;
+; Total Number of Removed Registers = 95   ;                                             ;
++------------------------------------------+---------------------------------------------+
 
 
 +---------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -446,12 +449,12 @@ Encoding Type:  One-Hot
 +----------------------------------------------+-------+
 ; Statistic                                    ; Value ;
 +----------------------------------------------+-------+
-; Total registers                              ; 369   ;
+; Total registers                              ; 402   ;
 ; Number of registers using Synchronous Clear  ; 32    ;
 ; Number of registers using Synchronous Load   ; 56    ;
-; Number of registers using Asynchronous Clear ; 128   ;
+; Number of registers using Asynchronous Clear ; 161   ;
 ; Number of registers using Asynchronous Load  ; 0     ;
-; Number of registers using Clock Enable       ; 124   ;
+; Number of registers using Clock Enable       ; 140   ;
 ; Number of registers using Preset             ; 0     ;
 +----------------------------------------------+-------+
 
@@ -477,15 +480,15 @@ Encoding Type:  One-Hot
 ; spart:spart1|UART_tx:iTX|shift_reg[3]   ; 1       ;
 ; spart:spart1|UART_tx:iTX|shift_reg[4]   ; 1       ;
 ; spart:spart1|UART_tx:iTX|shift_reg[5]   ; 1       ;
+; cpu:cpu1|id:iID|instr_IM_ID[12]         ; 24      ;
+; cpu:cpu1|id:iID|instr_IM_ID[15]         ; 21      ;
+; cpu:cpu1|id:iID|instr_IM_ID[13]         ; 20      ;
+; spart:spart1|UART_rx:iRX|rx_ff2         ; 15      ;
 ; spart:spart1|UART_rx:iRX|baud_cnt[7]    ; 4       ;
 ; spart:spart1|UART_rx:iRX|baud_cnt[0]    ; 4       ;
 ; spart:spart1|UART_rx:iRX|baud_cnt[6]    ; 3       ;
 ; spart:spart1|UART_rx:iRX|baud_cnt[4]    ; 3       ;
 ; spart:spart1|UART_rx:iRX|baud_cnt[3]    ; 3       ;
-; spart:spart1|UART_rx:iRX|rx_ff2         ; 15      ;
-; cpu:cpu1|id:iID|instr_IM_ID[12]         ; 24      ;
-; cpu:cpu1|id:iID|instr_IM_ID[15]         ; 21      ;
-; cpu:cpu1|id:iID|instr_IM_ID[13]         ; 20      ;
 ; spart:spart1|UART_tx:iTX|shift_reg[6]   ; 1       ;
 ; spart:spart1|UART_rx:iRX|rx_ff1         ; 1       ;
 ; spart:spart1|UART_tx:iTX|shift_reg[7]   ; 1       ;
@@ -535,25 +538,26 @@ Encoding Type:  One-Hot
 ; Multiplexer Inputs ; Bus Width ; Baseline Area ; Area if Restructured ; Saving if Restructured ; Registered ; Example Multiplexer Output                                     ;
 +--------------------+-----------+---------------+----------------------+------------------------+------------+----------------------------------------------------------------+
 ; 3:1                ; 8 bits    ; 16 LEs        ; 0 LEs                ; 16 LEs                 ; Yes        ; |BranchPrediction|spart:spart1|UART_tx:iTX|baud_cnt[11]        ;
-; 3:1                ; 16 bits   ; 32 LEs        ; 0 LEs                ; 32 LEs                 ; Yes        ; |BranchPrediction|cpu:cpu1|src_mux:ISRCMUX|p1_ID_EX[6]         ;
-; 3:1                ; 16 bits   ; 32 LEs        ; 0 LEs                ; 32 LEs                 ; Yes        ; |BranchPrediction|cpu:cpu1|src_mux:ISRCMUX|p0_ID_EX[10]        ;
-; 3:1                ; 4 bits    ; 8 LEs         ; 4 LEs                ; 4 LEs                  ; Yes        ; |BranchPrediction|spart:spart1|UART_tx:iTX|bit_cnt[0]          ;
-; 3:1                ; 4 bits    ; 8 LEs         ; 4 LEs                ; 4 LEs                  ; Yes        ; |BranchPrediction|spart:spart1|UART_rx:iRX|bit_cnt[2]          ;
+; 3:1                ; 16 bits   ; 32 LEs        ; 0 LEs                ; 32 LEs                 ; Yes        ; |BranchPrediction|cpu:cpu1|src_mux:ISRCMUX|p1_ID_EX[1]         ;
+; 3:1                ; 16 bits   ; 32 LEs        ; 0 LEs                ; 32 LEs                 ; Yes        ; |BranchPrediction|cpu:cpu1|src_mux:ISRCMUX|p0_ID_EX[2]         ;
+; 3:1                ; 4 bits    ; 8 LEs         ; 4 LEs                ; 4 LEs                  ; Yes        ; |BranchPrediction|spart:spart1|UART_tx:iTX|bit_cnt[3]          ;
+; 3:1                ; 4 bits    ; 8 LEs         ; 4 LEs                ; 4 LEs                  ; Yes        ; |BranchPrediction|spart:spart1|UART_rx:iRX|bit_cnt[0]          ;
 ; 4:1                ; 7 bits    ; 14 LEs        ; 14 LEs               ; 0 LEs                  ; Yes        ; |BranchPrediction|spart:spart1|UART_rx:iRX|baud_cnt[8]         ;
-; 6:1                ; 6 bits    ; 24 LEs        ; 24 LEs               ; 0 LEs                  ; Yes        ; |BranchPrediction|cpu:cpu1|dst_mux:iDSTMUX|rf_w_data_DM_WB[15] ;
-; 6:1                ; 10 bits   ; 40 LEs        ; 40 LEs               ; 0 LEs                  ; Yes        ; |BranchPrediction|cpu:cpu1|dst_mux:iDSTMUX|rf_w_data_DM_WB[3]  ;
+; 6:1                ; 8 bits    ; 32 LEs        ; 32 LEs               ; 0 LEs                  ; Yes        ; |BranchPrediction|cpu:cpu1|dst_mux:iDSTMUX|rf_w_data_DM_WB[4]  ;
+; 10:1               ; 6 bits    ; 36 LEs        ; 36 LEs               ; 0 LEs                  ; Yes        ; |BranchPrediction|cpu:cpu1|dst_mux:iDSTMUX|rf_w_data_DM_WB[10] ;
+; 10:1               ; 2 bits    ; 12 LEs        ; 12 LEs               ; 0 LEs                  ; Yes        ; |BranchPrediction|cpu:cpu1|dst_mux:iDSTMUX|rf_w_data_DM_WB[8]  ;
 ; 3:1                ; 5 bits    ; 10 LEs        ; 5 LEs                ; 5 LEs                  ; Yes        ; |BranchPrediction|spart:spart1|UART_tx:iTX|baud_cnt[1]         ;
 ; 4:1                ; 5 bits    ; 10 LEs        ; 10 LEs               ; 0 LEs                  ; Yes        ; |BranchPrediction|spart:spart1|UART_rx:iRX|baud_cnt[7]         ;
-; 5:1                ; 7 bits    ; 21 LEs        ; 14 LEs               ; 7 LEs                  ; Yes        ; |BranchPrediction|spart:spart1|UART_tx:iTX|shift_reg[3]        ;
-; 3:1                ; 16 bits   ; 32 LEs        ; 32 LEs               ; 0 LEs                  ; No         ; |BranchPrediction|cpu:cpu1|src_mux:ISRCMUX|RF_p0[3]            ;
-; 4:1                ; 19 bits   ; 38 LEs        ; 38 LEs               ; 0 LEs                  ; No         ; |BranchPrediction|cpu:cpu1|alu:iALU|shft_r2[5]                 ;
-; 3:1                ; 5 bits    ; 10 LEs        ; 10 LEs               ; 0 LEs                  ; No         ; |BranchPrediction|cpu:cpu1|src_mux:ISRCMUX|src0[6]             ;
-; 4:1                ; 8 bits    ; 16 LEs        ; 16 LEs               ; 0 LEs                  ; No         ; |BranchPrediction|databus[7]                                   ;
+; 5:1                ; 7 bits    ; 21 LEs        ; 14 LEs               ; 7 LEs                  ; Yes        ; |BranchPrediction|spart:spart1|UART_tx:iTX|shift_reg[7]        ;
+; 3:1                ; 16 bits   ; 32 LEs        ; 32 LEs               ; 0 LEs                  ; No         ; |BranchPrediction|cpu:cpu1|src_mux:ISRCMUX|RF_p0[8]            ;
+; 4:1                ; 19 bits   ; 38 LEs        ; 38 LEs               ; 0 LEs                  ; No         ; |BranchPrediction|cpu:cpu1|alu:iALU|shft_r2[13]                ;
+; 3:1                ; 5 bits    ; 10 LEs        ; 10 LEs               ; 0 LEs                  ; No         ; |BranchPrediction|cpu:cpu1|src_mux:ISRCMUX|src0[7]             ;
 ; 4:1                ; 2 bits    ; 4 LEs         ; 4 LEs                ; 0 LEs                  ; No         ; |BranchPrediction|cpu:cpu1|src_mux:ISRCMUX|src0[9]             ;
-; 16:1               ; 4 bits    ; 40 LEs        ; 8 LEs                ; 32 LEs                 ; No         ; |BranchPrediction|cpu:cpu1|id:iID|Selector2                    ;
-; 5:1                ; 16 bits   ; 48 LEs        ; 48 LEs               ; 0 LEs                  ; No         ; |BranchPrediction|cpu:cpu1|src_mux:ISRCMUX|src1[11]            ;
-; 13:1               ; 4 bits    ; 32 LEs        ; 32 LEs               ; 0 LEs                  ; No         ; |BranchPrediction|cpu:cpu1|alu:iALU|dst[10]                    ;
-; 13:1               ; 4 bits    ; 32 LEs        ; 32 LEs               ; 0 LEs                  ; No         ; |BranchPrediction|cpu:cpu1|alu:iALU|dst[7]                     ;
+; 16:1               ; 4 bits    ; 40 LEs        ; 8 LEs                ; 32 LEs                 ; No         ; |BranchPrediction|cpu:cpu1|id:iID|Selector0                    ;
+; 5:1                ; 16 bits   ; 48 LEs        ; 48 LEs               ; 0 LEs                  ; No         ; |BranchPrediction|cpu:cpu1|src_mux:ISRCMUX|src1[12]            ;
+; 8:1                ; 8 bits    ; 40 LEs        ; 40 LEs               ; 0 LEs                  ; No         ; |BranchPrediction|databus[5]                                   ;
+; 13:1               ; 4 bits    ; 32 LEs        ; 32 LEs               ; 0 LEs                  ; No         ; |BranchPrediction|cpu:cpu1|alu:iALU|dst[11]                    ;
+; 13:1               ; 4 bits    ; 32 LEs        ; 32 LEs               ; 0 LEs                  ; No         ; |BranchPrediction|cpu:cpu1|alu:iALU|dst[5]                     ;
 ; 16:1               ; 4 bits    ; 40 LEs        ; 40 LEs               ; 0 LEs                  ; No         ; |BranchPrediction|cpu:cpu1|alu:iALU|dst[3]                     ;
 ; 16:1               ; 4 bits    ; 40 LEs        ; 40 LEs               ; 0 LEs                  ; No         ; |BranchPrediction|cpu:cpu1|alu:iALU|dst[12]                    ;
 +--------------------+-----------+---------------+----------------------+------------------------+------------+----------------------------------------------------------------+
@@ -1364,27 +1368,28 @@ Note: In order to hide this table in the UI and the text report file, please set
 +-----------------------+-----------------------------+
 ; Type                  ; Count                       ;
 +-----------------------+-----------------------------+
-; arriav_ff             ; 369                         ;
-;     CLR               ; 45                          ;
+; arriav_ff             ; 402                         ;
+;     CLR               ; 62                          ;
 ;     ENA               ; 41                          ;
-;     ENA CLR           ; 59                          ;
+;     ENA CLR           ; 75                          ;
 ;     ENA CLR SLD       ; 24                          ;
 ;     SCLR SLD          ; 32                          ;
 ;     plain             ; 168                         ;
 ; arriav_io_obuf        ; 36                          ;
-; arriav_lcell_comb     ; 516                         ;
-;     arith             ; 42                          ;
-;         1 data inputs ; 42                          ;
-;     extend            ; 21                          ;
-;         7 data inputs ; 21                          ;
-;     normal            ; 421                         ;
+; arriav_lcell_comb     ; 623                         ;
+;     arith             ; 72                          ;
+;         1 data inputs ; 70                          ;
+;         2 data inputs ; 2                           ;
+;     extend            ; 18                          ;
+;         7 data inputs ; 18                          ;
+;     normal            ; 501                         ;
 ;         0 data inputs ; 1                           ;
-;         1 data inputs ; 15                          ;
-;         2 data inputs ; 28                          ;
-;         3 data inputs ; 54                          ;
-;         4 data inputs ; 51                          ;
-;         5 data inputs ; 108                         ;
-;         6 data inputs ; 164                         ;
+;         1 data inputs ; 17                          ;
+;         2 data inputs ; 39                          ;
+;         3 data inputs ; 74                          ;
+;         4 data inputs ; 53                          ;
+;         5 data inputs ; 120                         ;
+;         6 data inputs ; 197                         ;
 ;     shared            ; 32                          ;
 ;         2 data inputs ; 16                          ;
 ;         3 data inputs ; 16                          ;
@@ -1393,7 +1398,7 @@ Note: In order to hide this table in the UI and the text report file, please set
 ; stratixv_ram_block    ; 80                          ;
 ;                       ;                             ;
 ; Max LUT depth         ; 11.50                       ;
-; Average LUT depth     ; 4.80                        ;
+; Average LUT depth     ; 4.78                        ;
 +-----------------------+-----------------------------+
 
 
@@ -1402,7 +1407,7 @@ Note: In order to hide this table in the UI and the text report file, please set
 +----------------+--------------+
 ; Partition Name ; Elapsed Time ;
 +----------------+--------------+
-; Top            ; 00:00:03     ;
+; Top            ; 00:00:04     ;
 +----------------+--------------+
 
 
@@ -1412,7 +1417,7 @@ Note: In order to hide this table in the UI and the text report file, please set
 Info: *******************************************************************
 Info: Running Quartus Prime Analysis & Synthesis
     Info: Version 21.1.0 Build 842 10/21/2021 SJ Lite Edition
-    Info: Processing started: Thu Apr  6 18:36:25 2023
+    Info: Processing started: Mon Apr 10 18:23:43 2023
 Info: Command: quartus_map --read_settings_files=on --write_settings_files=off BranchPrediction -c BranchPrediction
 Warning (18236): Number of processors has not been specified which may cause overloading on shared machines.  Set the global assignment NUM_PARALLEL_PROCESSORS in your QSF to an appropriate value for best performance.
 Info (20030): Parallel compilation is enabled and will use 6 of the 6 processors detected
@@ -1510,7 +1515,7 @@ Warning (10236): Verilog HDL Implicit Net warning at cpu.v(73): created implicit
 Warning (10236): Verilog HDL Implicit Net warning at cpu.v(96): created implicit net for "ov" File: I:/ece554/ECE554_GroupProject/Project/cpu.v Line: 96
 Warning (10236): Verilog HDL Implicit Net warning at cpu.v(96): created implicit net for "zr" File: I:/ece554/ECE554_GroupProject/Project/cpu.v Line: 96
 Warning (10236): Verilog HDL Implicit Net warning at cpu.v(96): created implicit net for "neg" File: I:/ece554/ECE554_GroupProject/Project/cpu.v Line: 96
-Warning (10236): Verilog HDL Implicit Net warning at BranchPrediction.sv(104): created implicit net for "clk" File: I:/ece554/ECE554_GroupProject/Project/BranchPrediction.sv Line: 104
+Warning (10236): Verilog HDL Implicit Net warning at BranchPrediction.sv(106): created implicit net for "clk" File: I:/ece554/ECE554_GroupProject/Project/BranchPrediction.sv Line: 106
 Warning (10236): Verilog HDL Implicit Net warning at alu.v(50): created implicit net for "sat_neg" File: I:/ece554/ECE554_GroupProject/Project/alu.v Line: 50
 Warning (10236): Verilog HDL Implicit Net warning at alu.v(51): created implicit net for "sat_pos" File: I:/ece554/ECE554_GroupProject/Project/alu.v Line: 51
 Warning (10236): Verilog HDL Implicit Net warning at alu.v(69): created implicit net for "shft_in" File: I:/ece554/ECE554_GroupProject/Project/alu.v Line: 69
@@ -1523,7 +1528,7 @@ Warning (10034): Output port "VGA_BLANK_N" at BranchPrediction.sv(27) has no dri
 Warning (10034): Output port "VGA_HS" at BranchPrediction.sv(31) has no driver File: I:/ece554/ECE554_GroupProject/Project/BranchPrediction.sv Line: 31
 Warning (10034): Output port "VGA_SYNC_N" at BranchPrediction.sv(33) has no driver File: I:/ece554/ECE554_GroupProject/Project/BranchPrediction.sv Line: 33
 Warning (10034): Output port "VGA_VS" at BranchPrediction.sv(35) has no driver File: I:/ece554/ECE554_GroupProject/Project/BranchPrediction.sv Line: 35
-Info (12128): Elaborating entity "PLL" for hierarchy "PLL:iPLL" File: I:/ece554/ECE554_GroupProject/Project/BranchPrediction.sv Line: 104
+Info (12128): Elaborating entity "PLL" for hierarchy "PLL:iPLL" File: I:/ece554/ECE554_GroupProject/Project/BranchPrediction.sv Line: 106
 Info (12128): Elaborating entity "PLL_0002" for hierarchy "PLL:iPLL|PLL_0002:pll_inst" File: I:/ece554/ECE554_GroupProject/Project/PLL.v Line: 22
 Info (12128): Elaborating entity "altera_pll" for hierarchy "PLL:iPLL|PLL_0002:pll_inst|altera_pll:altera_pll_i" File: I:/ece554/ECE554_GroupProject/Project/PLL/PLL_0002.v Line: 88
 Info (10008): Verilog HDL or VHDL information: EDA Netlist Writer cannot regroup multidimensional array "wire_to_nowhere_64" into its bus
@@ -1589,8 +1594,8 @@ Info (12133): Instantiated megafunction "PLL:iPLL|PLL_0002:pll_inst|altera_pll:a
     Info (12134): Parameter "duty_cycle17" = "50"
     Info (12134): Parameter "pll_type" = "General"
     Info (12134): Parameter "pll_subtype" = "General"
-Info (12128): Elaborating entity "rst_synch" for hierarchy "rst_synch:iRST" File: I:/ece554/ECE554_GroupProject/Project/BranchPrediction.sv Line: 110
-Info (12128): Elaborating entity "cpu" for hierarchy "cpu:cpu1" File: I:/ece554/ECE554_GroupProject/Project/BranchPrediction.sv Line: 121
+Info (12128): Elaborating entity "rst_synch" for hierarchy "rst_synch:iRST" File: I:/ece554/ECE554_GroupProject/Project/BranchPrediction.sv Line: 112
+Info (12128): Elaborating entity "cpu" for hierarchy "cpu:cpu1" File: I:/ece554/ECE554_GroupProject/Project/BranchPrediction.sv Line: 123
 Warning (10036): Verilog HDL or VHDL warning at cpu.v(37): object "DM_we" assigned a value but never read File: I:/ece554/ECE554_GroupProject/Project/cpu.v Line: 37
 Info (12128): Elaborating entity "pc" for hierarchy "cpu:cpu1|pc:iPC" File: I:/ece554/ECE554_GroupProject/Project/cpu.v Line: 48
 Warning (10230): Verilog HDL assignment warning at prgm_cntr.v(31): truncated value with size 32 to match size of target (16) File: I:/ece554/ECE554_GroupProject/Project/prgm_cntr.v Line: 31
@@ -1601,7 +1606,7 @@ Warning (10230): Verilog HDL assignment warning at btb.sv(49): truncated value w
 Warning (10230): Verilog HDL assignment warning at btb.sv(64): truncated value with size 32 to match size of target (9) File: I:/ece554/ECE554_GroupProject/Project/btb.sv Line: 64
 Warning (10030): Net "en" at btb.sv(30) has no driver or initial value, using a default initial value '0' File: I:/ece554/ECE554_GroupProject/Project/btb.sv Line: 30
 Info (12128): Elaborating entity "IM" for hierarchy "cpu:cpu1|IM:iIM" File: I:/ece554/ECE554_GroupProject/Project/cpu.v Line: 60
-Warning (10850): Verilog HDL warning at instr_mem.sv(25): number of words (38) in memory file does not match the number of elements in the address range [0:2047] File: I:/ece554/ECE554_GroupProject/Project/instr_mem.sv Line: 25
+Warning (10850): Verilog HDL warning at instr_mem.sv(25): number of words (51) in memory file does not match the number of elements in the address range [0:2047] File: I:/ece554/ECE554_GroupProject/Project/instr_mem.sv Line: 25
 Warning (10030): Net "instr_mem.data_a" at instr_mem.sv(10) has no driver or initial value, using a default initial value '0' File: I:/ece554/ECE554_GroupProject/Project/instr_mem.sv Line: 10
 Warning (10030): Net "instr_mem.waddr_a" at instr_mem.sv(10) has no driver or initial value, using a default initial value '0' File: I:/ece554/ECE554_GroupProject/Project/instr_mem.sv Line: 10
 Warning (10030): Net "instr_mem.we_a" at instr_mem.sv(10) has no driver or initial value, using a default initial value '0' File: I:/ece554/ECE554_GroupProject/Project/instr_mem.sv Line: 10
@@ -1617,35 +1622,35 @@ Warning (10230): Verilog HDL assignment warning at alu.v(69): truncated value wi
 Info (12128): Elaborating entity "DM" for hierarchy "cpu:cpu1|DM:iDM" File: I:/ece554/ECE554_GroupProject/Project/cpu.v Line: 103
 Info (12128): Elaborating entity "dst_mux" for hierarchy "cpu:cpu1|dst_mux:iDSTMUX" File: I:/ece554/ECE554_GroupProject/Project/cpu.v Line: 124
 Info (12128): Elaborating entity "br_bool" for hierarchy "cpu:cpu1|br_bool:iBRL" File: I:/ece554/ECE554_GroupProject/Project/cpu.v Line: 132
-Info (12128): Elaborating entity "spart" for hierarchy "spart:spart1" File: I:/ece554/ECE554_GroupProject/Project/BranchPrediction.sv Line: 128
-Info (12128): Elaborating entity "UART_tx" for hierarchy "spart:spart1|UART_tx:iTX" File: I:/ece554/ECE554_GroupProject/Project/spart.sv Line: 64
+Info (12128): Elaborating entity "spart" for hierarchy "spart:spart1" File: I:/ece554/ECE554_GroupProject/Project/BranchPrediction.sv Line: 130
+Info (12128): Elaborating entity "UART_tx" for hierarchy "spart:spart1|UART_tx:iTX" File: I:/ece554/ECE554_GroupProject/Project/spart.sv Line: 60
 Warning (10036): Verilog HDL or VHDL warning at UART_tx.sv(31): object "load_ff2" assigned a value but never read File: I:/ece554/ECE554_GroupProject/Project/UART_tx.sv Line: 31
 Warning (10036): Verilog HDL or VHDL warning at UART_tx.sv(31): object "iocs_n_ff" assigned a value but never read File: I:/ece554/ECE554_GroupProject/Project/UART_tx.sv Line: 31
 Warning (10230): Verilog HDL assignment warning at UART_tx.sv(63): truncated value with size 32 to match size of target (4) File: I:/ece554/ECE554_GroupProject/Project/UART_tx.sv Line: 63
 Warning (10230): Verilog HDL assignment warning at UART_tx.sv(76): truncated value with size 32 to match size of target (4) File: I:/ece554/ECE554_GroupProject/Project/UART_tx.sv Line: 76
 Warning (10230): Verilog HDL assignment warning at UART_tx.sv(143): truncated value with size 32 to match size of target (4) File: I:/ece554/ECE554_GroupProject/Project/UART_tx.sv Line: 143
 Warning (10230): Verilog HDL assignment warning at UART_tx.sv(154): truncated value with size 32 to match size of target (13) File: I:/ece554/ECE554_GroupProject/Project/UART_tx.sv Line: 154
-Info (12128): Elaborating entity "UART_rx" for hierarchy "spart:spart1|UART_rx:iRX" File: I:/ece554/ECE554_GroupProject/Project/spart.sv Line: 68
+Info (12128): Elaborating entity "UART_rx" for hierarchy "spart:spart1|UART_rx:iRX" File: I:/ece554/ECE554_GroupProject/Project/spart.sv Line: 64
 Warning (10230): Verilog HDL assignment warning at UART_rx.sv(64): truncated value with size 32 to match size of target (4) File: I:/ece554/ECE554_GroupProject/Project/UART_rx.sv Line: 64
 Warning (10230): Verilog HDL assignment warning at UART_rx.sv(79): truncated value with size 32 to match size of target (4) File: I:/ece554/ECE554_GroupProject/Project/UART_rx.sv Line: 79
 Warning (10230): Verilog HDL assignment warning at UART_rx.sv(95): truncated value with size 32 to match size of target (4) File: I:/ece554/ECE554_GroupProject/Project/UART_rx.sv Line: 95
 Warning (10230): Verilog HDL assignment warning at UART_rx.sv(112): truncated value with size 32 to match size of target (13) File: I:/ece554/ECE554_GroupProject/Project/UART_rx.sv Line: 112
-Info (12128): Elaborating entity "mmap_regs" for hierarchy "mmap_regs:immap_regs" File: I:/ece554/ECE554_GroupProject/Project/BranchPrediction.sv Line: 133
-Warning (10230): Verilog HDL assignment warning at mmap_regs.sv(26): truncated value with size 32 to match size of target (16) File: I:/ece554/ECE554_GroupProject/Project/mmap_regs.sv Line: 26
-Warning (10230): Verilog HDL assignment warning at mmap_regs.sv(33): truncated value with size 32 to match size of target (16) File: I:/ece554/ECE554_GroupProject/Project/mmap_regs.sv Line: 33
-Warning (10230): Verilog HDL assignment warning at mmap_regs.sv(40): truncated value with size 32 to match size of target (16) File: I:/ece554/ECE554_GroupProject/Project/mmap_regs.sv Line: 40
-Warning (10230): Verilog HDL assignment warning at mmap_regs.sv(47): truncated value with size 32 to match size of target (16) File: I:/ece554/ECE554_GroupProject/Project/mmap_regs.sv Line: 47
+Info (12128): Elaborating entity "mmap_regs" for hierarchy "mmap_regs:immap_regs" File: I:/ece554/ECE554_GroupProject/Project/BranchPrediction.sv Line: 136
+Warning (10230): Verilog HDL assignment warning at mmap_regs.sv(34): truncated value with size 32 to match size of target (16) File: I:/ece554/ECE554_GroupProject/Project/mmap_regs.sv Line: 34
+Warning (10230): Verilog HDL assignment warning at mmap_regs.sv(41): truncated value with size 32 to match size of target (16) File: I:/ece554/ECE554_GroupProject/Project/mmap_regs.sv Line: 41
+Warning (10230): Verilog HDL assignment warning at mmap_regs.sv(48): truncated value with size 32 to match size of target (16) File: I:/ece554/ECE554_GroupProject/Project/mmap_regs.sv Line: 48
+Warning (10230): Verilog HDL assignment warning at mmap_regs.sv(55): truncated value with size 32 to match size of target (16) File: I:/ece554/ECE554_GroupProject/Project/mmap_regs.sv Line: 55
 Warning (276027): Inferred dual-clock RAM node "spart:spart1|UART_rx:iRX|rx_queue_rtl_0" from synchronous design logic.  The read-during-write behavior of a dual-clock RAM is undefined and may not match the behavior of the original design.
 Warning (276020): Inferred RAM node "spart:spart1|UART_tx:iTX|tx_queue_rtl_0" from synchronous design logic.  Pass-through logic has been added to match the read-during-write behavior of the original design.
 Warning (13046): Tri-state node(s) do not directly drive top-level pin(s)
-    Warning (13049): Converted tri-state buffer "databus[15]" feeding internal logic into a wire File: I:/ece554/ECE554_GroupProject/Project/BranchPrediction.sv Line: 59
-    Warning (13049): Converted tri-state buffer "databus[14]" feeding internal logic into a wire File: I:/ece554/ECE554_GroupProject/Project/BranchPrediction.sv Line: 59
-    Warning (13049): Converted tri-state buffer "databus[13]" feeding internal logic into a wire File: I:/ece554/ECE554_GroupProject/Project/BranchPrediction.sv Line: 59
-    Warning (13049): Converted tri-state buffer "databus[12]" feeding internal logic into a wire File: I:/ece554/ECE554_GroupProject/Project/BranchPrediction.sv Line: 59
-    Warning (13049): Converted tri-state buffer "databus[11]" feeding internal logic into a wire File: I:/ece554/ECE554_GroupProject/Project/BranchPrediction.sv Line: 59
-    Warning (13049): Converted tri-state buffer "databus[10]" feeding internal logic into a wire File: I:/ece554/ECE554_GroupProject/Project/BranchPrediction.sv Line: 59
-    Warning (13049): Converted tri-state buffer "databus[9]" feeding internal logic into a wire File: I:/ece554/ECE554_GroupProject/Project/BranchPrediction.sv Line: 59
-    Warning (13049): Converted tri-state buffer "databus[8]" feeding internal logic into a wire File: I:/ece554/ECE554_GroupProject/Project/BranchPrediction.sv Line: 59
+    Warning (13048): Converted tri-state node "databus[15]" into a selector File: I:/ece554/ECE554_GroupProject/Project/BranchPrediction.sv Line: 53
+    Warning (13048): Converted tri-state node "databus[14]" into a selector File: I:/ece554/ECE554_GroupProject/Project/BranchPrediction.sv Line: 53
+    Warning (13048): Converted tri-state node "databus[13]" into a selector File: I:/ece554/ECE554_GroupProject/Project/BranchPrediction.sv Line: 53
+    Warning (13048): Converted tri-state node "databus[12]" into a selector File: I:/ece554/ECE554_GroupProject/Project/BranchPrediction.sv Line: 53
+    Warning (13048): Converted tri-state node "databus[11]" into a selector File: I:/ece554/ECE554_GroupProject/Project/BranchPrediction.sv Line: 53
+    Warning (13048): Converted tri-state node "databus[10]" into a selector File: I:/ece554/ECE554_GroupProject/Project/BranchPrediction.sv Line: 53
+    Warning (13048): Converted tri-state node "databus[9]" into a selector File: I:/ece554/ECE554_GroupProject/Project/BranchPrediction.sv Line: 53
+    Warning (13048): Converted tri-state node "databus[8]" into a selector File: I:/ece554/ECE554_GroupProject/Project/BranchPrediction.sv Line: 53
     Warning (13048): Converted tri-state node "databus[7]" into a selector File: I:/ece554/ECE554_GroupProject/Project/BranchPrediction.sv Line: 53
     Warning (13048): Converted tri-state node "databus[6]" into a selector File: I:/ece554/ECE554_GroupProject/Project/BranchPrediction.sv Line: 53
     Warning (13048): Converted tri-state node "databus[5]" into a selector File: I:/ece554/ECE554_GroupProject/Project/BranchPrediction.sv Line: 53
@@ -1834,6 +1839,8 @@ Info (12133): Instantiated megafunction "cpu:cpu1|IM:iIM|altsyncram:instr_mem_rt
     Info (12134): Parameter "INIT_FILE" = "db/BranchPrediction.ram0_IM_936.hdl.mif"
 Info (12021): Found 1 design units, including 1 entities, in source file db/altsyncram_n9d1.tdf
     Info (12023): Found entity 1: altsyncram_n9d1 File: I:/ece554/ECE554_GroupProject/Project/db/altsyncram_n9d1.tdf Line: 28
+Warning (127007): Memory Initialization File or Hexadecimal (Intel-Format) File "I:/ece554/ECE554_GroupProject/Project/db/BranchPrediction.ram0_IM_936.hdl.mif" contains "don't care" values -- overwriting them with 0s File: c:/intelfpga_lite/21.1/quartus/libraries/megafunctions/altsyncram.tdf Line: 792
+Warning (127007): Memory Initialization File or Hexadecimal (Intel-Format) File "I:/ece554/ECE554_GroupProject/Project/db/BranchPrediction.ram0_IM_936.hdl.mif" contains "don't care" values -- overwriting them with 0s File: c:/intelfpga_lite/21.1/quartus/libraries/megafunctions/altsyncram.tdf Line: 792
 Warning (12241): 2 hierarchies have connectivity warnings - see the Connectivity Checks report folder
 Warning (13034): The following nodes have both tri-state and non-tri-state drivers
     Warning (13035): Inserted always-enabled tri-state buffer between "GPIO[3]" and its non-tri-state driver. File: I:/ece554/ECE554_GroupProject/Project/BranchPrediction.sv Line: 24
@@ -1916,17 +1923,17 @@ Warning (21074): Design contains 6 input pin(s) that do not drive logic
     Warning (15610): No output dependent on input pin "KEY[1]" File: I:/ece554/ECE554_GroupProject/Project/BranchPrediction.sv Line: 15
     Warning (15610): No output dependent on input pin "KEY[2]" File: I:/ece554/ECE554_GroupProject/Project/BranchPrediction.sv Line: 15
     Warning (15610): No output dependent on input pin "KEY[3]" File: I:/ece554/ECE554_GroupProject/Project/BranchPrediction.sv Line: 15
-Info (21057): Implemented 948 device resources after synthesis - the final resource count might be different
+Info (21057): Implemented 1055 device resources after synthesis - the final resource count might be different
     Info (21058): Implemented 18 input pins
     Info (21059): Implemented 39 output pins
     Info (21060): Implemented 36 bidirectional pins
-    Info (21061): Implemented 773 logic cells
+    Info (21061): Implemented 880 logic cells
     Info (21064): Implemented 80 RAM segments
     Info (21065): Implemented 2 PLLs
-Info: Quartus Prime Analysis & Synthesis was successful. 0 errors, 164 warnings
-    Info: Peak virtual memory: 4877 megabytes
-    Info: Processing ended: Thu Apr  6 18:36:41 2023
-    Info: Elapsed time: 00:00:16
+Info: Quartus Prime Analysis & Synthesis was successful. 0 errors, 166 warnings
+    Info: Peak virtual memory: 4875 megabytes
+    Info: Processing ended: Mon Apr 10 18:24:00 2023
+    Info: Elapsed time: 00:00:17
     Info: Total CPU time (on all processors): 00:00:20
 
 
