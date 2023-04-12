@@ -86,21 +86,79 @@ sw R3, R2, 0
 
 
 llb R14, 0xff       # DEBUG
-#### sw R5, R2, 0        # ******** OUTPUT STATS ******** (WONT WORK NEED TO CONVERT)
 
 ##########################################
 #   HEX --> CHAR CONVERSION
 ##########################################
 
-    
-    lhb R5, 0x00
     llb R12, 9          # R12 contains 9 for comparing
+    llb R4, 0x0f        # R4 contains bit mask to select each 4 bits after shifting
 
     #####################
-    # UPPER NIBBLE
+    # NIBBLE 4
     #####################
 
-    srl R13, R5, 4      # R13 contains upper nibble
+    srl R13, R5, 12      # R13 contains R5[15:12]
+    and R13, R13, R4
+
+    sub R14, R13, R12   # R14 is junk reg for comparison subtraction
+    b gt, LETTER_4      # value > 9 -- needs letter char
+    llb R9, 0x30        # R9 contains addition offset
+    b uncond, CONVERT_4
+
+    LETTER_4:
+    llb R9, 0x57        # R9 -- offset to ascii lowercase chars
+
+    CONVERT_4:
+    add R13, R13, R9    # R13 contains converted value
+
+    sw R13, R2, 0       # PRINT
+
+    #####################
+    # NIBBLE 3
+    #####################
+
+    srl R13, R5, 8      # R13 contains R5[11:8]
+    and R13, R13, R4
+
+    sub R14, R13, R12   # R14 is junk reg for comparison subtraction
+    b gt, LETTER_3      # value > 9 -- needs letter char
+    llb R9, 0x30        # R9 contains addition offset
+    b uncond, CONVERT_3
+
+    LETTER_3:
+    llb R9, 0x57        # R9 -- offset to ascii lowercase chars
+
+    CONVERT_3:
+    add R13, R13, R9    # R13 contains converted value
+
+    sw R13, R2, 0       # PRINT
+
+    #####################
+    # NIBBLE 2
+    #####################
+
+    srl R13, R5, 4      # R13 contains R5[7:4]
+    and R13, R13, R4
+
+    sub R14, R13, R12   # R14 is junk reg for comparison subtraction
+    b gt, LETTER_2      # value > 9 -- needs letter char
+    llb R9, 0x30        # R9 contains addition offset
+    b uncond, CONVERT_2
+
+    LETTER_2:
+    llb R9, 0x57        # R9 -- offset to ascii lowercase chars
+
+    CONVERT_2:
+    add R13, R13, R9    # R13 contains converted value
+
+    sw R13, R2, 0       # PRINT
+
+    #####################
+    # NIBBLE 1
+    #####################
+
+    and R13, R4, R5    # R13 contains R5[3:0]
 
     sub R14, R13, R12   # R14 is junk reg for comparison subtraction
     b gt, LETTER_1      # value > 9 -- needs letter char
@@ -111,26 +169,6 @@ llb R14, 0xff       # DEBUG
     llb R9, 0x57       # R9 -- offset to ascii lowercase chars
 
     CONVERT_1:
-    add R13, R13, R9   # R13 contains converted value
-
-    sw R13, R2, 0      # PRINT
-
-    #####################
-    # LOWER NIBBLE
-    #####################
-
-    llb R14, 0x0f
-    and R13, R14, R5    # R13 now conatians lower nibble
-
-    sub R14, R13, R12   # R14 is junk reg for comparison subtraction
-    b gt, LETTER_2      # value > 9 -- needs letter char
-    llb R9, 0x30       # R9 contains addition offset
-    b uncond, CONVERT_2
-
-    LETTER_2:
-    llb R9, 0x57       # R9 -- offset to ascii lowercase chars
-
-    CONVERT_2:
     add R13, R13, R9   # R13 contains converted value
 
     sw R13, R2, 0      # PRINT
