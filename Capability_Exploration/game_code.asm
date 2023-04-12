@@ -14,9 +14,9 @@ LHB R4, 0xC0
 LLB R5, 0x04	# R5 contains TX/RX buffer (0xC004)
 LHB R5, 0xC0
 
-LLB R9, 0x00    # R9 stores the x-coordinates of the meteor
+LLB R9, 0x00    # R9 stores the x-coordinates of the lower left corner of the meteor
 
-LLB R10, 0x00	# R10 stores the y-coordinates of the meteor
+LLB R10, 0x00	# R10 stores the y-coordinates of the lower left corner of the meteor
 
 # Implement movement of spaceships
 # determine when to send meteor
@@ -45,6 +45,18 @@ B eq, SPACE_SHIP_MOVEMENT
 
 # Game end condition here:
 COLLISION_CHECK:	# check if collision after a move
+LLB R11, 0x50       # dimensions of spaceship 5*16+0=80
+PUSH R11
+PUSH R11
+# branch to handling iff 1, 2 amd 3 hold simultaneously 
+# 1. x coordinate of lower left of spaceship + decimal 100 >= lower left x coordinate of meteor (R9)
+# 2. y coordinate of lower left of spaceship <= lower left y coordinate of meteor (R10)
+# 3. y coordinate of lower left of spaceship + decimal 100 >= lower left y coordinate of meteor (R10) + decimal 80
+#   \---- 
+#    \-------\            /\
+#    /-------/            \/
+#   /----
+
 
 COLLISION_HANDLING:	# if collision, handle here
 
