@@ -1,6 +1,7 @@
 # starting the game code here
 
 # Memory Map isn't done, will be changed
+# ADDI/SUBI are zero extended, rest immediates are zero extended
 
 LLB R2, 0x00	# R2 contains addr for key[1] (0xC000)... (move up)
 LHB R2, 0xC0	
@@ -32,8 +33,8 @@ LLB R12, 0x00	# R11 stores the y-coordinates of the lower left corner of the
 # determine when a collision between spaceship and meteors happen
 # display statistics of BTB
 
-# currently occupied registers: R0, R2, R3, R4, R5, R6, R7, R13, R14, R15, R9, R10, R11, R12
-# temp occupied registers: R6, R7, R8,
+# currently occupied registers: R0, R15, R2, R9, R10, R11, R12, R13, R14, 
+# temp occupied registers: R1, R3, R4, R5, R6, R7, R8,
 # free registers: 
 
 GAME_LOOP:
@@ -59,21 +60,43 @@ COLLISION_CHECK:	# check if collision after a move
 # 2. y coordinate of lower left of spaceship (R12) <= lower left y coordinate of meteor (R10)
 # 3. y coordinate of lower left of spaceship (R12) + decimal 100 >= lower left y coordinate of meteor (R10) + decimal 60
 #   \---- 
-#    \-------\            /\
-#    /-------/            \/
+#    \-------\            /+\
+#    /-------/            \+/
 #   /----
+LLB R3, 0x00       # x status register
+LLB R4, 0x00       # y status register
 LLB R1, 0x64       # dimensions of spaceship 6*16+4=100
 ADD R1, R11, R1
 SUB R1, R9, R1
-B lte, COLLISION_HANDLING
+B lte, ADD_1
+ADD_1_b:
 SUB R1, R12, R10
-B lte, COLLISION_HANDLING
+B lte, ADD_2
+ADD_2_b:
 LLB R1, 0x64       # dimensions of spaceship 6*16+4=100
 ADD R6, R11, R1
 LLB R1, 0x3C       # dimensions of meteor 3*16+12=60
 ADD R7, R10, R1
 SUB R1, R7, R6
-B lte, COLLISION_HANDLING
+B lte, ADD_3
+ADD_3_b:
+SUBI R3, R3, 0x01  			# Basically if x condition is fulfilled R3 will be set to 0
+B eq, X_FULFILLED:
+B uncond, COLLISION_CHECK	# if condition not met retry with collision check in next iteration
+X_FULFILLED:
+SUBI R4, R4, 0x00  			# Basically if y condition is fulfilled R4 will be set to 1 or 2
+B neq, COLLISION_HANDLING
+B uncond, COLLISION_CHECK	# if condition not met retry with collision check in next iteration
+
+ADD_1:
+ADDI R3, R3, 0x01
+B uncond, ADD_1_b
+ADD_2:
+ADDI R4, R4, 0x01
+B uncond, ADD_2_b
+ADD_3:
+ADDI R4, R4, 0x01
+B uncond, ADD_3_b
 
 COLLISION_HANDLING:	# if collision, handle here
 
