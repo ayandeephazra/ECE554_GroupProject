@@ -88,7 +88,7 @@ module BranchPrediction(
 				(mm_re & (addr==16'hc004 | addr==16'hc005 | addr[15:4]==12'hc01)) ? databus : 
 				16'ha5a5;
 
-		iocs_n = ~((addr==16'hc004 | addr==16'hc005 | addr==16'hc006 | addr==16'hc007) & (mm_we | mm_re));		// selects C004/5/6/7
+		iocs_n = ~((addr==16'hc004 | addr==16'hc005 | addr==16'hc006 | addr==16'hc007) & (mm_we | mm_re));
 		iorw_n = (~iocs_n) & mm_re;
 
 		bmp_sel = ((addr==16'hc008 | addr==16'hc009 | addr==16'hc00A) & mm_we);
@@ -97,7 +97,6 @@ module BranchPrediction(
 		mmap_re = (mm_re & (addr==16'hc010 | addr==16'hc011 | addr==16'hc012 | addr==16'hc013));
 	end
 
-	// assign databus = (~iorw_n | bmp_sel) ? wdata[7:0] : 8'hzz;	// infer tri state for driving bus from proc to spart
 	assign databus = (mm_we) ? wdata : 8'hzz;	// infer tri state for driving bus from proc
 
 	////////////////////////////////////////////////////////
