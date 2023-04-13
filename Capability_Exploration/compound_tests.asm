@@ -2,12 +2,13 @@
 ##               ADDI                    ##
 ###########################################
 
-llb R1, 0x08         # R1 holds decimal 8
+llb R1, 0x00         # R1 holds decimal 8
 lhb R1, 0x00
-llb R3, 0x10         # R1 holds decimal 16
+llb R3, 0x02         # R1 holds decimal 16
 lhb R3, 0x00
 
-ADDI R2, R1, 0x08
+ADDI R2, R1, 0x01
+ADDI R2, R2, 0x01
 SUB R4, R2, R3
 B eq, PASS_1
 B neq, FAIL_2

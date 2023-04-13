@@ -229,6 +229,13 @@ always @(instr_IM_ID) begin
   LWI_instr = 0;
   
   case (instr_IM_ID[16:12])
+    XORi: begin
+	  rf_re0 = 1;
+	  rf_re1 = 1;
+	  rf_we = 1;
+	  alu_func = XOR;
+	  clk_z = 1;
+    end
     ADDi : begin
 	  rf_re0 = 1;
 	  rf_re1 = 1;
@@ -337,64 +344,66 @@ always @(instr_IM_ID) begin
 	end
 	// rf_re0 = 1
 	// rf_re1 = 1
-	ADDIi: begin
+	ADDIi: begin	// zero extend
 	  rf_re0 = 1;					// read from reg 
 	  src0sel = IMM2SRC0_4BZE;		    // access 4-bit SE immediate
 	  rf_we = 1;					// write as normal to a reg
 	  alu_func = ADD;				// use the "add" alu functionality but change the src muxes to get from immediates rather than reg file
-      clk_z = 1;                    // include zero flags
-      clk_nv = 1;					// include overflow or neg flags
+      	  clk_z = 1;                    // include zero flags
+      	  clk_nv = 1;					// include overflow or neg flags
 	end
-	SUBIi: begin
+	SUBIi: begin // zero extend
 	 rf_re1 = 1;
 	 src0sel = IMM2SRC0_4BZE;
 	 rf_we = 1;
 	 clk_z = 1;
 	 clk_nv = 1;
 	  alu_func = SUB;
-	
 	end
-	XORIi: begin
+	XORIi: begin // sign extend
 	  rf_re0 = 1;
   	  src0sel = IMM2SRC0;
 	  rf_we = 1;
 	  clk_z = 1;	  
 	  alu_func = XOR;
 	end
-	ANDNIi: begin
+	ANDNIi: begin // sign extend
 	  rf_re0 = 1;
 	  src0sel = IMM2SRC0;
 	  rf_we = 1;
 	  clk_z = 1;
 	  alu_func = ANDN;
 	end
-	ANDIi: begin
+	ANDIi: begin // sign extend
 	 rf_re0 = 1;
+	 //src0sel = IMM2SRC0_4BZE;
 	 src0sel = IMM2SRC0;
 	 rf_we = 1;
 	 clk_z = 1;
 	  alu_func = AND;
 	end
-	XORNIi: begin
+	XORNIi: begin // sign extend
 	  rf_re0 = 1;
 	  src0sel = IMM2SRC0;
 	  rf_we = 1;
 	  clk_z = 1;
 	  alu_func = XORN;
-	
 	end
-	ORIi: begin
+	ORIi: begin // sign extend
 	  rf_re0 = 1;
+	  //src0sel = IMM2SRC0_4BZE;
 	  src0sel = IMM2SRC0;
 	  rf_we = 1;
 	  clk_z = 1;
 	  alu_func = OR;
 	end
-	ANDNi: begin
+	ANDNi: begin // sign extend
 	  rf_re0 = 1;
-	  rf_re1 = 1;
+	//  rf_re1 = 1;
+	// src0sel = IMM2SRC0_4BZE;
+	 src0sel = IMM2SRC0;
 	  rf_we = 1;
-      alu_func = ANDN;
+      	alu_func = ANDN;
 	  clk_z = 1;
 	end
 	// MUL till assembler is updated
@@ -422,7 +431,6 @@ always @(instr_IM_ID) begin
 	  clk_z = 1;	
 	  clk_nv = 1;
 	end
-
   endcase
 end
 

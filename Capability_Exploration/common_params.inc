@@ -54,7 +54,8 @@ localparam ORIi 	= 5'b10110;
 localparam ANDNi 	= 5'b10111;
 localparam MOVCi 	= 5'b11000;
 localparam UMULi 	= 5'b11001;
-localparam SMULi 	= 5'b11010; 
+localparam SMULi 	= 5'b11010;
+localparam XORi		= 5'b11011;
 //localparam PUSHi 	= 5'b11010;
 //localparam POPi 	= 5'b11011;
 
@@ -65,7 +66,7 @@ localparam RF2SRC0 	= 3'b000;
 localparam IMM_BR2SRC0 = 3'b001;			// 7-bit SE for branch target
 localparam IMM_JMP2SRC0 = 3'b010;		// 12-bit SE for jump target
 localparam IMM2SRC0 = 3'b011;			// 4-bit SE Address immediate for LW/SW
-localparam IMM2SRC0_4BZE = 3'b100;      // 4-bit ZE Address 
+localparam IMM2SRC0_4BZE = 3'b100;      // 4-bit ZE Address
 
 ////////////////////////////////
 // Encodings for src1 select //
