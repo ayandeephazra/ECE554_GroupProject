@@ -496,4 +496,3 @@ lhb R6, 0xfa
 b uncond, END
 
 END:
-
