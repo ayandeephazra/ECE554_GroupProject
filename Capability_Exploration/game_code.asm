@@ -1,7 +1,6 @@
 # starting the game code here
 
 # Memory Map isn't done, will be changed
-# ADDI/SUBI are zero extended, rest immediates are zero extended
 
 LLB R2, 0x00	# R2 contains addr for key[1] (0xC000)... (move up)
 LHB R2, 0xC0	
@@ -33,13 +32,14 @@ LLB R12, 0x00	# R11 stores the y-coordinates of the lower left corner of the
 # determine when a collision between spaceship and meteors happen
 # display statistics of BTB
 
-# currently occupied registers: R0, R15, R2, R9, R10, R11, R12, R13, R14, 
-# temp occupied registers: R1, R3, R4, R5, R6, R7, R8,
+# currently occupied registers: R0, R2, R3, R4, R5, R6, R7, R13, R14, R15, R9, R10, R11, R12
+# temp occupied registers: R6, R7, R8,
 # free registers: 
 
 GAME_LOOP:
 
 # sending pictures will begin here:
+JAL CHECK_PARITY
 
 # picture movement begins here:
 LW R6, R2, 0		# read data (key_press[1]) located in C000 into R6
@@ -60,43 +60,21 @@ COLLISION_CHECK:	# check if collision after a move
 # 2. y coordinate of lower left of spaceship (R12) <= lower left y coordinate of meteor (R10)
 # 3. y coordinate of lower left of spaceship (R12) + decimal 100 >= lower left y coordinate of meteor (R10) + decimal 60
 #   \---- 
-#    \-------\            /+\
-#    /-------/            \+/
+#    \-------\            /\
+#    /-------/            \/
 #   /----
-LLB R3, 0x00       # x status register
-LLB R4, 0x00       # y status register
 LLB R1, 0x64       # dimensions of spaceship 6*16+4=100
 ADD R1, R11, R1
 SUB R1, R9, R1
-B lte, ADD_1
-ADD_1_b:
+B lte, COLLISION_HANDLING
 SUB R1, R12, R10
-B lte, ADD_2
-ADD_2_b:
+B lte, COLLISION_HANDLING
 LLB R1, 0x64       # dimensions of spaceship 6*16+4=100
 ADD R6, R11, R1
 LLB R1, 0x3C       # dimensions of meteor 3*16+12=60
 ADD R7, R10, R1
 SUB R1, R7, R6
-B lte, ADD_3
-ADD_3_b:
-SUBI R3, R3, 0x01  			# Basically if x condition is fulfilled R3 will be set to 0
-B eq, X_FULFILLED:
-B uncond, COLLISION_CHECK	# if condition not met retry with collision check in next iteration
-X_FULFILLED:
-SUBI R4, R4, 0x00  			# Basically if y condition is fulfilled R4 will be set to 1 or 2
-B neq, COLLISION_HANDLING
-B uncond, COLLISION_CHECK	# if condition not met retry with collision check in next iteration
-
-ADD_1:
-ADDI R3, R3, 0x01
-B uncond, ADD_1_b
-ADD_2:
-ADDI R4, R4, 0x01
-B uncond, ADD_2_b
-ADD_3:
-ADDI R4, R4, 0x01
-B uncond, ADD_3_b
+B lte, COLLISION_HANDLING
 
 COLLISION_HANDLING:	# if collision, handle here
 
@@ -126,6 +104,32 @@ B eq, DOWNWARDS_MOVEMENT	# branch to downwards_movement if equal
 # determine if a collision happens
 
 JR R15		# jump back to correct spot of game_loop
+
+CHECK_PARITY: # will have to change registers
+# int x = 7
+#LLB R1, 0xDC	# x
+#LHB R1, 0xCC
+#LLB R6, 0x01	# check for odd parity
+
+# changed XOR opcode in asmbl.pl, added XOR to common_params.inc and id.v
+# use R13, R3, R1
+# y => R3
+# int y = R1 ^ (R2 >> 1)
+SRL R13, R1, 0x01	# (x >> 1)
+XOR R3, R1, R13		# x ^ (x >> 1) = y
+
+SRL R13, R3, 0x02	# y >> 2
+XOR R3, R13, R3		#y ^ (y >> 2)
+
+SRL R13, R3, 0x04	# y >> 4
+XOR R3, R13, R3		# y ^ (y >> 4)
+
+SRL R13, R3, 0x08	# y >> 8
+XOR R3, R3, R13		# y ^ (y >> 8)
+
+ANDI R4, R3, 0x01	# (y & 1)
+SUB R5, R4, R6		# (y & 1) == 1(R5 == 1)? if 1 is returned, parity is odd
+JR R15			# branch back
 
 END:			# end of game
 
