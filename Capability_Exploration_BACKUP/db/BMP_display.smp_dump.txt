@@ -1,0 +1,24 @@
+
+State Machine - |BMP_display|PlaceBMP:comb_28|state
+Name state.WRT2 state.WRT state.YRD state.XRD state.ADV2 state.ADV1 state.IDLE 
+state.IDLE 0 0 0 0 0 0 0 
+state.ADV1 0 0 0 0 0 1 1 
+state.ADV2 0 0 0 0 1 0 1 
+state.XRD 0 0 0 1 0 0 1 
+state.YRD 0 0 1 0 0 0 1 
+state.WRT 0 1 0 0 0 0 1 
+state.WRT2 1 0 0 0 0 0 1 
+
+State Machine - |BMP_display|VGA_timing:iVGATM|Vstate
+Name Vstate.V_FP Vstate.V_FRAME Vstate.V_BP Vstate.V_SYNCH 
+Vstate.V_SYNCH 0 0 0 0 
+Vstate.V_BP 0 0 1 1 
+Vstate.V_FRAME 0 1 0 1 
+Vstate.V_FP 1 0 0 1 
+
+State Machine - |BMP_display|VGA_timing:iVGATM|Hstate
+Name Hstate.H_FP Hstate.H_LINE Hstate.H_BP Hstate.H_SYNCH 
+Hstate.H_SYNCH 0 0 0 0 
+Hstate.H_BP 0 0 1 1 
+Hstate.H_LINE 0 1 0 1 
+Hstate.H_FP 1 0 0 1 

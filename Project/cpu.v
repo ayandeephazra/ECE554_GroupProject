@@ -1,4 +1,4 @@
-module cpu(clk,rst_n, wdata, mm_we, addr, mm_re, rdata);
+module cpu(clk,rst_n, wdata, mm_we, addr, mm_re, rdata, inc_br_cnt, inc_hit_cnt, inc_mispr_cnt);
 
 //rdata added to original input signals
 input clk,rst_n;
@@ -7,6 +7,10 @@ input [15:0] rdata;
 output [15:0] wdata;
 output [15:0] addr;
 output mm_we, mm_re;
+// branch prediciton stats collection
+output inc_br_cnt;
+output inc_hit_cnt;
+output inc_mispr_cnt;
 
 wire [16:0] instr;				// instruction from IM
 wire [11:0] instr_ID_EX;		// immediate bus
@@ -32,14 +36,25 @@ wire [15:0] p0_EX_DM;			// data to be stored for SW
 wire mm_re, mm_we;              // external read and write
 wire DM_we;                     // internal data memory write
 wire [15:0] read_mux_select;    // choosing which signal is read 
+wire [15:0] btb_nxt_pc;			// Branch predicted target PC
+wire btb_hit;					// F stage btb_hit
+wire btb_hit_ID_EX;				// Required in EX to decide if flow change is necessary
 
 //////////////////////////////////
 // Instantiate program counter //
 ////////////////////////////////
 pc iPC(.clk(clk), .rst_n(rst_n), .stall_IM_ID(stall_IM_ID), .pc(iaddr), .dst_ID_EX(dst_ID_EX),
 		.pc_ID_EX(pc_ID_EX), .pc_EX_DM(pc_EX_DM), .flow_change_ID_EX(flow_change_ID_EX), 
-		.LWI_instr_EX_DM(LWI_instr_EX_DM), .dst_EX_DM(dst_EX_DM));
+		.LWI_instr_EX_DM(LWI_instr_EX_DM), .dst_EX_DM(dst_EX_DM),
+	   .btb_hit(btb_hit), .btb_nxt_pc(btb_nxt_pc), .btb_hit_ID_EX(btb_hit_ID_EX));
 	   
+///////////////////////////////////////
+// Instantiate Branch Target Buffer //
+/////////////////////////////////////
+btb iBTB(.clk(clk), .rst_n(rst_n), .PC(iaddr), .target_PC(btb_nxt_pc), .hit(btb_hit), .btb_hit_ID_EX(btb_hit_ID_EX),
+		.flow_change_ID_EX(flow_change_ID_EX), .br_instr_ID_EX(br_instr_ID_EX), .pc_ID_EX(pc_ID_EX),
+		.dst_ID_EX(dst_ID_EX), .inc_br_cnt(inc_br_cnt), .inc_hit_cnt(inc_hit_cnt), .inc_mispr_cnt(inc_mispr_cnt));
+
 /////////////////////////////////////
 // Instantiate instruction memory //
 ///////////////////////////////////
@@ -116,6 +131,6 @@ dst_mux iDSTMUX(.clk(clk), .dm_re_EX_DM(dm_re_EX_DM), .dm_rd_data_EX_DM(read_mux
 br_bool iBRL(.clk(clk), .rst_n(rst_n), .clk_z_ID_EX(clk_z_ID_EX), .clk_nv_ID_EX(clk_nv_ID_EX),
              .br_instr_ID_EX(br_instr_ID_EX), .jmp_imm_ID_EX(jmp_imm_ID_EX),
 			 .jmp_reg_ID_EX(jmp_reg_ID_EX), .cc_ID_EX(cc_ID_EX), .zr(zr), .ov(ov),
-			 .zr_EX_DM(zr_EX_DM), .neg(neg), .flow_change_ID_EX(flow_change_ID_EX));	
+			 .zr_EX_DM(zr_EX_DM), .neg(neg), .flow_change_ID_EX(flow_change_ID_EX), .btb_hit_ID_EX(btb_hit_ID_EX));	
 	   
 endmodule

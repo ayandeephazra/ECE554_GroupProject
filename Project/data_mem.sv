@@ -13,7 +13,7 @@ input [15:0] wrt_data;	// data to be written
 
 output reg [15:0] rd_data;	//output of data memory
 
-// 2K 16-bit memory
+// 8K 16-bit memory
 reg [15:0]data_mem[0:8192];
 
 // ///////////////////////////////////////////////

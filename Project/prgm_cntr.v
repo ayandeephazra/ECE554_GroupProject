@@ -1,6 +1,7 @@
-module pc(clk,rst_n,stall_IM_ID,dst_ID_EX, 
-		  LWI_instr_EX_DM, dst_EX_DM,
-          pc,pc_ID_EX,flow_change_ID_EX,pc_EX_DM);
+module pc(clk,rst_n,stall_IM_ID,dst_ID_EX,
+          LWI_instr_EX_DM, dst_EX_DM,
+          pc,pc_ID_EX,flow_change_ID_EX,pc_EX_DM,
+          btb_hit, btb_nxt_pc, btb_hit_ID_EX);
 ////////////////////////////////////////////////////////////////////////////\
 // This module implements the program counter logic. It normally increments \\
 // the PC by 1, but when a branch is taken will add the 9-bit immediate      \\
@@ -13,6 +14,9 @@ input clk,rst_n;
 input flow_change_ID_EX;			// asserted from branch boolean on jump or taken branch
 input stall_IM_ID;					// asserted if we need to stall the pipe
 input [15:0] dst_ID_EX;				// branch target address comes in on this bus
+input btb_hit;                // Fetch target PC predicted by Branch Predictor
+input [15:0] btb_nxt_pc;      // target pc from btb
+input btb_hit_ID_EX;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 input LWI_instr_EX_DM; 				// pipelined movc select signal
@@ -64,15 +68,45 @@ always @(posedge clk, negedge rst_n)
 	//pc <= 16'h0000;
  end
   else if (!stall_IM_ID)	// all stalls stall the PC
-    if (flow_change_ID_EX)
-      pc_pre_mux <= dst_ID_EX;
+
+    // MOVC TAKES HIGHER PRIORITY
+    if (flow_change_ID_EX) begin
+      if (btb_hit_ID_EX)
+        pc_pre_mux <= pc_ID_EX;   // branch misprediction :( -- flush back to og pc
+      else
+        pc_pre_mux <= dst_ID_EX;
+    else if (btb_hit)
+      pc_pre_mux <= btb_nxt_pc;
     else
-	  pc_pre_mux <= nxt_pc;
-	  
+	    pc_pre_mux <= nxt_pc;
+    end
+
+    // MERGE CONFLICT !!!!!!!!!
+    // BRANCH PREDICTION HIGHER PRIORITY
+//     if (flow_change_ID_EX) begin
+// <<<<<<< HEAD
+//       pc_pre_mux <= dst_ID_EX;
+//     else
+// 	  pc_pre_mux <= nxt_pc;
+// =======
+//       if (btb_hit_ID_EX)
+//         pc <= pc_ID_EX;   // branch misprediction :( -- flush back to og pc
+//       else
+//         pc <= dst_ID_EX;
+//     else if (btb_hit)
+//       pc <= btb_nxt_pc;
+//     else
+// 	    pc <= nxt_pc;
+
+// >>>>>>> branch_predictor
+    // end
+
+
+
+
 /////////////////////////////////////////////////
 // Implement the mux that selects the movc pc //
 ///////////////////////////////////////////////
-
 assign pc = (LWI_instr_EX_DM)? dst_EX_DM: pc_pre_mux;
 
 ////////////////////////////////////////////////

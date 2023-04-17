@@ -28,10 +28,6 @@ module spart(
     inout [7:0] databus,	// bi-directional data bus
     output TX,				// UART TX line
     input RX  				// UART RX line
-
-
-    ///////// REMOVE /////////
-    //output logic [7:0] SPART_status
     );
     
     // SPART specific signals

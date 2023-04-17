@@ -1,6 +1,6 @@
 module br_bool(clk,rst_n,clk_z_ID_EX,clk_nv_ID_EX,br_instr_ID_EX,
                jmp_imm_ID_EX,jmp_reg_ID_EX,cc_ID_EX,zr,ov,neg,
-			   zr_EX_DM,flow_change_ID_EX);
+			   zr_EX_DM,flow_change_ID_EX,btb_hit_ID_EX);
 
 //////////////////////////////////////////////////////
 // determines branch or not based on cc, and flags //
@@ -13,6 +13,7 @@ input jmp_imm_ID_EX;		// from ID, tell us this is jump immediate instruction
 input jmp_reg_ID_EX;		// from ID, tell us this is jump register instruction
 input [2:0] cc_ID_EX;		// condition code from instr[11:9]
 input zr,ov,neg;			// flag bits from ALU
+input btb_hit_ID_EX;    // branch prediction piped in
 
 output reg flow_change_ID_EX;		// asserted if we should take branch or jumping
 output reg zr_EX_DM;				// goes to ID for ADDZ
@@ -44,21 +45,61 @@ always @(posedge clk, negedge rst_n)
 	  neg_EX_DM <= neg;
 	end
 
-always @(br_instr_ID_EX,cc_ID_EX,zr_EX_DM,ov_EX_DM,neg_EX_DM,jmp_reg_ID_EX,jmp_imm_ID_EX) begin
+// // always @(br_instr_ID_EX,cc_ID_EX,zr_EX_DM,ov_EX_DM,neg_EX_DM,jmp_reg_ID_EX,jmp_imm_ID_EX,btb_hit_ID_EX) begin
+always @(*) begin
 
   flow_change_ID_EX = jmp_imm_ID_EX | jmp_reg_ID_EX;	// jumps always change the flow
   
-  if (br_instr_ID_EX)
-    case (cc_ID_EX)
-	  3'b000 : flow_change_ID_EX = ~zr_EX_DM;
-	  3'b001 : flow_change_ID_EX = zr_EX_DM;
-	  3'b010 : flow_change_ID_EX = ~zr_EX_DM & ~neg_EX_DM;
-	  3'b011 : flow_change_ID_EX = neg_EX_DM;
-	  3'b100 : flow_change_ID_EX = zr_EX_DM | (~zr_EX_DM & ~neg_EX_DM);
-	  3'b101 : flow_change_ID_EX = neg_EX_DM | zr_EX_DM;
-	  3'b110 : flow_change_ID_EX = ov_EX_DM;
-	  3'b111 : flow_change_ID_EX = 1;
-	endcase
+  if (br_instr_ID_EX) begin
+    if (!btb_hit_ID_EX) begin
+      case (cc_ID_EX)
+        3'b000 : flow_change_ID_EX = ~zr_EX_DM;
+        3'b001 : flow_change_ID_EX = zr_EX_DM;
+        3'b010 : flow_change_ID_EX = ~zr_EX_DM & ~neg_EX_DM;
+        3'b011 : flow_change_ID_EX = neg_EX_DM;
+        3'b100 : flow_change_ID_EX = zr_EX_DM | (~zr_EX_DM & ~neg_EX_DM);
+        3'b101 : flow_change_ID_EX = neg_EX_DM | zr_EX_DM;
+        3'b110 : flow_change_ID_EX = ov_EX_DM;
+        3'b111 : flow_change_ID_EX = 1;
+      endcase
+    end else begin    // if btb hit then it's Assume Branch Taken so decision to flow change is reversed
+      case (cc_ID_EX)
+        3'b000 : flow_change_ID_EX = ~(~zr_EX_DM);
+        3'b001 : flow_change_ID_EX = ~(zr_EX_DM);
+        3'b010 : flow_change_ID_EX = ~(~zr_EX_DM & ~neg_EX_DM);
+        3'b011 : flow_change_ID_EX = ~(neg_EX_DM);
+        3'b100 : flow_change_ID_EX = ~(zr_EX_DM | (~zr_EX_DM & ~neg_EX_DM));
+        3'b101 : flow_change_ID_EX = ~(neg_EX_DM | zr_EX_DM);
+        3'b110 : flow_change_ID_EX = ~(ov_EX_DM);
+        3'b111 : flow_change_ID_EX = 0;
+      endcase
+    end
+  end
+    
 end
+
+
+
+
+// assign flow_change_ID_EX = (jmp_imm_ID_EX | jmp_reg_ID_EX) ? 1:
+//     (~br_instr_ID_EX) ? 0 : 
+//     (cc_ID_EX == 3'b000) ? (btb_hit_ID_EX ? ~(~zr_EX_DM) : ~zr_EX_DM) :
+//     (cc_ID_EX == 3'b001) ? (btb_hit_ID_EX ? ~(zr_EX_DM) : zr_EX_DM) :
+//     (cc_ID_EX == 3'b010) ? (btb_hit_ID_EX ? ~(~zr_EX_DM & ~neg_EX_DM) : (~zr_EX_DM & ~neg_EX_DM)) :
+//     (cc_ID_EX == 3'b011) ? (btb_hit_ID_EX ? ~(neg_EX_DM) : neg_EX_DM) :
+//     (cc_ID_EX == 3'b100) ? (btb_hit_ID_EX ? ~(zr_EX_DM | (~zr_EX_DM & ~neg_EX_DM)) : (zr_EX_DM | (~zr_EX_DM & ~neg_EX_DM))) :
+//     (cc_ID_EX == 3'b101) ? (btb_hit_ID_EX ? ~(neg_EX_DM | zr_EX_DM) : (neg_EX_DM | zr_EX_DM)) :
+//     (cc_ID_EX == 3'b110) ? (btb_hit_ID_EX ? ~(ov_EX_DM) : ov_EX_DM) :
+//     (cc_ID_EX == 3'b111) ? (btb_hit_ID_EX ? 0 : 1) : 0;
+    
+
+
+
+
+
+
+
+
+
 
 endmodule

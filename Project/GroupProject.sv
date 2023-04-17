@@ -12,13 +12,16 @@ module GroupProject(
 	input 		          		CLOCK_50,
 
 	//////////// KEY //////////
-	input 		     		RST_n,
+	input 		     [3:0]		KEY,
 
 	//////////// LED //////////
 	output		     [9:0]		LEDR,
 
 	//////////// SW //////////
 	input 		     [9:0]		SW,
+
+	//////////// GPIO_1, GPIO_1 connect to GPIO Default //////////
+	inout 		    [35:0]		GPIO,
 
 	//////////// VGA //////////
 	output		          		VGA_BLANK_N,
@@ -28,10 +31,7 @@ module GroupProject(
 	output		          		VGA_HS,
 	output		     [7:0]		VGA_R,
 	output		          		VGA_SYNC_N,
-	output		          		VGA_VS,
-
-	//////////// GPIO_1, GPIO_1 connect to GPIO Default //////////
-	inout 		    [35:0]		GPIO
+	output		          		VGA_VS
 );
 
 
@@ -40,7 +40,14 @@ module GroupProject(
 //  REG/WIRE declarations
 //=======================================================
 
-    // internal signals for modified cpu
+
+
+
+//=======================================================
+//  Structural coding
+//=======================================================
+
+// internal signals for modified cpu
 	logic rst_n;
 	logic mm_we, mm_re;
 	logic [15:0] wdata, rdata, addr;
@@ -58,22 +65,15 @@ module GroupProject(
 	// PLL/rst_synch
 	logic pll_locked;
 
-	// REMOVE
+	////////////////// REMOVE
 	logic [7:0] status;
-	
+
 	// PLL signals
 	wire clk;
 
-//=======================================================
-//  Structural coding
-//=======================================================
-
-
-/* CapabilityExplore1 CE1(.KEY(KEY), .CLOCK_50(CLOCK_50), .LEDR(LEDR), .SW(SW), .TX(GPIO[3]), .RX(GPIO[5]),
-						// VGA outs assigned in BMP_Display
-						.VGA_BLANK_N(VGA_BLANK_N), .VGA_B(VGA_B), .VGA_CLK(VGA_CLK), .VGA_G(VGA_G), .VGA_HS(VGA_HS),
-						.VGA_R(VGA_R), .VGA_SYNC_N(VGA_SYNC_N), .VGA_VS(VGA_VS)); */
-						
+	// mmap reg signals
+	logic inc_br_cnt, inc_hit_cnt, inc_mispr_cnt; 	// branch pred stats
+	logic br_stats_wr, mmap_re;
 	
 	// FF logic for LEDR ---- DEBUG
 	always_ff @ (negedge CLOCK_50) begin
@@ -88,52 +88,56 @@ module GroupProject(
 	// Memory Mappings
 	always_comb begin
 		rdata = (mm_re & (addr==16'hc001)) ? {{6{1'b0}},SW} :
-				(mm_re & (addr==16'hc004 | addr==16'hc005)) ? databus : 
-				16'ha5a5; 
+				(mm_re & (addr==16'hc004 | addr==16'hc005 | addr[15:4]==12'hc01)) ? databus : 
+				16'ha5a5;
 
-		iocs_n = ~((addr==16'hc004 | addr==16'hc005 | addr==16'hc006 | addr==16'hc007) & (mm_we | mm_re));		// selects C004/5/6/7
+		iocs_n = ~((addr==16'hc004 | addr==16'hc005 | addr==16'hc006 | addr==16'hc007) & (mm_we | mm_re));
 		iorw_n = (~iocs_n) & mm_re;
 
 		bmp_sel = ((addr==16'hc008 | addr==16'hc009 | addr==16'hc00A) & mm_we);
+		br_stats_wr = ((addr == 16'hc00b) & mm_we);
+
+		mmap_re = (mm_re & (addr==16'hc010 | addr==16'hc011 | addr==16'hc012 | addr==16'hc013));
 	end
 
-	// assign databus = (~iorw_n | bmp_sel) ? wdata[7:0] : 8'hzz;	// infer tri state for driving bus from proc to spart
-	assign databus = (mm_we) ? wdata : 8'hzz;	// infer tri state for driving bus from proc to spart
+	assign databus = (mm_we) ? wdata : 8'hzz;	// infer tri state for driving bus from proc
 
 	////////////////////////////////////////////////////////
 	// Instantiate PLL to generate clk and 25MHz VGA_CLK //
 	//////////////////////////////////////////////////////
-	PLL iPLL(.refclk(CLOCK_50), .rst(~RST_n),.outclk_0(clk),.outclk_1(VGA_CLK), .locked(pll_locked));
+	PLL iPLL(.refclk(CLOCK_50), .rst(~KEY[0]),.outclk_0(clk),.outclk_1(VGA_CLK), .locked(pll_locked));
 
+		
 	/////////////////////////////////////
 	// instantiate rst_n synchronizer //
 	///////////////////////////////////
-	rst_synch iRST(.clk(clk),.RST_n(RST_n), .pll_locked(pll_locked), .rst_n(rst_n));
-	
-	// /////////////////////////////////////
-    // // instantiate rst_n synchronizer //
-    // ///////////////////////////////////
-	// rst_synch rst_synch1(.RST_n(KEY[0]), .rst_n(rst_n), .clk(CLOCK_50));
+	rst_synch iRST(.clk(clk),.RST_n(KEY[0]), .pll_locked(pll_locked), .rst_n(rst_n));
 	
 	/////////////////////////////////////
     // instantiate cpu topl level mod //
     ///////////////////////////////////
-	cpu cpu1(.clk(clk), .rst_n(rst_n), .wdata(wdata), .mm_we(mm_we), .addr(addr), .mm_re(mm_re), .rdata(rdata));
+	cpu cpu1(.clk(clk), .rst_n(rst_n), .wdata(wdata), .mm_we(mm_we), .addr(addr), .mm_re(mm_re), .rdata(rdata),
+			.inc_br_cnt(inc_br_cnt), .inc_hit_cnt(inc_hit_cnt), .inc_mispr_cnt(inc_mispr_cnt));
 
-	//////////////////////////////////////////////////
-  	// Instantiate Logic that includes internal    //
+	////////////////////////////////////////////////
+	// Instantiate Logic that includes internal    //
   	// RX -> TX in that particular order          //
-  	///////////////////////////////////////////////	
+  	/////////////////////////////////////////////	
 	spart spart1(.clk(clk), .rst_n(rst_n), .iocs_n(iocs_n), .iorw_n(iorw_n), .tx_q_full(tx_q_full), .rx_q_empty(rx_q_empty),
-	 			 .ioaddr(addr[1:0]), .databus(databus[7:0]), .TX(GPIO[3]), .RX(GPIO[5]));
+				 .ioaddr(addr[1:0]), .databus(databus[7:0]), .TX(GPIO[3]), .RX(GPIO[5]));
+
+	//////////////////////////////////////////
+	// Instantiate memory mapped registers //
+	////////////////////////////////////////
+	mmap_regs immap_regs(.clk(clk), .rst_n(rst_n), .inc_br_cnt(inc_br_cnt), .inc_hit_cnt(inc_hit_cnt), .inc_mispr_cnt(inc_mispr_cnt),
+						 .br_stats_wr(br_stats_wr), .databus(databus), .mmap_addr(addr[3:0]), .mmap_re(mmap_re));
 
 	////////////////////////////////
     // instantiate BMP_display	 //
     //////////////////////////////
 	BMP_display iBMP(.clk(clk), .rst_n(rst_n), .pll_locked(pll_locked), .bmp_sel(bmp_sel), .addr(addr), .databus(databus),
-					
 					.VGA_BLANK_N(VGA_BLANK_N), .VGA_B(VGA_B), .VGA_CLK(VGA_CLK), .VGA_G(VGA_G), .VGA_HS(VGA_HS), .VGA_R(VGA_R), .VGA_SYNC_N(VGA_SYNC_N), .VGA_VS(VGA_VS));
 
-// .mm_addr(addr), .mm_we(mm_we), .mm_wdata(databus),
+
 
 endmodule
