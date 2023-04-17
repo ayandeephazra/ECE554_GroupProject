@@ -6,15 +6,15 @@ module DM(clk,addr,re,we,wrt_data,rd_data);
 // high, read/write on clock low.                   //
 /////////////////////////////////////////////////////
 input clk;
-input [9:0] addr;
+input [15:0] addr;
 input re;				// asserted when instruction read desired
 input we;				// asserted when write desired
 input [15:0] wrt_data;	// data to be written
 
 output reg [15:0] rd_data;	//output of data memory
 
-// 2K 16-bit memory
-reg [15:0]data_mem[0:1023];
+// 8K 16-bit memory
+reg [15:0]data_mem[0:8192];
 
 // ///////////////////////////////////////////////
 // // Model read, data is flopped on clock low //
