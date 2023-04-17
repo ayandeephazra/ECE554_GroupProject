@@ -15,3 +15,10 @@ Branch predictor -> Cache of sorts, stores like 4 branches (2 bits) with a bit t
                     Decode, find out it is a branch instruction, if yes, check the cache(?) above and predict last outcome.
                     Comb logic for storing entries to the cache.
                     Do a reduction xor of a PC and use that as an index to the cache. 
+                    
+                    
+                    
+                    
+merge_branch --- appended instr + moving images
+6bit_merge -- merge_branch + 6bit
+final_merge --- 6bitmerge + branch_pred
