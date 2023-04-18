@@ -66,11 +66,11 @@ always @(posedge clk, negedge rst_n)
   if (!rst_n) begin
     pc_pre_mux <= 16'h0000;
 	//pc <= 16'h0000;
- end
+  end
   else if (!stall_IM_ID)	// all stalls stall the PC
 
     // MOVC TAKES HIGHER PRIORITY
-    if (flow_change_ID_EX) begin
+    if (flow_change_ID_EX)
       if (btb_hit_ID_EX)
         pc_pre_mux <= pc_ID_EX;   // branch misprediction :( -- flush back to og pc
       else
@@ -79,7 +79,6 @@ always @(posedge clk, negedge rst_n)
       pc_pre_mux <= btb_nxt_pc;
     else
 	    pc_pre_mux <= nxt_pc;
-    end
 
     // MERGE CONFLICT !!!!!!!!!
     // BRANCH PREDICTION HIGHER PRIORITY
