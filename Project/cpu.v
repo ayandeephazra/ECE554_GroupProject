@@ -20,6 +20,7 @@ wire [15:0] dst_ID_EX;			// result from ALU for branch destination
 wire [15:0] pc_ID_EX;			// nxt_pc to source mux for JR
 wire [15:0] pc_EX_DM;			// nxt_pc to store in reg15 for JAL
 wire [15:0] iaddr;				// instruction address
+wire [15:0] pc_pre_mux;			// **ADDED** pre movc mux to index into BTB
 wire [15:0] dm_rd_data_EX_DM;	// data memory read data
 wire [15:0] rf_w_data_DM_WB;	// register file write data
 wire [15:0] p0,p1;				// read ports from RF
@@ -45,13 +46,13 @@ wire btb_hit_ID_EX;				// Required in EX to decide if flow change is necessary
 ////////////////////////////////
 pc iPC(.clk(clk), .rst_n(rst_n), .stall_IM_ID(stall_IM_ID), .pc(iaddr), .dst_ID_EX(dst_ID_EX),
 		.pc_ID_EX(pc_ID_EX), .pc_EX_DM(pc_EX_DM), .flow_change_ID_EX(flow_change_ID_EX), 
-		.LWI_instr_EX_DM(LWI_instr_EX_DM), .dst_EX_DM(dst_EX_DM),
+		.LWI_instr_EX_DM(LWI_instr_EX_DM), .dst_EX_DM(dst_EX_DM), .pc_pre_mux(pc_pre_mux), 
 	   .btb_hit(btb_hit), .btb_nxt_pc(btb_nxt_pc), .btb_hit_ID_EX(btb_hit_ID_EX));
 	   
 ///////////////////////////////////////
 // Instantiate Branch Target Buffer //
 /////////////////////////////////////
-btb iBTB(.clk(clk), .rst_n(rst_n), .PC(iaddr), .target_PC(btb_nxt_pc), .hit(btb_hit), .btb_hit_ID_EX(btb_hit_ID_EX),
+btb iBTB(.clk(clk), .rst_n(rst_n), .PC(pc_pre_mux), .target_PC(btb_nxt_pc), .hit(btb_hit), .btb_hit_ID_EX(btb_hit_ID_EX),
 		.flow_change_ID_EX(flow_change_ID_EX), .br_instr_ID_EX(br_instr_ID_EX), .pc_ID_EX(pc_ID_EX),
 		.dst_ID_EX(dst_ID_EX), .inc_br_cnt(inc_br_cnt), .inc_hit_cnt(inc_hit_cnt), .inc_mispr_cnt(inc_mispr_cnt));
 

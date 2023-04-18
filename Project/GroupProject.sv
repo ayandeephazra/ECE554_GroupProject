@@ -12,7 +12,7 @@ module GroupProject(
 	input 		          		CLOCK_50,
 
 	//////////// KEY //////////
-	input 		     [3:0]		KEY,
+	input 		     			RST_n,
 
 	//////////// LED //////////
 	output		     [9:0]		LEDR,
@@ -82,7 +82,7 @@ module GroupProject(
 		if(!rst_n)
 			LEDR_reg <= 10'h000;
 		else
-			LEDR_reg <= status;		// REPLACE FOR DEBUG
+			LEDR_reg <= 10'hfff;		// REPLACE FOR DEBUG
 	end
 	
 	// Memory Mappings
@@ -105,13 +105,13 @@ module GroupProject(
 	////////////////////////////////////////////////////////
 	// Instantiate PLL to generate clk and 25MHz VGA_CLK //
 	//////////////////////////////////////////////////////
-	PLL iPLL(.refclk(CLOCK_50), .rst(~KEY[0]),.outclk_0(clk),.outclk_1(VGA_CLK), .locked(pll_locked));
+	PLL iPLL(.refclk(CLOCK_50), .rst(~RST_n),.outclk_0(clk),.outclk_1(VGA_CLK), .locked(pll_locked));
 
 		
 	/////////////////////////////////////
 	// instantiate rst_n synchronizer //
 	///////////////////////////////////
-	rst_synch iRST(.clk(clk),.RST_n(KEY[0]), .pll_locked(pll_locked), .rst_n(rst_n));
+	rst_synch iRST(.clk(clk),.RST_n(RST_n), .pll_locked(pll_locked), .rst_n(rst_n));
 	
 	/////////////////////////////////////
     // instantiate cpu topl level mod //
@@ -132,11 +132,11 @@ module GroupProject(
 	mmap_regs immap_regs(.clk(clk), .rst_n(rst_n), .inc_br_cnt(inc_br_cnt), .inc_hit_cnt(inc_hit_cnt), .inc_mispr_cnt(inc_mispr_cnt),
 						 .br_stats_wr(br_stats_wr), .databus(databus), .mmap_addr(addr[3:0]), .mmap_re(mmap_re));
 
-	////////////////////////////////
-    // instantiate BMP_display	 //
-    //////////////////////////////
-	BMP_display iBMP(.clk(clk), .rst_n(rst_n), .pll_locked(pll_locked), .bmp_sel(bmp_sel), .addr(addr), .databus(databus),
-					.VGA_BLANK_N(VGA_BLANK_N), .VGA_B(VGA_B), .VGA_CLK(VGA_CLK), .VGA_G(VGA_G), .VGA_HS(VGA_HS), .VGA_R(VGA_R), .VGA_SYNC_N(VGA_SYNC_N), .VGA_VS(VGA_VS));
+	// ////////////////////////////////
+    // // instantiate BMP_display	 //
+    // //////////////////////////////
+	// BMP_display iBMP(.clk(clk), .rst_n(rst_n), .pll_locked(pll_locked), .bmp_sel(bmp_sel), .addr(addr), .databus(databus),
+	// 				.VGA_BLANK_N(VGA_BLANK_N), .VGA_B(VGA_B), .VGA_CLK(VGA_CLK), .VGA_G(VGA_G), .VGA_HS(VGA_HS), .VGA_R(VGA_R), .VGA_SYNC_N(VGA_SYNC_N), .VGA_VS(VGA_VS));
 
 
 
