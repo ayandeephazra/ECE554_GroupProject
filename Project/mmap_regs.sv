@@ -7,17 +7,23 @@ module mmap_regs(
     inout [15:0] databus,   // input (for en/dis stats count) OR output (mmap_reg data)
     input inc_br_cnt,
     input inc_hit_cnt,
-    input inc_mispr_cnt
+    input inc_mispr_cnt,
+    input KEY_UP,
+    input KEY_DOWN
 );
 
     logic [15:0] br_cnt, mispr_cnt, hit_cnt;
     logic [15:0] timer;
     logic stats_en;     // a write to mem addr 0xc00b sets or clears the stats reg
+    logic [15:0] button_up, button_down;
 
-    assign databus = (mmap_re & mmap_addr == 2'b00) ? br_cnt :
-                     (mmap_re & mmap_addr == 2'b01) ? mispr_cnt :
-                     (mmap_re & mmap_addr == 2'b10) ? hit_cnt :
-                     (mmap_re & mmap_addr == 2'b11) ? timer :
+    // mmap_addr needs to check all 4 bits -> switched to hex to make it easier
+    assign databus = (mmap_re & mmap_addr == 4'h0) ? br_cnt :
+                     (mmap_re & mmap_addr == 4'h1) ? mispr_cnt :
+                     (mmap_re & mmap_addr == 4'h2) ? hit_cnt :
+                     (mmap_re & mmap_addr == 4'h3) ? timer :
+                     (mmap_re & mmap_addr == 4'h4) ? button_up :       
+                     (mmap_re & mmap_addr == 4'h5) ? button_down :       
                      16'hzzzz;
 
     always_ff @ (posedge clk, negedge rst_n)
@@ -53,6 +59,24 @@ module mmap_regs(
             timer <= '0;
         else
             timer <= timer + 1;
+
+    // KEY[1] -- addr 0xc014
+    always_ff @(posedge clk, negedge rst_n)
+        if (!rst_n)
+            button_up <= 16'h0000;
+        else if (KEY_UP)
+            button_up <= 16'hFFFF;
+        else
+            button_up <= 16'h0000;
+
+    // KEY[2] -- addr 0xc015
+    always_ff @(posedge clk, negedge rst_n)
+        if (!rst_n)
+            button_down <= 16'h0000;
+        else if (KEY_DOWN)
+            button_down <= 16'hFFFF;
+        else
+            button_down <= 16'h0000;
     
 
 endmodule
