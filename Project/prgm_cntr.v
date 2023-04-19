@@ -26,7 +26,7 @@ input [15:0] dst_EX_DM;
 output [15:0] pc;				// the PC, forms address to instruction memory, muxed with movc control
 output reg [15:0] pc_ID_EX;			// needed in EX stage for Branch instruction
 output reg [15:0] pc_EX_DM;			// needed in dst_mux for JAL instruction
-output reg [15:0] pc_pre_mux;
+output reg [15:0] pc_pre_mux;   // used to index into BTB
 
 reg [15:0] pc_IM_ID;
 
@@ -73,7 +73,7 @@ always @(posedge clk, negedge rst_n)
       if (btb_hit_ID_EX)
         pc_pre_mux <= pc_ID_EX;   // branch misprediction :( -- flush back to og pc
       else
-        pc_pre_mux <= dst_ID_EX;
+        pc_pre_mux <= dst_ID_EX;  // standard jump flow
     else if (btb_hit)
       pc_pre_mux <= btb_nxt_pc;   // branch prediction
     else

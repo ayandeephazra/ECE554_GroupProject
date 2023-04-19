@@ -4,6 +4,7 @@ module btb (
     // input en,         // enable btb default high
     input [15:0] PC,
     input flow_change_ID_EX,
+    input stall_IM_ID,
     input br_instr_ID_EX,
     input [15:0] pc_ID_EX,
     input [15:0] dst_ID_EX,
@@ -46,7 +47,7 @@ assign strong_bit = btb_out[17];
 // Determine hit
 assign valid_bit = btb_out[16];
 assign tag = btb_out[24:18];
-assign hit = (valid_bit & en & (PC[15:9] == tag)) ? 1 : 0;
+assign hit = (valid_bit & ~stall_IM_ID & en & (PC[15:9] == tag)) ? 1 : 0;
 
 // output target
 assign target_PC = btb_out[13:0];

@@ -10,7 +10,7 @@ llb R3, 0x3
 
 REPEAT:
 sub R5, R2, R3
-b gte, FIRST        ## 1st. branch taken & not predicted -- PC: 4 -> PC: 9 (alloc) --- R5 = 1
+b gte, FIRST        ## 1st. branch taken & not predicted -- PC: 8 -> PC: 13 (alloc) --- R5 = 1
                     ## 2nd. branch taken & predicted (SETS STRONG BIT) ---- R5 = 0
                     ## 3rd. branch not taken & predicted (CLR STRONG BIT)   --- R5 = -1
                     ## 4th. branch not taken & predicted (line invalidate)  --- R5 = -2
@@ -20,7 +20,7 @@ llb R4, 0x1
 llb R4, 0x2
 llb R4, 0x3
 
-FIRST:
+FIRST:              # PC: 13
 llb R4, 0x8
 llb R4, 0x9
 llb R4, 0xa
@@ -29,7 +29,7 @@ llb R4, 0xb
 sub R2, R2, R1
 b eq, END_STATS     ## 1st/2nd/3rd. branch not taken & not predicted
                     ## 4th. branch taken & not predicted (alloc)
-b gte, REPEAT       ## REPEAT FOUR TIMES ----- PC: 15 -> PC: 3
+b gte, REPEAT       ## REPEAT FOUR TIMES ----- PC: 19 -> PC: 7
                     ## 1st. branch taken & not predicted (alloc)
                     ## 2nd. branch taken & predicted (SET STRONG BIT)
                     ## 3rd. .......
@@ -42,7 +42,7 @@ sw R1, R2, 0        # stop stats -- clear mem[0xc00b]
 jal PRINT_STATS
 
 END:
-b uncond, END
+b uncond, END       # PC: 25
 
 
 ###############################
@@ -75,9 +75,10 @@ llb R3, 0x20        # ' '
 sw R3, R2, 0
 
 L_WAIT_EMP:         # wait for TX q to empty
-lw R3, R2, 1        # read from 0xc005 (status reg) --> R3
+lw R3, R2, 1        # PC: 47       read from 0xc005 (status reg) --> R3
 and R3, R3, R4      # look for R3 == 1XXX_XXXX (tx_queue is empty)
 b eq, L_WAIT_EMP    # if result is zero => MSB of status_reg is not 1 => not empty keep waiting
+                    # PC: 49
 
 llb R3, 0x30        # 0
 sw R3, R2, 0
@@ -85,7 +86,7 @@ llb R3, 0x78        # x
 sw R3, R2, 0
 
 
-llb R14, 0xff       # DEBUG
+llb R14, 0xff       # DEBUG --- PC: 54
 
 ##########################################
 #   HEX --> CHAR CONVERSION
