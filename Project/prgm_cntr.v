@@ -69,7 +69,7 @@ always @(posedge clk, negedge rst_n)
   else if (!stall_IM_ID)	// all stalls stall the PC
 
     // MOVC TAKES HIGHER PRIORITY
-    if (flow_change_ID_EX)
+    if (flow_change_ID_EX) 
       if (btb_hit_ID_EX)
         pc_pre_mux <= pc_ID_EX;   // branch misprediction :( -- flush back to og pc
       else

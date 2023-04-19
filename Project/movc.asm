@@ -1,18 +1,15 @@
-llb R1, 0x55
-lhb R1, 0x55
-llb R2, 0x00
-lhb R2, 0x01
-llb R3, 0x48
-lhb R3, 0x00
-llb R7, 0x49
-lhb R7, 0x00
+llb R1, 0x55	# buffer
+lhb R1, 0x55	# buffer
+llb R2, 0x00	# address of MEM below
+lhb R2, 0x01	# address of MEM below
+llb R3, 0x48    # ASCII H
+lhb R3, 0x00	# ASCII H
+llb R7, 0x49	# ASCII I
+lhb R7, 0x00	# ASCII I
 
 # first MOVC instruction
-MOVC R4, R2, 0x00
-SUB R5, R4, R7
-#NOOP
-#MOVC R4, R2, 0x05
-#SUB R5, R4, R3
+MOVC R4, R2, 0x00		# R4 <- ASCII I (49)
+SUB R5, R4, R7			# R5 = 0 if code correct
 
 B eq, PASS_1
 B neq, FAIL
@@ -20,29 +17,35 @@ B neq, FAIL
 PASS_1:
 llb R6, 0x55
 lhb R6, 0x9a
-# arithmetic to see if they function normally
+# arithmetic to see if they function normally in conjunction with MOVC
 ADDI R3, R3, 0x01
 SUB  R8, R3, R7
 SUBI R3, R3, 0x01
+# R8 = 0 as R3 == R7
 
 llb R6, 0x00
 llb R5, 0x00
+llb R1, 0x00
+llb R2, 0x00
+llb R3, 0x00
+llb R7, 0x00
 llb R8, 0xff
 
-llb R1, 0x55
-lhb R1, 0x55
-llb R2, 0x00
-lhb R2, 0x01
-llb R3, 0x48
-lhb R3, 0x00
-llb R7, 0x49
-lhb R7, 0x00
+llb R1, 0x55	# buffer
+lhb R1, 0x55	# buffer
+llb R2, 0x00	# address of MEM below
+lhb R2, 0x01	# address of MEM below
+llb R3, 0x48    # ASCII H
+lhb R3, 0x00	# ASCII H
+llb R7, 0x49	# ASCII I
+lhb R7, 0x00	# ASCII I
+
 # second MOVC instruction
 MOVC R4, R2, 0x05
 #NOOP
-#NOOP
-#NOOP
-#NOOP
+# NOOP
+# NOOP
+# NOOP
 #MOVC R4, R2, 0x05
 MOVC R4, R2, 0x05
 SUB R5, R4, R3
@@ -53,6 +56,7 @@ PASS_2:
 llb R6, 0x55
 lhb R6, 0x9a
 # arithmetic to see if they function normally
+
 ADDI R3, R3, 0x01
 SUB  R8, R3, R7
 SUBI R3, R3, 0x01
@@ -69,4 +73,4 @@ lhb R9, 0x0e
 b uncond, END
 
 MEM 0x0100
-STRING I am Hereg
+STRING I am Here!

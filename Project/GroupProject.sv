@@ -40,13 +40,6 @@ module GroupProject(
 //  REG/WIRE declarations
 //=======================================================
 
-
-
-
-//=======================================================
-//  Structural coding
-//=======================================================
-
 // internal signals for modified cpu
 	logic rst_n;
 	logic mm_we, mm_re;
@@ -74,7 +67,11 @@ module GroupProject(
 	// mmap reg signals
 	logic inc_br_cnt, inc_hit_cnt, inc_mispr_cnt; 	// branch pred stats
 	logic br_stats_wr, mmap_re;
-	
+
+//=======================================================
+//  Structural coding
+//=======================================================
+
 	// FF logic for LEDR ---- DEBUG
 	always_ff @ (negedge CLOCK_50) begin
 	
@@ -135,8 +132,8 @@ module GroupProject(
 	// ////////////////////////////////
     // // instantiate BMP_display	 //
     // //////////////////////////////
-	// BMP_display iBMP(.clk(clk), .rst_n(rst_n), .pll_locked(pll_locked), .bmp_sel(bmp_sel), .addr(addr), .databus(databus),
-	// 				.VGA_BLANK_N(VGA_BLANK_N), .VGA_B(VGA_B), .VGA_CLK(VGA_CLK), .VGA_G(VGA_G), .VGA_HS(VGA_HS), .VGA_R(VGA_R), .VGA_SYNC_N(VGA_SYNC_N), .VGA_VS(VGA_VS));
+	BMP_display iBMP(.clk(clk), .rst_n(rst_n), .pll_locked(pll_locked), .bmp_sel(bmp_sel), .addr(addr), .databus(databus),
+	 				.VGA_BLANK_N(VGA_BLANK_N), .VGA_B(VGA_B), .VGA_CLK(VGA_CLK), .VGA_G(VGA_G), .VGA_HS(VGA_HS), .VGA_R(VGA_R), .VGA_SYNC_N(VGA_SYNC_N), .VGA_VS(VGA_VS));
 
 
 

@@ -61,7 +61,7 @@ my %numArgs = ( qw/ADD 3 ADDZ 3 SUB 3 AND 3 NOR 3 XOR 3 SLL 3 SRL 3 SRA 3 LW 3 S
                 ADDI 3 SUBI 3 XORI 3 ANDNI 3 ANDI 3 XORNI 3 ORI 3 ANDN 3 SMUL 3 MOVC 3 UMUL 3 PUSH 1 POP 1 NOOP 0/);
 
 
-my %opcode = ( qw/ADD 00000000 ADDZ 00000001 SUB 00000010 AND 00000011 NOR 00000100 XOR 00010111 SLL 00000101 SRL 00000110 SRA 00000111 LW 00001000 SW 00001001 
+my %opcode = ( qw/ADD 00000000 ADDZ 00000001 SUB 00000010 AND 00000011 NOR 00000100 XOR 00011011 SLL 00000101 SRL 00000110 SRA 00000111 LW 00001000 SW 00001001 
                   LHB 00001010 LLB 00001011 B 00001100 JAL 00001101 JR 00001110 ADDI 00010000 SUBI 00010001 XORI 00010010 ANDNI 00010011 ANDI 00010100 
                   XORNI 00010101 ORI 00010110 ANDN 00010111 SMUL 00011010 MOVC 00011000 UMUL 00011001 PUSH 00000000 POP 00000000 NOOP 00001111/);
 
@@ -112,6 +112,35 @@ while(<IN>) {
 	    next;
 
     }
+    
+    if(/STRING\s+(.*)/) {
+
+        my $data = $1;
+
+        my @chars;
+
+        @chars = split(//,$data);
+        
+        # print $data;
+        # print "\n";
+        # print @chars;
+        # print "\n";
+
+        my $x;
+
+        for ($x = 0; $x < (length($data)-1); $x++) {
+          $mem[$addr] = decToBin(ord($chars[$x]), 20);
+          $source_lines[$addr++] = $chars[$x];
+          # print $chars[$x];
+          # print "\n";
+        }
+
+        $mem[$addr] = decToBin(0,20);
+        $source_lines[$addr++] = "Null terminate";
+
+        next;
+        
+    }
 
     if(/DATA\s+(.*)/) {
 
@@ -127,27 +156,6 @@ while(<IN>) {
 
     }
 
-    if(/STRING\s+(.*)/) {
-
-        my $data = $1;
-
-        my @chars;
-
-        @chars = split(//,$data);
-
-        my $x;
-
-        for ($x = 0; $x < (length($data)-1); $x++) {
-          $mem[$addr] = decToBin(ord($chars[$x]), 20);
-          $source_lines[$addr++] = $chars[$x];
-        }
-
-        $mem[$addr] = decToBin(0,20);
-        $source_lines[$addr++] = "Null terminate";
-
-        next;
-        
-    }
 
     $source_lines[$addr] = $_;
 
@@ -248,6 +256,9 @@ while(<IN>) {
       }
 
 
+
+      # this will essential just become a macro most likely, easier to do than in hardware
+      # just a placeholder for now - look at slides when changing
       elsif($instr =~ /^(PUSH)$/) {
 
         foreach my $reg ($args[0]) {
@@ -285,8 +296,8 @@ while(<IN>) {
 
         $addr += 1;
 
-        #         opcode                 R0       0
-        $bits = "00001000" . $args[0] . "0000" . "0000";
+        #         opcode                         R0       0
+        $bits = "00001000" . $regs{$args[0]} . "0000" . "0000";
 
       }
 
@@ -410,13 +421,7 @@ for(my $i=0; $i<scalar(@mem); $i++) {
 
   # print decToHex($i) . "  :  " . binToHex($addr) . "  ;\n";
   
-  # need to also check if it doesn't contain anything (possibly check the length?)
-  # ($source_lines[$i] ne "")
-  if (!($source_lines[$i] =~ m/PUSH|POP/)) {
-    if ($source_lines[$i] ne "") {
-      print "\@" . decToHex($i, 4) . " " . binToHex($addr) . "\t// " . $source_lines[$i] . "\n";
-    }
-  }
+  print "\@" . decToHex($i, 4) . " " . binToHex($addr) . "\t// " . $source_lines[$i] . "\n";
 
   #if($code[$i]) { print $code[$i] }
 
