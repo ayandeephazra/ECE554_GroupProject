@@ -66,7 +66,7 @@ module GroupProject(
 
 	// mmap reg signals
 	logic inc_br_cnt, inc_hit_cnt, inc_mispr_cnt; 	// branch pred stats
-	logic br_stats_wr, mmap_re;
+	logic br_stats_wr, mmap_re, lfsr_load;
 
 //=======================================================
 //  Structural coding
@@ -93,8 +93,9 @@ module GroupProject(
 
 		bmp_sel = ((addr==16'hc008 | addr==16'hc009 | addr==16'hc00A) & mm_we);
 		br_stats_wr = ((addr == 16'hc00b) & mm_we);
+		lfsr_load = ((addr == 16'hc016) & mm_we);
 
-		mmap_re = (mm_re & (addr==16'hc010 | addr==16'hc011 | addr==16'hc012 | addr==16'hc013));
+		// mmap_re = (mm_re & (addr==16'hc010 | addr==16'hc011 | addr==16'hc012 | addr==16'hc013));
 	end
 
 	assign databus = (mm_we) ? wdata : 8'hzz;	// infer tri state for driving bus from proc
@@ -127,7 +128,9 @@ module GroupProject(
 	// Instantiate memory mapped registers //
 	////////////////////////////////////////
 	mmap_regs immap_regs(.clk(clk), .rst_n(rst_n), .inc_br_cnt(inc_br_cnt), .inc_hit_cnt(inc_hit_cnt), .inc_mispr_cnt(inc_mispr_cnt),
-						 .br_stats_wr(br_stats_wr), .databus(databus), .mmap_addr(addr[3:0]), .mmap_re(mmap_re));
+						 .lfsr_load(lfsr_load), .br_stats_wr(br_stats_wr), .databus(databus), .addr(addr), .mm_re(mm_re));
+
+	
 
 	// ////////////////////////////////
     // // instantiate BMP_display	 //
