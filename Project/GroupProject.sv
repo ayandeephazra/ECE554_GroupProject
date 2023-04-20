@@ -67,10 +67,14 @@ module GroupProject(
 	// mmap reg signals
 	logic inc_br_cnt, inc_hit_cnt, inc_mispr_cnt; 	// branch pred stats
 	logic br_stats_wr, mmap_re, lfsr_load;
+	logic btb_en;
 
 //=======================================================
 //  Structural coding
 //=======================================================
+
+	logic [8:0] led_debug;
+	assign led_debug = 9'hfff;		// REPLACE FOR DEBUG
 
 	// FF logic for LEDR ---- DEBUG
 	always_ff @ (negedge CLOCK_50) begin
@@ -79,7 +83,7 @@ module GroupProject(
 		if(!rst_n)
 			LEDR_reg <= 10'h000;
 		else
-			LEDR_reg <= 10'hfff;		// REPLACE FOR DEBUG
+			LEDR_reg <= {led_debug, SW[0]};
 	end
 	
 	// Memory Mappings
@@ -96,6 +100,7 @@ module GroupProject(
 		lfsr_load = ((addr == 16'hc016) & mm_we);
 
 		// mmap_re = (mm_re & (addr==16'hc010 | addr==16'hc011 | addr==16'hc012 | addr==16'hc013));
+		btb_en = SW[0];
 	end
 
 	assign databus = (mm_we) ? wdata : 8'hzz;	// infer tri state for driving bus from proc
@@ -115,7 +120,7 @@ module GroupProject(
     // instantiate cpu topl level mod //
     ///////////////////////////////////
 	cpu cpu1(.clk(clk), .rst_n(rst_n), .wdata(wdata), .mm_we(mm_we), .addr(addr), .mm_re(mm_re), .rdata(rdata),
-			.inc_br_cnt(inc_br_cnt), .inc_hit_cnt(inc_hit_cnt), .inc_mispr_cnt(inc_mispr_cnt));
+			.inc_br_cnt(inc_br_cnt), .inc_hit_cnt(inc_hit_cnt), .inc_mispr_cnt(inc_mispr_cnt), .en(btb_en));
 
 	////////////////////////////////////////////////
 	// Instantiate Logic that includes internal    //

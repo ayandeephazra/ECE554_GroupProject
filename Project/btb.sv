@@ -1,7 +1,7 @@
 module btb (
     input clk,
     input rst_n,
-    // input en,         // enable btb default high
+    input en,         // enable btb default high
     input [15:0] PC,
     input flow_change_ID_EX,
     input stall_IM_ID,
@@ -28,7 +28,8 @@ logic [24:0] btb_out;
 logic valid_bit, strong_bit;
 logic sbit_IF_ID, sbit_ID_EX;
 logic [15:0] target_PC_IF_ID, target_PC_ID_EX;
-logic en, btb_hit_IF_ID;
+// logic en;    
+logic btb_hit_IF_ID;
 
 logic write, alloc, evict, set_strong, clr_strong;
 logic [8:0] wr_index;
