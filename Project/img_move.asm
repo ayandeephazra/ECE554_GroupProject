@@ -1,13 +1,14 @@
 llb R1, 0x08                # R1 holds bmp mmap address
 lhb R1, 0xC0
 
-llb R3, 0x50                # R3 holds YLOC (for time being)
+llb R3, 0xF0                # R3 holds YLOC (for time being)
+lhb R3, 0x00
 
 llb R10, 0x10               # R10 holds mmap address for mmap_regs
 lhb R10, 0xC0
 
 ####### Place Ship
-llb R2, 0x80                # XLOC <= 10'h0080 (left side of the screen)
+llb R2, 0x10                # XLOC <= 10'h0080 (left side of the screen)
 lhb R2, 0x00
 sw R2, R1, 0                
 
@@ -21,8 +22,6 @@ lhb R12, 0x40
 JAL COUNT                   # Gonna have to figure out how we do delay bc of the branch prediction
 
 b uncond, RUN
-
-b uncond, END
 
 ################################################
 # REGS IN USE #
@@ -47,11 +46,15 @@ RUN:
     # loop back otherwise
     b uncond, RUN
 
-UP:
-    B uncond, EDGETOP       # check top edge
+DOWN:
+    # check bottom of screen
+    llb R4, 0x7C            # R4 holds top bound (480)
+    lhb R4, 0x01
+    SUB R4, R4, R3          # if R4 == R3, then at bottom of screen
+    b eq, RUN               # can't move anymore, go to RUN
 
     addi R3, R3, 1          # move img down by 1 units
-    sw R2, R1, 0            # XLOC <= 10'h0000 (left side of the screen)
+    sw R2, R1, 0            # XLOC <= 10'h0080 (left side of the screen)
     sw R3, R1, 1
     llb R4, 0x3             # cntrl <= 3
     sw R4, R1, 2            # print new location
@@ -61,11 +64,13 @@ UP:
     JAL COUNT               #### WAIT 1000 cycles 
     b uncond, RUN
 
-DOWN:
-    B uncond, EDGEBOTTOM    # check bottom edge
+UP:
+    # check top of screen
+    SUBI R4, R3, 0          # if R3 == 0, then at top of screen
+    b eq, RUN               # can't move anymore, go to RUN
 
-    subi R3, R3, 1          # move img down by 1 units
-    sw R2, R1, 0            # XLOC <= 10'h0000 (left side of the screen)
+    subi R3, R3, 1          # move img up by 1 units
+    sw R2, R1, 0            # XLOC <= 10'h0080 (left side of the screen)
     sw R3, R1, 1
     llb R4, 0x3             # cntrl <= 3
     sw R4, R1, 2            # print new location
@@ -74,22 +79,6 @@ DOWN:
     lhb R12, 0x40
     JAL COUNT               #### WAIT 1000 cycles 
     b uncond, RUN
-
-# check this code again
-EDGEBOTTOM:
-    SUBI R4, R3, 0          # if R3 <= 0, then at bottom edge 
-    B LTE, RUN              # can't move anymore, go to RUN
-
-    B uncond, DOWN
-
-# check this code again
-EDGETOP:
-    llb R4, 0xE0            # R4 holds top bound (480)
-    lhb R4, 0x01
-    SUB R4, R4, R3          # if R4 >= 0, then at top edge
-    B LTE, RUN              # can't move anymore, go to RUN
-
-    B uncond, UP
 
 COUNT:
     SUBI R12, R12, 1
