@@ -19,7 +19,7 @@ always_ff @(posedge clk, negedge rst_n) begin
         ff2 <= 0;
         ff1 <= 0;
     end
-    else if (load) begin
+    if (load) begin
         ff8 <= SEED[7];
         ff7 <= SEED[6];
         ff6 <= SEED[5];
