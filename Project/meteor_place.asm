@@ -4,6 +4,11 @@ lhb R1, 0xC0
 llb R10, 0x10               # R10 holds mmap address for mmap_regs
 lhb R10, 0xC0
 
+llb R11, 0x08
+lhb R11, 0xC0
+
+llb R13, 0x16
+lhb R13, 0xC0
 # 6 lanes -> 0-79, 80-159, 160-239, 240-319, 320-399, 400-479
 # meteors are 60x60, so the placement for each lane needs to be +10 to be put at middle of lane
 # -> 10, 90, 170, 250, 330, 410 for starting position of each lane (for YLOC)
@@ -17,35 +22,43 @@ lhb R10, 0xC0
 # need to get output from LFSR and then check the value with these, then place based on this value
 
 # LFSR mmap addr -> 0xC016
+# new code added between comments
+#########################################################################
+llb R9, 0x88		# SEED that will be loaded into LFSR
+lhb R9, 0x00	
 
+addi R8, R9, 0		# load R8 with SEED we want to use
+sw R8, R13, 0		# whatever in R8 goes to c016 as SEED
+##########################################################################
 START:
-    lw R2, R1, 16               # get value of LFSR
-    b uncond, CHECK_VALUE
+    	lw R2, R13, 0		# R2 contains LFSR output
+   # lw R2, R1, 16               # get value of LFSR
+   # b uncond, CHECK_VALUE
 
 CHECK_VALUE:
-    llb R3, 0xD6
+    llb R3, 0xD6	#214
     lhb R3, 0x00
-    SUB R3, R3, R2              # if R3 < R2, then go to lane 6
+    SUB R3, R2, R3              # if R3 < R2, then go to lane 6
     b gt, LANE6
 
-    llb R3, 0xAB
+    llb R3, 0xAB	#171
     lhb R3, 0x00
-    SUB R3, R3, R2              # if R3 < R2, then go to lane 5
+    SUB R3, R2, R3              # if R3 < R2, then go to lane 5
     b gt, LANE5
 
-    llb R3, 0x80
+    llb R3, 0x80	#128
     lhb R3, 0x00
-    SUB R3, R3, R2              # if R3 < R2, then go to lane 4
+    SUB R3, R2, R3              # if R3 < R2, then go to lane 4
     b gt, LANE4
 
-    llb R3, 0x55
+    llb R3, 0x55	#85
     lhb R3, 0x00
-    SUB R3, R3, R2              # if R3 < R2, then go to lane 3
+    SUB R3, R2, R3              # if R3 < R2, then go to lane 3
     b gt, LANE3
 
-    llb R3, 0x2A
+    llb R3, 0x2A	#42
     lhb R3, 0x00
-    SUB R3, R3, R2              # if R3 < R2, then go to lane 2
+    SUB R3, R2, R3              # if R3 < R2, then go to lane 2
     b gt, LANE2
 
     b uncond, LANE1             # uconditional branch to LANE1 if not others 
@@ -53,14 +66,14 @@ CHECK_VALUE:
 LANE1:
     llb R3, 0x44                # XLOC <= 10'h0244 (right side of the screen)
     lhb R3, 0x02
-    sw R3, R1, 8                
+    sw R3, R11, 0  
 
     llb R3, 0x0A                # YLOC <= 10'h000A (right side of the screen)
     lhb R3, 0x00
-    sw R3, R1, 9                
+    sw R3, R11, 1                
 
-    llb R4, 0x3                 # cntrl <= 3 (don't know what it is for the meteor, need to ask)
-    sw R4, R1, 10
+    llb R4, 0x5               # cntrl <= 3 (don't know what it is for the meteor, need to ask)
+    sw R4, R11, 2
 
     llb R12, 0x00     
     lhb R12, 0x40
@@ -70,14 +83,14 @@ LANE1:
 LANE2:
     llb R3, 0x44                # XLOC <= 10'h0244 (right side of the screen)
     lhb R3, 0x02
-    sw R3, R1, 8                
+    sw R3, R11, 0                
 
     llb R3, 0x5A                # YLOC <= 10'h000A (right side of the screen)
     lhb R3, 0x00
-    sw R3, R1, 9                
+    sw R3, R11, 1                
 
-    llb R4, 0x3                 # cntrl <= 3 (don't know what it is for the meteor, need to ask)
-    sw R4, R1, 10
+    llb R4, 0x5                 # cntrl <= 3 (don't know what it is for the meteor, need to ask)
+    sw R4, R11, 2
 
     llb R12, 0x00     
     lhb R12, 0x40
@@ -88,14 +101,14 @@ LANE2:
 LANE3:
     llb R3, 0x44                # XLOC <= 10'h0244 (right side of the screen)
     lhb R3, 0x02
-    sw R3, R1, 8                
+    sw R3, R11, 0                
 
     llb R3, 0xAA                # YLOC <= 10'h000A (right side of the screen)
     lhb R3, 0x00
-    sw R3, R1, 9                
+    sw R3, R11, 1                
 
-    llb R4, 0x3                 # cntrl <= 3 (don't know what it is for the meteor, need to ask)
-    sw R4, R1, 10
+    llb R4, 0x5                 # cntrl <= 3 (don't know what it is for the meteor, need to ask)
+    sw R4, R11, 2
 
     llb R12, 0x00     
     lhb R12, 0x40
@@ -106,14 +119,14 @@ LANE3:
 LANE4:
     llb R3, 0x44                # XLOC <= 10'h0244 (right side of the screen)
     lhb R3, 0x02
-    sw R3, R1, 8                
+    sw R3, R11, 0                
 
     llb R3, 0xFA                # YLOC <= 10'h000A (right side of the screen)
     lhb R3, 0x00
-    sw R3, R1, 9                
+    sw R3, R11, 1                
 
-    llb R4, 0x3                 # cntrl <= 3 (don't know what it is for the meteor, need to ask)
-    sw R4, R1, 10
+    llb R4, 0x5                 # cntrl <= 3 (don't know what it is for the meteor, need to ask)
+    sw R4, R11, 2
 
     llb R12, 0x00     
     lhb R12, 0x40
@@ -124,14 +137,14 @@ LANE4:
 LANE5:
     llb R3, 0x44                # XLOC <= 10'h0244 (right side of the screen)
     lhb R3, 0x02
-    sw R3, R1, 8                
+    sw R3, R11, 0                
 
     llb R3, 0x4A                # YLOC <= 10'h000A (right side of the screen)
     lhb R3, 0x01
-    sw R3, R1, 9                
+    sw R3, R11, 1                
 
-    llb R4, 0x3                 # cntrl <= 3 (don't know what it is for the meteor, need to ask)
-    sw R4, R1, 10
+    llb R4, 0x5                 # cntrl <= 3 (don't know what it is for the meteor, need to ask)
+    sw R4, R11, 2
 
     llb R12, 0x00     
     lhb R12, 0x40
@@ -142,22 +155,31 @@ LANE5:
 LANE6:
     llb R3, 0x44                # XLOC <= 10'h0244 (right side of the screen)
     lhb R3, 0x02
-    sw R3, R1, 8                
+    sw R3, R11, 0               # R3 => mem[R1 + 8] => mem[R1+8] = C008 
 
     llb R3, 0x9A                # YLOC <= 10'h000A (right side of the screen)
     lhb R3, 0x01
-    sw R3, R1, 9                
+    sw R3, R11, 1               # R3 => mem[R1 + 9] = coo9 
 
-    llb R4, 0x3                 # cntrl <= 3 (don't know what it is for the meteor, need to ask)
-    sw R4, R1, 10
+    llb R4, 0x5                 # cntrl <= 3 (don't know what it is for the meteor, need to ask)
+    sw R4, R11, 2		# R3 => mem[R1 + 10] = c00A
 
     llb R12, 0x00     
     lhb R12, 0x40
     JAL COUNT                   # Gonna have to figure out how we do delay bc of the branch prediction
+   #B uncond, END
     b uncond, START
 
+
+PASS:
+llb R6, 0x55
+lhb R6, 0x9a
+b uncond, END
 
 COUNT:
     SUBI R12, R12, 1
     B NEQ, COUNT
     JR R15
+
+END:
+ B uncond, END
