@@ -10,6 +10,8 @@ initial begin
     clk = 0;
     rst_n = 0;
     SEED = 8'h88;
+    repeat(5)@(posedge clk);
+    rst_n = 1;
     load = 1;
     repeat(5)@(posedge clk);
     load = 0;
@@ -18,7 +20,9 @@ initial begin
     repeat(50)@(posedge clk);
     rst_n = 0;
     SEED = 8'h12;
+    repeat(5)@(posedge clk);
     load = 1;
+    rst_n = 1;
     repeat(5)@(posedge clk);
     rst_n = 1;
     load = 0;
@@ -26,7 +30,9 @@ initial begin
     repeat(50)@(posedge clk);
     rst_n = 0;
     SEED = 8'hE4;
+    repeat(5)@(posedge clk);
     load = 1;
+    rst_n = 1;
     repeat(5)@(posedge clk);
     rst_n = 1;
     load = 0;
@@ -34,7 +40,9 @@ initial begin
     repeat(50)@(posedge clk);
     rst_n = 0;
     SEED = 8'hFF;
+    repeat(5)@(posedge clk);
     load = 1;
+    rst_n = 1;
     repeat(5)@(posedge clk);
     rst_n = 1;
     load = 0;
@@ -42,7 +50,9 @@ initial begin
     repeat(50)@(posedge clk);
     rst_n = 0;
     SEED = 8'h00;
+    repeat(5)@(posedge clk);
     load = 1;
+    rst_n = 1;
     repeat(5)@(posedge clk);
     rst_n = 1;
     load = 0;
