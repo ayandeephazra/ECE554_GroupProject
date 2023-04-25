@@ -92,6 +92,6 @@ assign yloc = YLOC;
 assign add_img = (cntrl_wr) ? databus[0] : 0;
 assign add_fnt = (cntrl_wr) ? ~databus[0] : 0;
 assign fnt_indx = databus[6:1];
-assign image_indx = databus[6:1];
+assign image_indx = databus[6:1]; // 3 is spaceship, 5 is asteroid, 7 is blackout_asteroid
 
 endmodule
