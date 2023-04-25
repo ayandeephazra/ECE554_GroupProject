@@ -47,6 +47,7 @@ module PlaceBMP6bit_mm(clk,rst_n, waddr,wdata,we, add_fnt, add_img, rem_img, ima
   wire [5:0] bmp_read0;
   wire [5:0] bmp_read1;
   wire [5:0] bmp_read2;			// add more for more images
+  wire [5:0] bmp_read3;
   wire [5:0] bmp_read;			// muxed output from BMP ROM
   wire waddr_wrap_en;
   wire fnt_wrap;
