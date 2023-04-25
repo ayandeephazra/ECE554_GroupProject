@@ -31,9 +31,31 @@ addi R8, R9, 0		# load R8 with SEED we want to use
 sw R8, R13, 0		# whatever in R8 goes to c016 as SEED
 ##########################################################################
 START:
+
     	lw R2, R13, 0		# R2 contains LFSR output
    # lw R2, R1, 16               # get value of LFSR
    # b uncond, CHECK_VALUE
+	llb R12, 0x00
+	lhb R12, 0x40
+	JAL COUNT
+	lw R2, R13, 0
+
+	lw R7, R10, 3		# get timer value
+	llb R12, 0xFF
+	lhb R12, 0xFF
+	SUB R12, R7, R12	# did timer finish?
+	B neq, CHECK_VALUE	# if no continue, if yes, go to change seed
+	addi R8, R9, 1		# change seed
+	sw R8, R13, 0		# load in SEED
+	lw R2, R13, 0		# get value from LFSR
+	
+#CHANGE_SEED:
+#lw R2, R13, 0		# get value of LFSR
+#lw R7, R10, 3		# get time value
+#llb R9, 0xFF		# did timer finish?
+#llb R9, 0xFF
+#AND R9, R9, R7	# wait a bit for randomization
+#B neq, CHANGE_SEED
 
 CHECK_VALUE:
     llb R3, 0xD6	#214
@@ -65,12 +87,13 @@ CHECK_VALUE:
 
 LANE1:
     llb R3, 0x44                # XLOC <= 10'h0244 (right side of the screen)
-    lhb R3, 0x02
+   # lhb R3, 0x02
+    lhb R3, 0xFE
     sw R3, R11, 0  
 
-    llb R3, 0x0A                # YLOC <= 10'h000A (right side of the screen)
-    lhb R3, 0x00
-    sw R3, R11, 1                
+    llb R5, 0x0A                # YLOC <= 10'h000A (right side of the screen)
+    lhb R5, 0x00
+    sw R5, R11, 1                
 
     llb R4, 0x5               # cntrl <= 3 (don't know what it is for the meteor, need to ask)
     sw R4, R11, 2
@@ -78,34 +101,38 @@ LANE1:
     llb R12, 0x00     
     lhb R12, 0x40
     JAL COUNT                   # Gonna have to figure out how we do delay bc of the branch prediction
+    b uncond, LEFT_TO_RIGHT
     b uncond, START
 
 LANE2:
     llb R3, 0x44                # XLOC <= 10'h0244 (right side of the screen)
-    lhb R3, 0x02
+ #   lhb R3, 0x02
+    lhb R3, 0xFE
     sw R3, R11, 0                
 
-    llb R3, 0x5A                # YLOC <= 10'h000A (right side of the screen)
-    lhb R3, 0x00
-    sw R3, R11, 1                
+    llb R5, 0x5A                # YLOC <= 10'h000A (right side of the screen)
+    lhb R5, 0x00
+    sw R5, R11, 1                
 
     llb R4, 0x5                 # cntrl <= 3 (don't know what it is for the meteor, need to ask)
     sw R4, R11, 2
 
     llb R12, 0x00     
     lhb R12, 0x40
-    JAL COUNT                   # Gonna have to figure out how we do delay bc of the branch prediction
+    JAL COUNT                   # Gonna have to figure out how we do delay bc of the branch prediction 
+    b uncond, LEFT_TO_RIGHT
     b uncond, START
 
 
 LANE3:
     llb R3, 0x44                # XLOC <= 10'h0244 (right side of the screen)
-    lhb R3, 0x02
+#    lhb R3, 0x02
+    lhb R3, 0xFE
     sw R3, R11, 0                
 
-    llb R3, 0xAA                # YLOC <= 10'h000A (right side of the screen)
-    lhb R3, 0x00
-    sw R3, R11, 1                
+    llb R5, 0xAA                # YLOC <= 10'h000A (right side of the screen)
+    lhb R5, 0x00
+    sw R5, R11, 1                
 
     llb R4, 0x5                 # cntrl <= 3 (don't know what it is for the meteor, need to ask)
     sw R4, R11, 2
@@ -113,17 +140,19 @@ LANE3:
     llb R12, 0x00     
     lhb R12, 0x40
     JAL COUNT                   # Gonna have to figure out how we do delay bc of the branch prediction
+    b uncond, LEFT_TO_RIGHT
     b uncond, START
 
 
 LANE4:
     llb R3, 0x44                # XLOC <= 10'h0244 (right side of the screen)
-    lhb R3, 0x02
+#    lhb R3, 0x02
+    lhb R3, 0xFE
     sw R3, R11, 0                
 
-    llb R3, 0xFA                # YLOC <= 10'h000A (right side of the screen)
-    lhb R3, 0x00
-    sw R3, R11, 1                
+    llb R5, 0xFA                # YLOC <= 10'h000A (right side of the screen)
+    lhb R5, 0x00
+    sw R5, R11, 1                
 
     llb R4, 0x5                 # cntrl <= 3 (don't know what it is for the meteor, need to ask)
     sw R4, R11, 2
@@ -131,17 +160,19 @@ LANE4:
     llb R12, 0x00     
     lhb R12, 0x40
     JAL COUNT                   # Gonna have to figure out how we do delay bc of the branch prediction
+    b uncond, LEFT_TO_RIGHT
     b uncond, START
 
 
 LANE5:
     llb R3, 0x44                # XLOC <= 10'h0244 (right side of the screen)
-    lhb R3, 0x02
+#    lhb R3, 0x02
+    lhb R3, 0xFE
     sw R3, R11, 0                
 
-    llb R3, 0x4A                # YLOC <= 10'h000A (right side of the screen)
-    lhb R3, 0x01
-    sw R3, R11, 1                
+    llb R5, 0x4A                # YLOC <= 10'h000A (right side of the screen)
+    lhb R5, 0x01
+    sw R5, R11, 1                
 
     llb R4, 0x5                 # cntrl <= 3 (don't know what it is for the meteor, need to ask)
     sw R4, R11, 2
@@ -149,17 +180,19 @@ LANE5:
     llb R12, 0x00     
     lhb R12, 0x40
     JAL COUNT                   # Gonna have to figure out how we do delay bc of the branch prediction
+    b uncond, LEFT_TO_RIGHT
     b uncond, START
 
 
 LANE6:
     llb R3, 0x44                # XLOC <= 10'h0244 (right side of the screen)
-    lhb R3, 0x02
+#    lhb R3, 0x02
+    lhb R3, 0xFE
     sw R3, R11, 0               # R3 => mem[R1 + 8] => mem[R1+8] = C008 
 
-    llb R3, 0x9A                # YLOC <= 10'h000A (right side of the screen)
-    lhb R3, 0x01
-    sw R3, R11, 1               # R3 => mem[R1 + 9] = coo9 
+    llb R5, 0x9A                # YLOC <= 10'h000A (right side of the screen)
+    lhb R5, 0x01
+    sw R5, R11, 1               # R3 => mem[R1 + 9] = coo9 
 
     llb R4, 0x5                 # cntrl <= 3 (don't know what it is for the meteor, need to ask)
     sw R4, R11, 2		# R3 => mem[R1 + 10] = c00A
@@ -167,15 +200,44 @@ LANE6:
     llb R12, 0x00     
     lhb R12, 0x40
     JAL COUNT                   # Gonna have to figure out how we do delay bc of the branch prediction
+     b uncond, LEFT_TO_RIGHT
    #B uncond, END
     b uncond, START
 
+LEFT_TO_RIGHT:	# 320 =>
 
-PASS:
-llb R6, 0x55
-lhb R6, 0x9a
-b uncond, END
+	llb R6, 0x04
+	lhb R6, 0xFC 
 
+	subi R3, R3, 1			# move img right by 1 unit
+	sw R3, R11, 0			# write x to mem
+
+	sw R5, R11, 1			# write y to mem
+
+	llb R4, 0x5
+	sw R4, R11, 2			# cntrl <= 5
+
+	llb R12, 0x00
+	lhb R12, 0x40			# for COUNT
+	
+	JAL COUNT
+
+	sub R6, R6, R3			# if R3 = FC04
+	B neq, LEFT_TO_RIGHT
+#	llb R2, 0x68
+#	lhb R2, 0xFE
+#	sw R2, R11, 0
+#	sw R5, R11, 1
+#	sw R4, R11, 2
+#	llb R12, 0x00
+#	llb R12, 0x40
+#	JAL COUNT
+#	B eq, START
+	#B uncond, LEFT_TO_RIGHT
+#	subi R3, R3, 0
+	B eq, START
+#	B uncond, LEFT_TO_RIGHT
+	
 COUNT:
     SUBI R12, R12, 1
     B NEQ, COUNT
