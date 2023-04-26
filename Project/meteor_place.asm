@@ -214,7 +214,7 @@ LEFT_TO_RIGHT:	# 320 =>
 
 	sw R5, R11, 1			# write y to mem
 
-	llb R4, 0x5
+	llb R4, 0x5			# 3 =>spaceship, # asteroid => #5, # blackout = 7
 	sw R4, R11, 2			# cntrl <= 5
 
 	llb R12, 0x00
@@ -224,6 +224,18 @@ LEFT_TO_RIGHT:	# 320 =>
 
 	sub R6, R6, R3			# if R3 = FC04
 	B neq, LEFT_TO_RIGHT
+	
+	sw R3, R11, 0	# blackout image
+	sw R5, R11, 1	# write y to mem
+
+	llb R4, 0x7	# cntrl <= 7 for blackout
+	sw R4, R11, 2	# draw to screen
+
+	llb R12, 0x00
+	lhb R12, 0x40
+
+	JAL COUNT	# count
+
 #	llb R2, 0x68
 #	lhb R2, 0xFE
 #	sw R2, R11, 0
@@ -235,7 +247,7 @@ LEFT_TO_RIGHT:	# 320 =>
 #	B eq, START
 	#B uncond, LEFT_TO_RIGHT
 #	subi R3, R3, 0
-	B eq, START
+	B eq, START	# might have to change to uncond
 #	B uncond, LEFT_TO_RIGHT
 	
 COUNT:

@@ -112,6 +112,35 @@ while(<IN>) {
 	    next;
 
     }
+    
+    if(/STRING\s+(.*)/) {
+
+        my $data = $1;
+
+        my @chars;
+
+        @chars = split(//,$data);
+        
+        # print $data;
+        # print "\n";
+        # print @chars;
+        # print "\n";
+
+        my $x;
+
+        for ($x = 0; $x < (length($data)-1); $x++) {
+          $mem[$addr] = decToBin(ord($chars[$x]), 20);
+          $source_lines[$addr++] = $chars[$x];
+          # print $chars[$x];
+          # print "\n";
+        }
+
+        $mem[$addr] = decToBin(0,20);
+        $source_lines[$addr++] = "Null terminate";
+
+        next;
+        
+    }
 
     if(/DATA\s+(.*)/) {
 
@@ -127,27 +156,6 @@ while(<IN>) {
 
     }
 
-    if(/STRING\s+(.*)/) {
-
-        my $data = $1;
-
-        my @chars;
-
-        @chars = split(//,$data);
-
-        my $x;
-
-        for ($x = 0; $x < (length($data)-1); $x++) {
-          $mem[$addr] = decToBin(ord($chars[$x]), 20);
-          $source_lines[$addr++] = $chars[$x];
-        }
-
-        $mem[$addr] = decToBin(0,20);
-        $source_lines[$addr++] = "Null terminate";
-
-        next;
-        
-    }
 
     $source_lines[$addr] = $_;
 
@@ -247,7 +255,6 @@ while(<IN>) {
 
       }
 
-
       elsif($instr =~ /^(PUSH)$/) {
 
         foreach my $reg ($args[0]) {
@@ -286,7 +293,7 @@ while(<IN>) {
         $addr += 1;
 
         #         opcode                 R0       0
-        $bits = "00001000" . $args[0] . "0000" . "0000";
+        $bits = "00001000" . $regs{$args[0]} . "0000" . "0000";
 
       }
 
@@ -410,13 +417,7 @@ for(my $i=0; $i<scalar(@mem); $i++) {
 
   # print decToHex($i) . "  :  " . binToHex($addr) . "  ;\n";
   
-  # need to also check if it doesn't contain anything (possibly check the length?)
-  # ($source_lines[$i] ne "")
-  if (!($source_lines[$i] =~ m/PUSH|POP/)) {
-    if ($source_lines[$i] ne "") {
-      print "\@" . decToHex($i, 4) . " " . binToHex($addr) . "\t// " . $source_lines[$i] . "\n";
-    }
-  }
+  print "\@" . decToHex($i, 4) . " " . binToHex($addr) . "\t// " . $source_lines[$i] . "\n";
 
   #if($code[$i]) { print $code[$i] }
 

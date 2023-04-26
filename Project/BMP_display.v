@@ -62,10 +62,11 @@ module BMP_display(
   //////////////////////////////////////////////
   // Instantiate Logic that determines pixel //
   // colors based on BMP placement          //
-  ///////////////////////////////////////////					
+  ///////////////////////////////////////////				
+  wire rem_img;	
   PlaceBMP6bit_mm iplace(.clk(clk),.rst_n(rst_n),
 	.waddr(waddr),.wdata(wdata),.we(we), .add_fnt(add_fnt),.fnt_indx(fnt_indx),
-	  .add_img(add_img),.rem_img(1'b0),.image_indx(image_indx), .xloc(xloc),.yloc(yloc)); 
+	  .add_img(add_img),.rem_img(rem_img),.image_indx(image_indx), .xloc(xloc),.yloc(yloc)); 
 
 reg [9:0] XLOC;
 reg [8:0] YLOC;
@@ -84,6 +85,7 @@ end
 
 
 assign cntrl_wr = (addr == 16'hc00a & bmp_sel);
+// assign rem_wr = (addr == 16'hc00b & bmp_sel);
 
 // COMMAND PARSING LOGIC
 assign xloc = XLOC;
@@ -91,7 +93,8 @@ assign yloc = YLOC;
 
 assign add_img = (cntrl_wr) ? databus[0] : 0;
 assign add_fnt = (cntrl_wr) ? ~databus[0] : 0;
-assign fnt_indx = databus[6:1];
-assign image_indx = databus[6:1]; // 3 is spaceship, 5 is asteroid, 7 is blackout_asteroid
+assign rem_img = (cntrl_wr) ? databus[15] : 0;
+assign fnt_indx = databus[5:1];
+assign image_indx = databus[5:1]; // 3 is spaceship, 5 is asteroid, 7 is blackout_asteroid
 
 endmodule
