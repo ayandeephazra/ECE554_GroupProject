@@ -62,14 +62,15 @@ module BMP_display(
   //////////////////////////////////////////////
   // Instantiate Logic that determines pixel //
   // colors based on BMP placement          //
-  ///////////////////////////////////////////					
+  ///////////////////////////////////////////				
+  wire rem_img;	
   PlaceBMP6bit_mm iplace(.clk(clk),.rst_n(rst_n),
 	.waddr(waddr),.wdata(wdata),.we(we), .add_fnt(add_fnt),.fnt_indx(fnt_indx),
 	  .add_img(add_img),.rem_img(rem_img),.image_indx(image_indx), .xloc(xloc),.yloc(yloc)); 
 
 reg [9:0] XLOC;
 reg [8:0] YLOC;
-wire cntrl_wr, rem_img;
+wire cntrl_wr;
 
 always @ (posedge clk, negedge rst_n) begin
   if (!rst_n) begin
