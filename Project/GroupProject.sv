@@ -74,7 +74,7 @@ module GroupProject(
 //=======================================================
 
 	logic [8:0] led_debug;
-	assign led_debug = 9'hfff;		// REPLACE FOR DEBUG
+	assign led_debug = 9'h000;		// REPLACE FOR DEBUG
 
 	// FF logic for LEDR ---- DEBUG
 	always_ff @ (negedge CLOCK_50) begin
@@ -120,7 +120,7 @@ module GroupProject(
     // instantiate cpu topl level mod //
     ///////////////////////////////////
 	cpu cpu1(.clk(clk), .rst_n(rst_n), .wdata(wdata), .mm_we(mm_we), .addr(addr), .mm_re(mm_re), .rdata(rdata),
-			.inc_br_cnt(inc_br_cnt), .inc_hit_cnt(inc_hit_cnt), .inc_mispr_cnt(inc_mispr_cnt), .en(btb_en));
+			.inc_br_cnt(inc_br_cnt), .inc_hit_cnt(inc_hit_cnt), .inc_mispr_cnt(inc_mispr_cnt), .btb_en(btb_en));
 
 	////////////////////////////////////////////////
 	// Instantiate Logic that includes internal    //

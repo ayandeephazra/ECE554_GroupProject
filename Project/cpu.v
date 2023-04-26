@@ -1,8 +1,9 @@
-module cpu(clk,rst_n, wdata, mm_we, addr, mm_re, rdata, inc_br_cnt, inc_hit_cnt, inc_mispr_cnt);
+module cpu(clk,rst_n, wdata, mm_we, addr, mm_re, rdata, inc_br_cnt, inc_hit_cnt, inc_mispr_cnt, btb_en);
 
 //rdata added to original input signals
 input clk,rst_n;
 input [15:0] rdata;
+input btb_en;					// **ADDED** enable branch prediction using SW[0]
 // all new signals to modified cpu outputs
 output [15:0] wdata;
 output [15:0] addr;
@@ -40,7 +41,6 @@ wire [15:0] read_mux_select;    // choosing which signal is read
 wire [15:0] btb_nxt_pc;			// Branch predicted target PC
 wire btb_hit;					// F stage btb_hit
 wire btb_hit_ID_EX;				// Required in EX to decide if flow change is necessary
-wire btb_en;					// enable branch prediction using SW[0]
 
 //////////////////////////////////
 // Instantiate program counter //
