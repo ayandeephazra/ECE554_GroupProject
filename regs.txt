@@ -1,0 +1,39 @@
+*********** img_move regs ***********
+R0 - Not used (won't be used at all)
+R1 - Memory Mapped to C008
+R2 - Memory Mapped to C010
+R3 - Holds YLOC for Ship (0x0010)
+R4 - temp
+R5 - temp
+R6 - 
+R7 - 
+R8 - 
+R9 - 
+R10 - 
+R11 -
+R12 - 
+R13 - temp
+R14 - Stack Pointer
+R15 - Used for Jump
+
+R1 - Memory Mapped to C008
+R2 - Memory Mapped to C010
+R3 - Holds YLOC for Ship (0x0010)
+
+*********** meteor_place regs ***********
+R0 - Not used (won't be used at all)
+R1 - Memory Mapped to C008
+R2 - Memory Mapped to C010
+R3 - Holds YLOC for Ship (0x0010)
+R4 - temp (Used in START, free afterwards)
+R5 - temp (Used in START, free afterwards)
+R6 - Keep Saved
+R7 - temp (Used in LEFT_TO_RIGHT)
+R8 - 
+R9 - 
+R10 - 
+R11 -
+R12 - temp
+R13 - Memory Mapped to C016
+R14 - Stack Pointer
+R15 - Used for Jump
