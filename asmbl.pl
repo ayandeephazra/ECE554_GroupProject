@@ -260,7 +260,7 @@ while(<IN>) {
         foreach my $reg ($args[0]) {
 
             if(!$regs{$reg}) { die("Bad register ($reg)\n$_") }
-						R14, 0
+		#				R14, 0
             $bits = "00001001" . $regs{$reg} . "11100000";
 
         }
