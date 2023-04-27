@@ -104,7 +104,7 @@ assign inc_mispr_cnt = btb_hit_ID_EX & flow_change_ID_EX;   // misprediction
 // use initial readmemh to reset all valid bits to 0. This will synthesize on the FPGA.
 // not possible to connect an async reset to the entire btb_mem on FPGA
 initial
-  $readmemh("I:/ece554/ECE554_GroupProject/Project/btb_contents_reset.hex",btb_mem);
+  $readmemh("C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/btb_contents_reset.hex",btb_mem);
 
     
 endmodule

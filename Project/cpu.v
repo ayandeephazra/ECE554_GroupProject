@@ -1,5 +1,5 @@
 module cpu(clk,rst_n, wdata, mm_we, addr, mm_re, rdata, inc_br_cnt, inc_hit_cnt, inc_mispr_cnt, btb_en);
-
+ //inc_br_cnt, inc_hit_cnt, inc_mispr_cnt, btb_en
 //rdata added to original input signals
 input clk,rst_n;
 input [15:0] rdata;
@@ -80,7 +80,7 @@ id	iID(.clk(clk), .rst_n(rst_n), .instr(instr), .zr_EX_DM(zr_EX_DM), .br_instr_I
 ////////////////////////////////
 // Instantiate register file //
 //////////////////////////////
-rf iRF(.clk(clk), .p0_addr(rf_p0_addr), .p1_addr(rf_p1_addr), .p0(p0), .p1(p1),
+rf iRF(.clk(clk), .rst_n(rst_n), .p0_addr(rf_p0_addr), .p1_addr(rf_p1_addr), .p0(p0), .p1(p1),
        .re0(rf_re0), .re1(rf_re1), .dst_addr(rf_dst_addr_DM_WB), .dst(rf_w_data_DM_WB),
  	   .we(rf_we_DM_WB));
 	   

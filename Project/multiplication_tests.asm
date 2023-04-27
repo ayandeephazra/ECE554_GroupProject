@@ -356,7 +356,7 @@ b uncond, TEST_19
 ###########################################
 
 TEST_19:
-llb R5, 0xff        # to break monotonity in waves
+llb R5, 0xff        # to break monotonity in wavesgithub
 llb R8, 0x00        # default to 0 prior to start
 llb R1, 0xff        # R1 holds decimal 255
 lhb R1, 0x00
@@ -384,3 +384,4 @@ b uncond, END
 END:
 llb R9, 0x4d
 lhb R9, 0x0e
+b uncond, END

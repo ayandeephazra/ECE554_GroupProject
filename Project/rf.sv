@@ -1,4 +1,4 @@
-module rf(clk,p0_addr,p1_addr,p0,p1,re0,re1,dst_addr,dst,we);
+module rf(clk,rst_n,p0_addr,p1_addr,p0,p1,re0,re1,dst_addr,dst,we);
 //////////////////////////////////////////////////////////////////
 // Triple ported register file.  Two read ports (p0 & p1), and //
 // one write port (dst).  Data is written on clock high, and  //
@@ -6,6 +6,7 @@ module rf(clk,p0_addr,p1_addr,p0,p1,re0,re1,dst_addr,dst,we);
 //////////////////////
 
 input clk;
+input rst_n;
 input [3:0] p0_addr, p1_addr;			// two read port addresses
 input re0,re1;							// read enables (power not functionality)
 input [3:0] dst_addr;					// write address
@@ -20,10 +21,10 @@ reg we_ff;
 reg [15:0] dst_addr_ff, dst_ff;
 
 // RF0 instantiation
-rf_mem RF0(.clk(clk), .r_addr(p0_addr), .w_addr(dst_addr), .wdata(dst), .we(we), .rdata(p0_internal));
+rf_mem RF0(.clk(clk), .rst_n(rst_n), .r_addr(p0_addr), .w_addr(dst_addr), .wdata(dst), .we(we), .rdata(p0_internal));
 
 // RF1 instantiation
-rf_mem RF1(.clk(clk), .r_addr(p1_addr), .w_addr(dst_addr), .wdata(dst), .we(we), .rdata(p1_internal));
+rf_mem RF1(.clk(clk), .rst_n(rst_n), .r_addr(p1_addr), .w_addr(dst_addr), .wdata(dst), .we(we), .rdata(p1_internal));
 
 // Flop that stores data from one clock cycle so that comb block can use it
 // in that cycle to make a decision on data forwarding

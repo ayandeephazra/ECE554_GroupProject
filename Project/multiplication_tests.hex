@@ -231,3 +231,4 @@
 @00e6 0CE00	// b uncond, END
 @00e7 0B94D	// llb R9, 0x4d
 @00e8 0A90E	// lhb R9, 0x0e
+@00e9 0CFFD	// b uncond, END

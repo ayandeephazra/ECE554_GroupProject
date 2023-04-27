@@ -10,3 +10,4 @@ POP R3
 END:
 llb R7, 0x4d
 lhb R7, 0xe4
+b uncond, END
