@@ -127,7 +127,7 @@ module GroupProject(
 	//////////////////////////////////////////
 	// Instantiate memory mapped registers //
 	////////////////////////////////////////
-	mmap_regs immap_regs(.clk(clk), .rst_n(rst_n), .KEY_UP(KEY[1]), .KEY_DOWN(KEY[2]), .inc_br_cnt(inc_br_cnt), .inc_hit_cnt(inc_hit_cnt), .inc_mispr_cnt(inc_mispr_cnt),
+	mmap_regs immap_regs(.clk(clk), .rst_n(rst_n), .KEY_UP(~KEY[1]), .KEY_DOWN(~KEY[2]), .inc_br_cnt(inc_br_cnt), .inc_hit_cnt(inc_hit_cnt), .inc_mispr_cnt(inc_mispr_cnt),
 						 .lfsr_load(lfsr_load), .br_stats_wr(br_stats_wr), .databus(databus), .addr(addr), .mm_re(mm_re));
 
 	
