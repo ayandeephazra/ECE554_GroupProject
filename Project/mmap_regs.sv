@@ -69,7 +69,7 @@ module mmap_regs(
         if (!rst_n)
             button_up <= 16'h0000;
         else if (KEY_UP)
-            button_up <= 16'hFFFF;
+            button_up <= 16'hF0F0;
         else
             button_up <= 16'h0000;
 
@@ -78,7 +78,7 @@ module mmap_regs(
         if (!rst_n)
             button_down <= 16'h0000;
         else if (KEY_DOWN)
-            button_down <= 16'hFFFF;
+            button_down <= 16'hF0F0;
         else
             button_down <= 16'h0000;
 

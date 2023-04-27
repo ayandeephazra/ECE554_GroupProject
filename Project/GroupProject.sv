@@ -12,7 +12,7 @@ module GroupProject(
 	input 		          		CLOCK_50,
 
 	//////////// KEY //////////
-	input 		     			RST_n,
+	input[3:0] 		     		KEY,
 
 	//////////// LED //////////
 	output		     [9:0]		LEDR,
@@ -67,14 +67,10 @@ module GroupProject(
 	// mmap reg signals
 	logic inc_br_cnt, inc_hit_cnt, inc_mispr_cnt; 	// branch pred stats
 	logic br_stats_wr, mmap_re, lfsr_load;
-	logic btb_en;
 
 //=======================================================
 //  Structural coding
 //=======================================================
-
-	logic [8:0] led_debug;
-	assign led_debug = 9'h000;		// REPLACE FOR DEBUG
 
 	// FF logic for LEDR ---- DEBUG
 	always_ff @ (negedge CLOCK_50) begin
@@ -83,7 +79,7 @@ module GroupProject(
 		if(!rst_n)
 			LEDR_reg <= 10'h000;
 		else
-			LEDR_reg <= {led_debug, SW[0]};
+			LEDR_reg <= 10'hfff;		// REPLACE FOR DEBUG
 	end
 	
 	// Memory Mappings
@@ -100,7 +96,6 @@ module GroupProject(
 		lfsr_load = ((addr == 16'hc016) & mm_we);
 
 		// mmap_re = (mm_re & (addr==16'hc010 | addr==16'hc011 | addr==16'hc012 | addr==16'hc013));
-		btb_en = SW[0];
 	end
 
 	assign databus = (mm_we) ? wdata : 8'hzz;	// infer tri state for driving bus from proc
@@ -108,19 +103,19 @@ module GroupProject(
 	////////////////////////////////////////////////////////
 	// Instantiate PLL to generate clk and 25MHz VGA_CLK //
 	//////////////////////////////////////////////////////
-	PLL iPLL(.refclk(CLOCK_50), .rst(~RST_n),.outclk_0(clk),.outclk_1(VGA_CLK), .locked(pll_locked));
+	PLL iPLL(.refclk(CLOCK_50), .rst(~KEY[0]),.outclk_0(clk),.outclk_1(VGA_CLK), .locked(pll_locked));
 
 		
 	/////////////////////////////////////
 	// instantiate rst_n synchronizer //
 	///////////////////////////////////
-	rst_synch iRST(.clk(clk),.RST_n(RST_n), .pll_locked(pll_locked), .rst_n(rst_n));
+	rst_synch iRST(.clk(clk),.RST_n(KEY[0]), .pll_locked(pll_locked), .rst_n(rst_n));
 	
 	/////////////////////////////////////
     // instantiate cpu topl level mod //
     ///////////////////////////////////
 	cpu cpu1(.clk(clk), .rst_n(rst_n), .wdata(wdata), .mm_we(mm_we), .addr(addr), .mm_re(mm_re), .rdata(rdata),
-			.inc_br_cnt(inc_br_cnt), .inc_hit_cnt(inc_hit_cnt), .inc_mispr_cnt(inc_mispr_cnt), .btb_en(btb_en));
+			.inc_br_cnt(inc_br_cnt), .inc_hit_cnt(inc_hit_cnt), .inc_mispr_cnt(inc_mispr_cnt));
 
 	////////////////////////////////////////////////
 	// Instantiate Logic that includes internal    //
@@ -132,7 +127,7 @@ module GroupProject(
 	//////////////////////////////////////////
 	// Instantiate memory mapped registers //
 	////////////////////////////////////////
-	mmap_regs immap_regs(.clk(clk), .rst_n(rst_n), .inc_br_cnt(inc_br_cnt), .inc_hit_cnt(inc_hit_cnt), .inc_mispr_cnt(inc_mispr_cnt),
+	mmap_regs immap_regs(.clk(clk), .rst_n(rst_n), .KEY_UP(KEY[1]), .KEY_DOWN(KEY[2]), .inc_br_cnt(inc_br_cnt), .inc_hit_cnt(inc_hit_cnt), .inc_mispr_cnt(inc_mispr_cnt),
 						 .lfsr_load(lfsr_load), .br_stats_wr(br_stats_wr), .databus(databus), .addr(addr), .mm_re(mm_re));
 
 	
