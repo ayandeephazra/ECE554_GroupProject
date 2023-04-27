@@ -1,18 +1,233 @@
-@0000 0B1FF	// llb R1, 0xff
+@0000 0B169	// llb R1, 0x69
 @0001 0A100	// lhb R1, 0x00
-@0002 0B3FF	// llb R3, 0xff
-@0003 0A300	// lhb R3, 0x00
-@0004 0B401	// llb R4, 0x01
+@0002 0B200	// llb R2, 0x00
+@0003 0A200	// lhb R2, 0x00
+@0004 0B400	// llb R4, 0x00
 @0005 0A400	// lhb R4, 0x00
-@0006 1A213	// SMUL R2, R1, R3
-@0007 02524	// SUB R5, R2, R4
-@0008 0C201	// B eq, PASS_4
-@0009 0C003	// B neq, FAIL_4
+@0006 19312	// UMUL R3, R1, R2
+@0007 02534	// SUB R5, R3, R4
+@0008 0C201	// B eq, PASS_1
+@0009 0C003	// B neq, FAIL_1
 @000a 0B855	// llb R8, 0x55
 @000b 0A89A	// lhb R8, 0x9a
-@000c 0CE03	// b uncond, END
+@000c 0CE03	// b uncond, TEST_2
 @000d 0B817	// llb R8, 0x17
 @000e 0A8FA	// lhb R8, 0xfa
-@000f 0CE00	// b uncond, END
-@0010 0B94D	// llb R9, 0x4d
-@0011 0A90E	// lhb R9, 0x0e
+@000f 0CE00	// b uncond, TEST_2
+@0010 0B5FF	// llb R5, 0xff
+@0011 0B102	// llb R1, 0x02
+@0012 0A100	// lhb R1, 0x00
+@0013 0B202	// llb R2, 0x02
+@0014 0A200	// lhb R2, 0x00
+@0015 0B404	// llb R4, 0x04
+@0016 0A400	// lhb R4, 0x00
+@0017 19312	// UMUL R3, R1, R2
+@0018 02534	// SUB R5, R3, R4
+@0019 0C201	// B eq, PASS_2
+@001a 0C003	// B neq, FAIL_2
+@001b 0B855	// llb R8, 0x55
+@001c 0A89A	// lhb R8, 0x9a
+@001d 0CE03	// b uncond, TEST_3
+@001e 0B817	// llb R8, 0x17
+@001f 0A8FA	// lhb R8, 0xfa
+@0020 0CE00	// b uncond, TEST_3
+@0021 0B5FF	// llb R5, 0xff
+@0022 0B800	// llb R8, 0x00
+@0023 0B1FF	// llb R1, 0xff
+@0024 0A100	// lhb R1, 0x00
+@0025 0B2FF	// llb R2, 0xff
+@0026 0A200	// lhb R2, 0x00
+@0027 0B401	// llb R4, 0x01
+@0028 0A4FE	// lhb R4, 0xfe
+@0029 19312	// UMUL R3, R1, R2
+@002a 02534	// SUB R5, R3, R4
+@002b 0C201	// B eq, PASS_3
+@002c 0C003	// B neq, FAIL_3
+@002d 0B855	// llb R8, 0x55
+@002e 0A89A	// lhb R8, 0x9a
+@002f 0CE03	// b uncond, TEST_4
+@0030 0B817	// llb R8, 0x17
+@0031 0A8FA	// lhb R8, 0xfa
+@0032 0CE00	// b uncond, TEST_4
+@0033 0B5FF	// llb R5, 0xff
+@0034 0B800	// llb R8, 0x00
+@0035 0B166	// llb R1, 0x66
+@0036 0A166	// lhb R1, 0x66
+@0037 0B266	// llb R2, 0x66
+@0038 0A266	// lhb R2, 0x66
+@0039 0B4A4	// llb R4, 0xA4
+@003a 0A470	// lhb R4, 0x70
+@003b 19312	// UMUL R3, R1, R2
+@003c 02534	// SUB R5, R3, R4
+@003d 0C201	// B eq, PASS_4
+@003e 0C003	// B neq, FAIL_4
+@003f 0B855	// llb R8, 0x55
+@0040 0A89A	// lhb R8, 0x9a
+@0041 0CE03	// b uncond, TEST_5
+@0042 0B817	// llb R8, 0x17
+@0043 0A8FA	// lhb R8, 0xfa
+@0044 0CE00	// b uncond, TEST_5
+@0045 0B5FF	// llb R5, 0xff
+@0046 0B800	// llb R8, 0x00
+@0047 0B158	// llb R1, 0x58
+@0048 0A147	// lhb R1, 0x47
+@0049 0B296	// llb R2, 0x96
+@004a 0A212	// lhb R2, 0x12
+@004b 0B490	// llb R4, 0x90
+@004c 0A4FD	// lhb R4, 0xFD
+@004d 19312	// UMUL R3, R1, R2
+@004e 02534	// SUB R5, R3, R4
+@004f 0C201	// B eq, PASS_5
+@0050 0C003	// B neq, FAIL_5
+@0051 0B855	// llb R8, 0x55
+@0052 0A89A	// lhb R8, 0x9a
+@0053 0CE03	// b uncond, TEST_6
+@0054 0B817	// llb R8, 0x17
+@0055 0A8FA	// lhb R8, 0xfa
+@0056 0CE00	// b uncond, TEST_6
+@0057 0B5FF	// llb R5, 0xff
+@0058 0B800	// llb R8, 0x00
+@0059 0B1FF	// llb R1, 0xff
+@005a 0A1FF	// lhb R1, 0xff
+@005b 0B2FF	// llb R2, 0xff
+@005c 0A2FF	// lhb R2, 0xff
+@005d 0B401	// llb R4, 0x01
+@005e 0A400	// lhb R4, 0x00
+@005f 19312	// UMUL R3, R1, R2
+@0060 02534	// SUB R5, R3, R4
+@0061 0C201	// B eq, PASS_6
+@0062 0C003	// B neq, FAIL_6
+@0063 0B855	// llb R8, 0x55
+@0064 0A89A	// lhb R8, 0x9a
+@0065 0CE03	// b uncond, TEST_7
+@0066 0B817	// llb R8, 0x17
+@0067 0A8FA	// lhb R8, 0xfa
+@0068 0CE00	// b uncond, TEST_7
+@0069 0B5FF	// llb R5, 0xff
+@006a 0B800	// llb R8, 0x00
+@006b 0B1FF	// llb R1, 0xff
+@006c 0A1FF	// lhb R1, 0xff
+@006d 0B201	// llb R2, 0x01
+@006e 0A200	// lhb R2, 0x00
+@006f 0B4FF	// llb R4, 0xff
+@0070 0A4FF	// lhb R4, 0xff
+@0071 19312	// UMUL R3, R1, R2
+@0072 02534	// SUB R5, R3, R4
+@0073 0C201	// B eq, PASS_7
+@0074 0C003	// B neq, FAIL_7
+@0075 0B855	// llb R8, 0x55
+@0076 0A89A	// lhb R8, 0x9a
+@0077 0CE03	// b uncond, TEST_11
+@0078 0B817	// llb R8, 0x17
+@0079 0A8FA	// lhb R8, 0xfa
+@007a 0CE00	// b uncond, TEST_11
+@007b 0B5FF	// llb R5, 0xff
+@007c 0B800	// llb R8, 0x00
+@007d 0B100	// llb R1, 0x00
+@007e 0A100	// lhb R1, 0x00
+@007f 0B300	// llb R3, 0x00
+@0080 0A300	// lhb R3, 0x00
+@0081 0B400	// llb R4, 0x00
+@0082 0A400	// lhb R4, 0x00
+@0083 1A213	// SMUL R2, R1, R3
+@0084 02524	// SUB R5, R2, R4
+@0085 0C201	// B eq, PASS_11
+@0086 0C003	// B neq, FAIL_11
+@0087 0B855	// llb R8, 0x55
+@0088 0A89A	// lhb R8, 0x9a
+@0089 0CE03	// b uncond, TEST_12
+@008a 0B817	// llb R8, 0x17
+@008b 0A8FA	// lhb R8, 0xfa
+@008c 0CE00	// b uncond, TEST_12
+@008d 0B5FF	// llb R5, 0xff
+@008e 0B800	// llb R8, 0x00
+@008f 0B101	// llb R1, 0x01
+@0090 0A100	// lhb R1, 0x00
+@0091 0B301	// llb R3, 0x01
+@0092 0A300	// lhb R3, 0x00
+@0093 0B401	// llb R4, 0x01
+@0094 0A400	// lhb R4, 0x00
+@0095 1A213	// SMUL R2, R1, R3
+@0096 02524	// SUB R5, R2, R4
+@0097 0C201	// B eq, PASS_12
+@0098 0C003	// B neq, FAIL_12
+@0099 0B855	// llb R8, 0x55
+@009a 0A89A	// lhb R8, 0x9a
+@009b 0CE03	// b uncond, TEST_13
+@009c 0B817	// llb R8, 0x17
+@009d 0A8FA	// lhb R8, 0xfa
+@009e 0CE00	// b uncond, TEST_13
+@009f 0B5FF	// llb R5, 0xff
+@00a0 0B800	// llb R8, 0x00
+@00a1 0B104	// llb R1, 0x04
+@00a2 0A100	// lhb R1, 0x00
+@00a3 0B308	// llb R3, 0x08
+@00a4 0A300	// lhb R3, 0x00
+@00a5 0B420	// llb R4, 0x20
+@00a6 0A400	// lhb R4, 0x00
+@00a7 1A213	// SMUL R2, R1, R3
+@00a8 02524	// SUB R5, R2, R4
+@00a9 0C201	// B eq, PASS_13
+@00aa 0C003	// B neq, FAIL_13
+@00ab 0B855	// llb R8, 0x55
+@00ac 0A89A	// lhb R8, 0x9a
+@00ad 0CE03	// b uncond, TEST_14
+@00ae 0B817	// llb R8, 0x17
+@00af 0A8FA	// lhb R8, 0xfa
+@00b0 0CE00	// b uncond, TEST_14
+@00b1 0B5FF	// llb R5, 0xff
+@00b2 0B800	// llb R8, 0x00
+@00b3 0B180	// llb R1, 0x80
+@00b4 0A100	// lhb R1, 0x00
+@00b5 0B301	// llb R3, 0x01
+@00b6 0A300	// lhb R3, 0x00
+@00b7 0B480	// llb R4, 0x80
+@00b8 0A4FF	// lhb R4, 0xff
+@00b9 1A213	// SMUL R2, R1, R3
+@00ba 02524	// SUB R5, R2, R4
+@00bb 0C201	// B eq, PASS_14
+@00bc 0C003	// B neq, FAIL_14
+@00bd 0B855	// llb R8, 0x55
+@00be 0A89A	// lhb R8, 0x9a
+@00bf 0CE03	// b uncond, TEST_15
+@00c0 0B817	// llb R8, 0x17
+@00c1 0A8FA	// lhb R8, 0xfa
+@00c2 0CE00	// b uncond, TEST_15
+@00c3 0B5FF	// llb R5, 0xff
+@00c4 0B800	// llb R8, 0x00
+@00c5 0B180	// llb R1, 0x80
+@00c6 0A100	// lhb R1, 0x00
+@00c7 0B380	// llb R3, 0x80
+@00c8 0A300	// lhb R3, 0x00
+@00c9 0B400	// llb R4, 0x00
+@00ca 0A440	// lhb R4, 0x40
+@00cb 1A213	// SMUL R2, R1, R3
+@00cc 02524	// SUB R5, R2, R4
+@00cd 0C201	// B eq, PASS_15
+@00ce 0C003	// B neq, FAIL_15
+@00cf 0B855	// llb R8, 0x55
+@00d0 0A89A	// lhb R8, 0x9a
+@00d1 0CE03	// b uncond, TEST_19
+@00d2 0B817	// llb R8, 0x17
+@00d3 0A8FA	// lhb R8, 0xfa
+@00d4 0CE00	// b uncond, TEST_19
+@00d5 0B5FF	// llb R5, 0xff
+@00d6 0B800	// llb R8, 0x00
+@00d7 0B1FF	// llb R1, 0xff
+@00d8 0A100	// lhb R1, 0x00
+@00d9 0B3FF	// llb R3, 0xff
+@00da 0A300	// lhb R3, 0x00
+@00db 0B401	// llb R4, 0x01
+@00dc 0A400	// lhb R4, 0x00
+@00dd 1A213	// SMUL R2, R1, R3
+@00de 02524	// SUB R5, R2, R4
+@00df 0C201	// B eq, PASS_19
+@00e0 0C003	// B neq, FAIL_19
+@00e1 0B855	// llb R8, 0x55
+@00e2 0A89A	// lhb R8, 0x9a
+@00e3 0CE03	// b uncond, END
+@00e4 0B817	// llb R8, 0x17
+@00e5 0A8FA	// lhb R8, 0xfa
+@00e6 0CE00	// b uncond, END
+@00e7 0B94D	// llb R9, 0x4d
+@00e8 0A90E	// lhb R9, 0x0e
