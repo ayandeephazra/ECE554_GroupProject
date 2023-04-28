@@ -40,6 +40,9 @@ llb R2, 0x0b
 lhb R2, 0xc0
 sw R1, R2, 0        # stop stats -- clear mem[0xc00b]
 jal PRINT_STATS
+llb R12, 1          ##### DEBUG
+llb R12, 2          ##### DEBUG
+llb R12, 3          ##### DEBUG
 
 END:
 b uncond, END       # PC: 25
@@ -49,49 +52,65 @@ b uncond, END       # PC: 25
 # Print stats
 ###############################
 
-PRINT_STATS:
-llb R1, 0x10        # R1 contains mmap_reg base (br_cnt)
-lhb R1, 0xc0        
-llb R2, 0x04        # R2 contains spart addr
-lhb R2, 0xC0	    
-llb R4, 0x80        # R4 holds bit mask to poll tx q
-lhb R4, 0x00
-llb R6, 0x00        # R6 holds MEM 0x100: string init addr
-lhb R6, 0x01
+    PRINT_STATS:
+    llb R1, 0x10        # R1 contains mmap_reg base (br_cnt)
+    lhb R1, 0xc0        
+    llb R2, 0x04        # R2 contains spart addr
+    lhb R2, 0xC0	    
+    llb R4, 0x80        # R4 holds bit mask to poll tx q
+    lhb R4, 0x00
+    llb R6, 0x00        # R6 holds MEM 0x100: string init addr
+    lhb R6, 0x01
 
-lw R5, R1, 0        # R5 holds stats
+    lw R5, R1, 0        # R5 holds stats
 
-STR_LOOP:
+    push R15
+
+    jal STR_LOOP
+    pop R15
+
+    push R15
+    jal CONVERT
+    pop R15
+
+    llb R5, 16              #   --- 0x10
+    push R15
+    jal CONVERT
+    
+    pop R15
+    jr R15
+
+#########################################
+#   STR_LOOP:: Prints string
+#   assumes: R6 holds starting addr of char
+#########################################
+    STR_LOOP:
     movc R3, R6, 0      # R3 holds char to print
     addi R6, R6, 1
 
-    and R7, R3, R3      # R7: JUNK reg
-    b eq, CONVERT       # str end, print data
+    and R0, R3, R3      # R0: JUNK reg
+    b eq, STR_RETURN
     sw R3, R2, 0        # send char to print
 
     TX_WAIT:            # wait for TX q to empty
     lw R3, R2, 1        # read from 0xc005 (status reg) --> R3
-    and R3, R3, R4      # look for R3 == 1XXX_XXXX (tx_queue is empty)
+    and R0, R3, R4      # look for R3 == 1XXX_XXXX (tx_queue is empty)
     b eq, TX_WAIT       # if result is zero => MSB of status_reg is not 1 => not empty keep waiting
                         # PC: 49
+    b uncond, STR_LOOP
 
-b uncond, STR_LOOP
-
-push R15
-jal CONVERT
-pop R15
-
-jr R15
-
-
-
+    STR_RETURN:
+    jr R15
 
 
 ##########################################
 #   CONVERT:: HEX --> CHAR 
+#   assumes:
+#       R5 holds hex value to be converted
+#       R2 holds spart addr
+#   uses: 
 ##########################################
     CONVERT:
-    llb R14, 0xff       # DEBUG --- PC: 54
     llb R12, 9          # R12 contains 9 for comparing
     llb R4, 0x0f        # R4 contains bit mask to select each 4 bits after shifting
 
@@ -102,7 +121,7 @@ jr R15
     srl R13, R5, 12      # R13 contains R5[15:12]
     and R13, R13, R4
 
-    sub R14, R13, R12   # R14 is junk reg for comparison subtraction
+    sub R0, R13, R12    # R0 is junk reg for comparison subtraction
     b gt, LETTER_4      # value > 9 -- needs letter char
     llb R9, 0x30        # R9 contains addition offset
     b uncond, CONVERT_4
@@ -122,7 +141,7 @@ jr R15
     srl R13, R5, 8      # R13 contains R5[11:8]
     and R13, R13, R4
 
-    sub R14, R13, R12   # R14 is junk reg for comparison subtraction
+    sub R0, R13, R12    # R0 is junk reg for comparison subtraction
     b gt, LETTER_3      # value > 9 -- needs letter char
     llb R9, 0x30        # R9 contains addition offset
     b uncond, CONVERT_3
@@ -142,7 +161,7 @@ jr R15
     srl R13, R5, 4      # R13 contains R5[7:4]
     and R13, R13, R4
 
-    sub R14, R13, R12   # R14 is junk reg for comparison subtraction
+    sub R0, R13, R12    # R0 is junk reg for comparison subtraction
     b gt, LETTER_2      # value > 9 -- needs letter char
     llb R9, 0x30        # R9 contains addition offset
     b uncond, CONVERT_2
@@ -159,11 +178,11 @@ jr R15
     # NIBBLE 1
     #####################
 
-    and R13, R4, R5    # R13 contains R5[3:0]
+    and R13, R4, R5     # R13 contains R5[3:0]
 
-    sub R14, R13, R12   # R14 is junk reg for comparison subtraction
+    sub R0, R13, R12    # R0 is junk reg for comparison subtraction
     b gt, LETTER_1      # value > 9 -- needs letter char
-    llb R9, 0x30       # R9 contains addition offset
+    llb R9, 0x30        # R9 contains addition offset
     b uncond, CONVERT_1
 
     LETTER_1:
@@ -181,4 +200,5 @@ jr R15
 
 
 MEM 0x0100
-STRING Branch count: 0x 
+STRING Branch count: 0x
+STRING \nSNEHA HI: 0x 
