@@ -65,9 +65,10 @@ RUN:
     b eq, DOWN                      # if eq, go to DOWN
 
     # loop back otherwise
-    JAL RIGHT_TO_LEFT
+#    JAL RIGHT_TO_LEFT
+   b uncond, RIGHT_TO_LEFT
 
-    b uncond, RUN
+#    b uncond, RUN
 
 DOWN:
     # check bottom of screen
@@ -77,10 +78,11 @@ DOWN:
     SUB R4, R4, R3          # if R4 == R3, then at bottom of screen
     b neq, MOVING_DOWN
 
-    push R15
-    JAL RIGHT_TO_LEFT
-    pop R15
-    b uncond, RUN
+    #push R15
+    #JAL RIGHT_TO_LEFT
+    #pop R15
+   b uncond, RIGHT_TO_LEFT
+    #b uncond, RUN
 
 MOVING_DOWN:
     addi R3, R3, 1          # move img down by 1 units
@@ -100,21 +102,21 @@ MOVING_DOWN:
  #   JAL COUNT               #### WAIT 1000 cycles 
  #   pop R15
 
-    push R15
-    JAL RIGHT_TO_LEFT
-    pop R15
-
-    b uncond, RUN
+ #   push R15
+  #  JAL RIGHT_TO_LEFT
+   # pop R15
+b uncond, RIGHT_TO_LEFT
+   # b uncond, RUN
 
 UP:
     # check top of screen
     SUBI R4, R3, 0          # if R3 == 0, then at top of screen
     b neq, MOVING_UP
-
-    push R15
-    JAL RIGHT_TO_LEFT
-    pop R15
-    b uncond, RUN
+    b eq, RIGHT_TO_LEFT
+    #push R15
+    #JAL RIGHT_TO_LEFT
+    #pop R15
+    #b uncond, RUN
 
 MOVING_UP:
 
@@ -139,10 +141,11 @@ MOVING_UP:
 #    JAL COUNT               #### WAIT 1000 cycles 
 #    pop R15
 
-    push R15
-    JAL RIGHT_TO_LEFT
-    pop R15
-    b uncond, RUN
+    #push R15
+    #JAL RIGHT_TO_LEFT
+    #pop R15
+   b uncond, RIGHT_TO_LEFT
+#    b uncond, RUN
 
 RIGHT_TO_LEFT:
 
@@ -169,14 +172,15 @@ RIGHT_TO_LEFT:
     SUBI R12, R12, 1
     B NEQ, RIGHT_TO_LEFT_COUNT
 
-	sub R6, R6, R7			# if R3 = FC04
+#	sub R6, R6, R7			# if R3 = FC04
 	B eq, REMOVE_IMAGE		# remove the image
 	#JR R15				# jump to whereever the check was done at in ship movement
 
 	b uncond, RUN
 
 REMOVE_IMAGE:	
-	sw R6, R1, 0	# blackout image
+	#sw R6, R1, 0	# blackout image
+	sw R3, R11, 0
 	sw R5, R11, 1	# write y to mem
 
 	llb R4, 0x05	# cntrl <= 7 for blackout
