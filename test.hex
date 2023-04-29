@@ -1,0 +1,17 @@
+@0000 B101	// llb R1, 0x1
+@0001 B204	// llb R2, 0x4
+@0002 B303	// llb R3, 0x3
+@0003 2523	// sub R5, R2, R3
+@0004 C804	// b gte, FIRST
+@0005 B400	// llb R4, 0x0
+@0006 B401	// llb R4, 0x1
+@0007 B402	// llb R4, 0x2
+@0008 B403	// llb R4, 0x3
+@0009 B408	// llb R4, 0x8
+@000a B409	// llb R4, 0x9
+@000b B40A	// llb R4, 0xa
+@000c B40B	// llb R4, 0xb
+@000d 2221	// sub R2, R2, R1
+@000e C201	// b eq, END
+@000f C9F3	// b gte, REPEAT
+@0010 CFFF	// b uncond, END

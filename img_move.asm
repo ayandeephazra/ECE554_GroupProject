@@ -32,7 +32,7 @@ b uncond, RUN
 RUN:
     # If KEY[1] pressed:   
     llb R13, 0xF0	        # should be 16'hF0F0   
-    lhb R13, 0xF0            
+    lhb R13, 0xF0        
 
     lw R12, R10, 4		    # load up register -> 0xc014
     sub R12, R12, R13		# Is KEY[2] being pressed?

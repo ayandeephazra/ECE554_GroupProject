@@ -7,11 +7,6 @@ lhb R10, 0xC0
 llb R11, 0x08
 lhb R11, 0xC0
 
-#llb R12, 0xFF
-#lhb R12, 0x79
-#llb R12, 0x00
-#lhb R12, 0x40
-
 llb R13, 0x16
 lhb R13, 0xC0
 # 6 lanes -> 0-79, 80-159, 160-239, 240-319, 320-399, 400-479
@@ -35,36 +30,32 @@ lhb R9, 0x00
 addi R8, R9, 0		# load R8 with SEED we want to use
 sw R8, R13, 0		# whatever in R8 goes to c016 as SEED
 ##########################################################################
-llb R1, 0x00 #1E, every 30 loop finished, speed up by 10, until 4000 is reached
 START:
-	addi R1, R1, 1	# start of loop
 
-#    	lw R2, R13, 0		# R2 contains LFSR output
-
-#	llb R12, 0x00
-#	lhb R12, 0x40
-
-#	llb R12, 0xFF
-#	lhb R12, 0x79
-#	JAL COUNT
-
-#	JAL SAVE_REG
-#	addi R12, R7, 0
-
-#	llb R12, 0xFF
-#	lhb R12, 0x79
-#	JAL COUNT
-
+    	lw R2, R13, 0		# R2 contains LFSR output
+   # lw R2, R1, 16               # get value of LFSR
+   # b uncond, CHECK_VALUE
+	llb R12, 0x00
+	lhb R12, 0x40
+	JAL COUNT
 	lw R2, R13, 0
 
 	lw R7, R10, 3		# get timer value
-	llb R3, 0xFF
-	lhb R3, 0xFF
-	SUB R3, R7, R13		# did timer finish?
+	llb R12, 0xFF
+	lhb R12, 0xFF
+	SUB R12, R7, R12	# did timer finish?
 	B neq, CHECK_VALUE	# if no continue, if yes, go to change seed
 	addi R8, R9, 1		# change seed
 	sw R8, R13, 0		# load in SEED
 	lw R2, R13, 0		# get value from LFSR
+	
+#CHANGE_SEED:
+#lw R2, R13, 0		# get value of LFSR
+#lw R7, R10, 3		# get time value
+#llb R9, 0xFF		# did timer finish?
+#llb R9, 0xFF
+#AND R9, R9, R7	# wait a bit for randomization
+#B neq, CHANGE_SEED
 
 CHECK_VALUE:
     llb R3, 0xD6	#214
@@ -96,7 +87,6 @@ CHECK_VALUE:
 
 LANE1:
     llb R3, 0x44                # XLOC <= 10'h0244 (right side of the screen)
-   # lhb R3, 0x02
     lhb R3, 0xFE
     sw R3, R11, 0  
 
@@ -110,18 +100,11 @@ LANE1:
     llb R12, 0x00     
     lhb R12, 0x40
     JAL COUNT                   # Gonna have to figure out how we do delay bc of the branch prediction
-#    JAL SAVE_REG
-#addi R12, R12, 0
-#    addi R7, R12, 0	# save reg in R7
-#    JAL COUNT
-addi R12, R7, 0
-   #  b  uncond, SPEED_UP
     b uncond, LEFT_TO_RIGHT
     b uncond, START
 
 LANE2:
     llb R3, 0x44                # XLOC <= 10'h0244 (right side of the screen)
- #   lhb R3, 0x02
     lhb R3, 0xFE
     sw R3, R11, 0                
 
@@ -132,23 +115,15 @@ LANE2:
     llb R4, 0x5                 # cntrl <= 3 (don't know what it is for the meteor, need to ask)
     sw R4, R11, 2
 
-     llb R12, 0x00     
-     lhb R12, 0x40
+    llb R12, 0x00     
+    lhb R12, 0x40
     JAL COUNT                   # Gonna have to figure out how we do delay bc of the branch prediction 
-
-#	JAL SAVE_REG
-
-    #addi R7, R12, 0	# save reg in R7
-#	JAL COUNT
-
-#addi R12, R7, 0
-   #  b  uncond, SPEED_UP
     b uncond, LEFT_TO_RIGHT
     b uncond, START
 
+
 LANE3:
     llb R3, 0x44                # XLOC <= 10'h0244 (right side of the screen)
-#    lhb R3, 0x02
     lhb R3, 0xFE
     sw R3, R11, 0                
 
@@ -162,19 +137,12 @@ LANE3:
     llb R12, 0x00     
     lhb R12, 0x40
     JAL COUNT                   # Gonna have to figure out how we do delay bc of the branch prediction
-#	JAL SAVE_REG
-
-#addi R7, R12, 0
-#	JAL COUNT
-
-#addi R12, R7, 0
-   #  b  uncond, SPEED_UP
     b uncond, LEFT_TO_RIGHT
     b uncond, START
 
+
 LANE4:
     llb R3, 0x44                # XLOC <= 10'h0244 (right side of the screen)
-#    lhb R3, 0x02
     lhb R3, 0xFE
     sw R3, R11, 0                
 
@@ -188,20 +156,12 @@ LANE4:
     llb R12, 0x00     
     lhb R12, 0x40
     JAL COUNT                   # Gonna have to figure out how we do delay bc of the branch prediction
-
-#	JAL SAVE_REG
-
-#addi R7, R12, 0
-#	JAL COUNT
-
-#addi R12, R7, 0
-  #   b  uncond, SPEED_UP
     b uncond, LEFT_TO_RIGHT
     b uncond, START
 
+
 LANE5:
     llb R3, 0x44                # XLOC <= 10'h0244 (right side of the screen)
-#    lhb R3, 0x02
     lhb R3, 0xFE
     sw R3, R11, 0                
 
@@ -215,20 +175,12 @@ LANE5:
     llb R12, 0x00     
     lhb R12, 0x40
     JAL COUNT                   # Gonna have to figure out how we do delay bc of the branch prediction
-
-#	JAL SAVE_REG
-
-#addi R7, R12, 0
-#	JAL COUNT
-
-#addi R12, R7, 0
- #    b  uncond, SPEED_UP
     b uncond, LEFT_TO_RIGHT
     b uncond, START
 
+
 LANE6:
     llb R3, 0x44                # XLOC <= 10'h0244 (right side of the screen)
-#    lhb R3, 0x02
     lhb R3, 0xFE
     sw R3, R11, 0               # R3 => mem[R1 + 8] => mem[R1+8] = C008 
 
@@ -241,33 +193,10 @@ LANE6:
 
     llb R12, 0x00     
     lhb R12, 0x40
-
     JAL COUNT                   # Gonna have to figure out how we do delay bc of the branch prediction
-
-#addi R7, R12, 0
-#	JAL SAVE_REG
-
-#	JAL COUNT
-#addi R12, R7, 0
-#     b  uncond, SPEED_UP
      b uncond, LEFT_TO_RIGHT
    #B uncond, END
     b uncond, START
-
-SPEED_UP:	# if R1 == 001E, subtrace 10 from R12,then send picture across screen
-llb R7, 0x1E
-lhb R7, 0x00
-sub R6, R1, R7	# is R1 == 001E?
-B neq, LEFT_TO_RIGHT	# no=>LEFT_TO_RIGHT, yes=>subtract 10 from R12 and set R1 to zero
-llb R1, 0x00
-subi R12, R12, 0xA	# subtract 10
-
-llb R7, 0x67		# check if R12 == 0x3F67
-lhb R7, 0x3F		
-sub R6, R12, R7		# check if R12 == 0x3F67
-B neq, LEFT_TO_RIGHT
-llb R12, 0x67
-lhb R12, 0x3F
 
 LEFT_TO_RIGHT:	# 320 =>
 
@@ -282,21 +211,18 @@ LEFT_TO_RIGHT:	# 320 =>
 	llb R4, 0x5			# 3 =>spaceship, # asteroid => #5, # blackout = 7
 	sw R4, R11, 2			# cntrl <= 5
 
-	llb R12, 0x00
+	llb R12, 0x00			# 79FF is the slowest it can go
 	lhb R12, 0x40			# for COUNT
 
-	#llb R12, 0xFF
-	#lhb R12, 0x79
-
-#addi R7, R12, 0
-#	JAL SAVE_REG	
-#addi R12, R12, 0
+	llb R12, 0xFF
+	lhb R12, 0x79
+	
 	JAL COUNT
-#addi R12, R7, 0
 
-	#llb R12, 0xFF
-	#lhb R12, 0x79
-	#JAL COUNT	# this sequence of count branches will slow down the meteor
+	llb R12, 0xFF
+	lhb R12, 0x79
+
+ 	JAL COUNT	
 
 	sub R6, R6, R3			# if R3 = FC04
 	B neq, LEFT_TO_RIGHT
@@ -311,25 +237,26 @@ LEFT_TO_RIGHT:	# 320 =>
 	llb R12, 0x00
 	lhb R12, 0x40
 
-#	JAL SAVE_REG
-
-#addi R7, R12, 0
-#addi R12, R12, 0
 	JAL COUNT	# count
-#	JAL SAVE_REG
-	addi R12, R7, 0
+
+
+#	llb R2, 0x68
+#	lhb R2, 0xFE
+#	sw R2, R11, 0
+#	sw R5, R11, 1
+#	sw R4, R11, 2
+#	llb R12, 0x00
+#	llb R12, 0x40
+#	JAL COUNT
+#	B eq, START
+	#B uncond, LEFT_TO_RIGHT
+#	subi R3, R3, 0
 	B eq, START	# might have to change to uncond
+#	B uncond, LEFT_TO_RIGHT
 	
-
-SAVE_REG:
-llb R1, 0xaa
-    addi R7, R12, 0	# save reg in R7
-    JR R15
-
 COUNT:
     SUBI R12, R12, 1
     B NEQ, COUNT
-#llb R1, 0xbb
     JR R15
 
 END:

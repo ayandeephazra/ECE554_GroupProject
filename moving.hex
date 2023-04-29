@@ -1,0 +1,131 @@
+@0000 0B200	// LLB R2, 0x00
+@0001 0A2C0	// LHB R2, 0xC0
+@0002 0B108	// llb R1, 0x08
+@0003 0A1C0	// lhb R1, 0xC0
+@0004 0B3F0	// llb R3, 0xF0
+@0005 0A300	// lhb R3, 0x00
+@0006 0BA10	// llb R10, 0x10
+@0007 0AAC0	// lhb R10, 0xC0
+@0008 0B210	// llb R2, 0x10
+@0009 0A200	// lhb R2, 0x00
+@000a 09210	// sw R2, R1, 0
+@000b 09311	// sw R3, R1, 1
+@000c 0B403	// llb R4, 0x3
+@000d 09412	// sw R4, R1, 2
+@000e 0BC00	// llb R12, 0x00
+@000f 0AC40	// lhb R12, 0x40
+@0010 09FE0	// push R15
+@0011 10EE1	// 
+@0012 0D06C	// JAL COUNT
+@0013 11EE1	// pop R15
+@0014 08FE0	// 
+@0015 0D059	// JAL PLACE_METEOR
+@0016 0CFFE	// B uncond, GAME_LOOP
+@0017 0BDF0	// llb R13, 0xF0
+@0018 0ADF0	// lhb R13, 0xF0
+@0019 08CA4	// lw R12, R10, 4
+@001a 02CCD	// sub R12, R12, R13
+@001b 0C21F	// b eq, UP
+@001c 08CA5	// lw R12, R10, 5
+@001d 02CCD	// sub R12, R12, R13
+@001e 0C206	// b eq, DOWN
+@001f 09FE0	// push R15
+@0020 10EE1	// 
+@0021 0D02D	// JAL RIGHT_TO_LEFT
+@0022 11EE1	// pop R15
+@0023 08FE0	// 
+@0024 0CFF2	// b uncond, RUN
+@0025 0B47C	// llb R4, 0x7C
+@0026 0A401	// lhb R4, 0x01
+@0027 02443	// SUB R4, R4, R3
+@0028 0C226	// b eq, RIGHT_TO_LEFT
+@0029 10331	// addi R3, R3, 1
+@002a 09210	// sw R2, R1, 0
+@002b 09311	// sw R3, R1, 1
+@002c 0B403	// llb R4, 0x3
+@002d 09412	// sw R4, R1, 2
+@002e 0BC00	// llb R12, 0x00
+@002f 0AC40	// lhb R12, 0x40
+@0030 09FE0	// push R15
+@0031 10EE1	// 
+@0032 0D04C	// JAL COUNT
+@0033 11EE1	// pop R15
+@0034 08FE0	// 
+@0035 09FE0	// push R15
+@0036 10EE1	// 
+@0037 0D017	// JAL RIGHT_TO_LEFT
+@0038 11EE1	// pop R15
+@0039 08FE0	// 
+@003a 0CFDC	// b uncond, RUN
+@003b 11430	// SUBI R4, R3, 0
+@003c 0C3DA	// b eq, RUN
+@003d 11331	// subi R3, R3, 1
+@003e 09210	// sw R2, R1, 0
+@003f 09311	// sw R3, R1, 1
+@0040 0B403	// llb R4, 0x3
+@0041 09412	// sw R4, R1, 2
+@0042 0BC00	// llb R12, 0x00
+@0043 0AC40	// lhb R12, 0x40
+@0044 09FE0	// push R15
+@0045 10EE1	// 
+@0046 0D038	// JAL COUNT
+@0047 11EE1	// pop R15
+@0048 08FE0	// 
+@0049 09FE0	// push R15
+@004a 10EE1	// 
+@004b 0D003	// JAL RIGHT_TO_LEFT
+@004c 11EE1	// pop R15
+@004d 08FE0	// 
+@004e 0CFC8	// b uncond, RUN
+@004f 0B604	// llb R6, 0x04
+@0050 0A6FC	// lhb R6, 0xFC
+@0051 11771	// subi R7, R7, 1
+@0052 09710	// sw R7, R1, 0
+@0053 0B550	// llb R5, 0x50
+@0054 0A500	// lhb R5, 0x00
+@0055 09511	// sw R5, R1, 1
+@0056 0B405	// llb R4, 0x5
+@0057 09412	// sw R4, R1, 2
+@0058 0BC00	// llb R12, 0x00
+@0059 0AC40	// lhb R12, 0x40
+@005a 09FE0	// push R15
+@005b 10EE1	// 
+@005c 0D022	// JAL COUNT
+@005d 11EE1	// pop R15
+@005e 08FE0	// 
+@005f 02667	// sub R6, R6, R7
+@0060 0C201	// B eq, REMOVE_IMAGE
+@0061 0E0F0	// JR R15
+@0062 09610	// sw R6, R1, 0
+@0063 095B1	// sw R5, R11, 1
+@0064 0B405	// llb R4, 0x05
+@0065 0A4FF	// lhb R4, 0xFF
+@0066 09412	// sw R4, R1, 2
+@0067 0BC00	// llb R12, 0x00
+@0068 0AC40	// lhb R12, 0x40
+@0069 09FE0	// push R15
+@006a 10EE1	// 
+@006b 0D013	// JAL COUNT
+@006c 11EE1	// pop R15
+@006d 08FE0	// 
+@006e 0E0F0	// JR R15
+@006f 0B744	// llb R7, 0x44
+@0070 0A7FE	// lhb R7, 0xFE
+@0071 09710	// sw R7, R1, 0
+@0072 0B250	// llb R2, 0x50
+@0073 0A200	// lhb R2, 0x00
+@0074 09211	// sw R2, R1, 1
+@0075 0B205	// llb R2, 0x5
+@0076 09212	// sw R2, R1, 2
+@0077 0BCFF	// llb R12, 0xFF
+@0078 0AC79	// lhb R12, 0x79
+@0079 09FE0	// push R15
+@007a 10EE1	// 
+@007b 0D003	// JAL COUNT
+@007c 11EE1	// pop R15
+@007d 08FE0	// 
+@007e 0CF98	// b  uncond, RUN
+@007f 11CC1	// SUBI R12, R12, 1
+@0080 0C1FE	// B NEQ, COUNT
+@0081 0E0F0	// JR R15
+@0082 0CFFF	// B uncond, END
