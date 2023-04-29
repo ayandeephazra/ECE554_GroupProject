@@ -1,4 +1,7 @@
 # Final game code
+
+llb R14, 0x00
+
 LLB R2, 0x00
 LHB R2, 0xC0	# memory map access
 
