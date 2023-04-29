@@ -34,7 +34,7 @@ pop R15
 GAME_LOOP:
 # place meteor here:
 
-	JAL PLACE_METEOR
+	b uncond, PLACE_METEOR
 
 #	push R15
 #	JAL RUN
@@ -78,15 +78,11 @@ DOWN:
 
     SUB R4, R4, R3          # if R4 == R3, then at bottom of screen
     b neq, MOVING_DOWN
- #   push R15
-  #  JAL RIGHT_TO_LEFT
-   # pop R15
-push R15
-JAL RIGHT_TO_LEFT
-pop R15
-b uncond, RUN
 
-#    b eq, RUN               # can't move anymore, go to RUN
+	push R15
+	JAL RIGHT_TO_LEFT
+	pop R15
+	b uncond, RUN
 
 MOVING_DOWN:
     addi R3, R3, 1          # move img down by 1 units
@@ -110,13 +106,14 @@ MOVING_DOWN:
 UP:
     # check top of screen
     SUBI R4, R3, 0          # if R3 == 0, then at top of screen
-#    b eq, RIGHT_TO_LEFT
-  #  push R15
-  #  JAL RIGHT_TO_LEFT
-  #  pop R15
+    b neq, MOVING_UP
 
-    b eq, RUN               # can't move anymore, go to RUN
+    push R15
+    JAL RIGHT_TO_LEFT
+    pop R15
+    b uncond, RUN
 
+MOVING_UP:
     subi R3, R3, 1          # move img up by 1 units
     sw R2, R1, 0            # XLOC <= 10'h0080 (left side of the screen)
     sw R3, R1, 1
@@ -202,9 +199,9 @@ push R15	# push R15 into queue
 JAL COUNT	# jump to count
 pop R15		# remove R15 onto stack
 
-# b  uncond, RUN cause of bug
+b uncond, RUN 	# cause of bug
 
-JR R15	
+#JR R15	
 
 COUNT:
     SUBI R12, R12, 1
