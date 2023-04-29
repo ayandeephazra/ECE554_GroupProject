@@ -27,18 +27,18 @@ sw R4, R1, 2
 llb R12, 0x00     
 lhb R12, 0x40
 
-push R15
-JAL COUNT                   # Gonna have to figure out how we do delay bc of the branch prediction
-pop R15
+PLACE_SHIP_COUNT:
+SUBI R12, R12, 1
+B NEQ, PLACE_SHIP_COUNT
+
+#push R15
+#JAL COUNT                   # Gonna have to figure out how we do delay bc of the branch prediction
+#pop R15
 
 GAME_LOOP:
 # place meteor here:
 
 	b uncond, PLACE_METEOR
-
-#	push R15
-#	JAL RUN
-#	pop R15
 	
 # B uncond, RUN
 
@@ -56,18 +56,16 @@ RUN:
     lhb R13, 0xF0        
 
     lw R12, R10, 4		    # load up register -> 0xc014
-    sub R12, R12, R13		# Is KEY[2] being pressed?
-    b eq, UP	            # if eq, go to UP
+    sub R12, R12, R13		    # Is KEY[2] being pressed?
+    b eq, UP	            	    # if eq, go to UP
     
     # If KEY[2] pressed:   
     lw R12, R10, 5		    # load down register -> 0xc015
-    sub R12, R12, R13		# Is KEY[1] being pressed?
-    b eq, DOWN              # if eq, go to DOWN
+    sub R12, R12, R13		    # Is KEY[1] being pressed?
+    b eq, DOWN                      # if eq, go to DOWN
 
     # loop back otherwise
-    push R15
     JAL RIGHT_TO_LEFT
-    pop R15
 
     b uncond, RUN
 
@@ -79,10 +77,10 @@ DOWN:
     SUB R4, R4, R3          # if R4 == R3, then at bottom of screen
     b neq, MOVING_DOWN
 
-	push R15
-	JAL RIGHT_TO_LEFT
-	pop R15
-	b uncond, RUN
+    push R15
+    JAL RIGHT_TO_LEFT
+    pop R15
+    b uncond, RUN
 
 MOVING_DOWN:
     addi R3, R3, 1          # move img down by 1 units
@@ -93,9 +91,14 @@ MOVING_DOWN:
 
     llb R12, 0x00     
     lhb R12, 0x40
-    push R15
-    JAL COUNT               #### WAIT 1000 cycles 
-    pop R15
+
+    MOVING_DOWN_COUNT:
+    SUBI R12, R12, 1
+    B NEQ, MOVING_DOWN_COUNT
+
+ #   push R15
+ #   JAL COUNT               #### WAIT 1000 cycles 
+ #   pop R15
 
     push R15
     JAL RIGHT_TO_LEFT
@@ -114,25 +117,33 @@ UP:
     b uncond, RUN
 
 MOVING_UP:
+
     subi R3, R3, 1          # move img up by 1 units
     sw R2, R1, 0            # XLOC <= 10'h0080 (left side of the screen)
     sw R3, R1, 1
     llb R4, 0x3             # cntrl <= 3
     sw R4, R1, 2            # print new location
+	
+#	llb R4, 0x05	# cntrl <= 7 for blackout
+#	lhb R4, 0xFF
+#	sw R4, R1, 2	# remove img
 
     llb R12, 0x00     
     lhb R12, 0x40
 
-    push R15
-    JAL COUNT               #### WAIT 1000 cycles 
-    pop R15
+    MOVING_UP_COUNT:
+    SUBI R12, R12, 1
+    B NEQ, MOVING_UP_COUNT
+
+#    push R15
+#    JAL COUNT               #### WAIT 1000 cycles 
+#    pop R15
 
     push R15
     JAL RIGHT_TO_LEFT
     pop R15
     b uncond, RUN
 
-# rf.sv, rf_mem.sv cpu.sv
 RIGHT_TO_LEFT:
 
 	llb R6, 0x04
@@ -153,13 +164,16 @@ RIGHT_TO_LEFT:
 
 	#llb R12, 0xFF
 	#lhb R12, 0x79
-	push R15			# push to save prev R15
-	JAL COUNT
-	pop R15				# get prev R15 back into R15
+
+    RIGHT_TO_LEFT_COUNT:
+    SUBI R12, R12, 1
+    B NEQ, RIGHT_TO_LEFT_COUNT
 
 	sub R6, R6, R7			# if R3 = FC04
 	B eq, REMOVE_IMAGE		# remove the image
-	JR R15				# jump to whereever the check was done at in ship movement
+	#JR R15				# jump to whereever the check was done at in ship movement
+
+	b uncond, RUN
 
 REMOVE_IMAGE:	
 	sw R6, R1, 0	# blackout image
@@ -172,11 +186,16 @@ REMOVE_IMAGE:
 	llb R12, 0x00	# counter value
 	lhb R12, 0x40
 
-	push R15
-	JAL COUNT
-	pop R15
+    REMOVE_IMAGE_COUNT:
+    SUBI R12, R12, 1
+    B NEQ, REMOVE_IMAGE_COUNT
 
-	JR R15		# jump to wherever the check was done at in ship movement
+#	push R15
+#	JAL COUNT
+#	pop R15
+
+#	JR R15		# jump to wherever the check was done at in ship movement
+	B uncond, RUN
 
 PLACE_METEOR: # meteor lanes will eventually go here
 
@@ -195,9 +214,13 @@ sw R2, R1, 2
 llb R12, 0xFF	# 0x8000 limit?
 lhb R12, 0x79
 
-push R15	# push R15 into queue
-JAL COUNT	# jump to count
-pop R15		# remove R15 onto stack
+PLACE_METEOR_COUNT:
+SUBI R12, R12, 1
+B NEQ, PLACE_METEOR_COUNT
+
+#push R15	# push R15 into queue
+#JAL COUNT	# jump to count
+#pop R15		# remove R15 onto stack
 
 b uncond, RUN 	# cause of bug
 
