@@ -34,30 +34,15 @@ pop R15
 GAME_LOOP:
 # place meteor here:
 
-#	push R15
 	JAL PLACE_METEOR
+
+#	push R15
+#	JAL RUN
 #	pop R15
-#	llb R7, 0x44	# x coord for meteor
-#	lhb R7, 0xFE
+	
+# B uncond, RUN
 
-#	sw R7, R1, 0
-
-#	llb R2, 0x50	#YLOC <= 8'h50
-#	lhb R2, 0x00
-#	sw R2, R1, 1
-
-#	llb R2, 0x5	# cntrl <= 5
-#	sw R2, R1, 2
-
-#	llb R12, 0xFF	# 0x8000 limit?
-#	lhb R12, 0x79
-
-#	push R15	# push R15 into queue
-#	JAL COUNT	# jump to count
-#	pop R15		# remove R15 onto stack
-	JAL RUN
-
-B uncond, GAME_LOOP	# end of game loop
+#B uncond, GAME_LOOP	# end of game loop
 
 ################################################
 # REGS IN USE #
@@ -92,13 +77,18 @@ DOWN:
     lhb R4, 0x01
 
     SUB R4, R4, R3          # if R4 == R3, then at bottom of screen
-    b eq, RIGHT_TO_LEFT
+    b neq, MOVING_DOWN
  #   push R15
   #  JAL RIGHT_TO_LEFT
    # pop R15
+push R15
+JAL RIGHT_TO_LEFT
+pop R15
+b uncond, RUN
 
 #    b eq, RUN               # can't move anymore, go to RUN
 
+MOVING_DOWN:
     addi R3, R3, 1          # move img down by 1 units
     sw R2, R1, 0            # XLOC <= 10'h0080 (left side of the screen)
     sw R3, R1, 1
@@ -213,6 +203,7 @@ JAL COUNT	# jump to count
 pop R15		# remove R15 onto stack
 
 # b  uncond, RUN cause of bug
+
 JR R15	
 
 COUNT:
