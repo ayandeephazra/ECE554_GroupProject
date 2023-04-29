@@ -1,0 +1,32 @@
+
+State Machine - |GroupProject|BMP_display:iBMP|PlaceBMP6bit_mm:iplace|state
+Name state.WRT state.YRD2 state.YRD1 state.XRD2 state.XRD1 state.ADV2 state.ADV1 state.IDLE state.WRT2 
+state.IDLE 0 0 0 0 0 0 0 0 0 
+state.ADV1 0 0 0 0 0 0 1 1 0 
+state.ADV2 0 0 0 0 0 1 0 1 0 
+state.XRD1 0 0 0 0 1 0 0 1 0 
+state.XRD2 0 0 0 1 0 0 0 1 0 
+state.YRD1 0 0 1 0 0 0 0 1 0 
+state.YRD2 0 1 0 0 0 0 0 1 0 
+state.WRT 1 0 0 0 0 0 0 1 0 
+state.WRT2 0 0 0 0 0 0 0 1 1 
+
+State Machine - |GroupProject|BMP_display:iBMP|VGA_timing:iVGATM|Vstate
+Name Vstate.V_FP Vstate.V_FRAME Vstate.V_BP Vstate.V_SYNCH 
+Vstate.V_SYNCH 0 0 0 0 
+Vstate.V_BP 0 0 1 1 
+Vstate.V_FRAME 0 1 0 1 
+Vstate.V_FP 1 0 0 1 
+
+State Machine - |GroupProject|BMP_display:iBMP|VGA_timing:iVGATM|Hstate
+Name Hstate.H_FP Hstate.H_LINE Hstate.H_BP Hstate.H_SYNCH 
+Hstate.H_SYNCH 0 0 0 0 
+Hstate.H_BP 0 0 1 1 
+Hstate.H_LINE 0 1 0 1 
+Hstate.H_FP 1 0 0 1 
+
+State Machine - |GroupProject|spart:spart1|UART_tx:iTX|state2
+Name state2.IDLE2 state2.WAIT state2.TRMT 
+state2.IDLE2 0 0 0 
+state2.TRMT 1 0 1 
+state2.WAIT 1 1 0 

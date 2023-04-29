@@ -1,0 +1,220 @@
+{C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/BMP_ROM_Font.v} {1 {vlog -work work -stats=none {C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/BMP_ROM_Font.v}
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module BMP_ROM_Font
+
+Top level modules:
+	BMP_ROM_Font
+
+} {} {}} {C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/prgm_cntr.v} {1 {vlog -work work -stats=none {C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/prgm_cntr.v}
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module pc
+
+Top level modules:
+	pc
+
+} {} {}} {C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/dst_mux.v} {1 {vlog -work work -stats=none {C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/dst_mux.v}
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module dst_mux
+
+Top level modules:
+	dst_mux
+
+} {} {}} {C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/rst_synch.v} {1 {vlog -work work -stats=none {C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/rst_synch.v}
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module rst_synch
+
+Top level modules:
+	rst_synch
+
+} {} {}} {C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/PlaceBMP6bit_mm.sv} {2 {vlog -work work -sv -stats=none {C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/PlaceBMP6bit_mm.sv}
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module PlaceBMP6bit_mm
+** Warning: C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/PlaceBMP6bit_mm.sv(247): (vlog-2600) [RDGN] - Redundant digits in numeric literal.
+** Warning: C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/PlaceBMP6bit_mm.sv(260): (vlog-2600) [RDGN] - Redundant digits in numeric literal.
+
+Top level modules:
+	PlaceBMP6bit_mm
+
+} {} {}} {C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/CapabilityExplore1.sv} {1 {vlog -work work -sv -stats=none {C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/CapabilityExplore1.sv}
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module CapabilityExplore1
+
+Top level modules:
+	CapabilityExplore1
+
+} {} {}} {C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/BMP_ROM_asteroid.v} {1 {vlog -work work -stats=none {C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/BMP_ROM_asteroid.v}
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module BMP_ROM_asteroid
+
+Top level modules:
+	BMP_ROM_asteroid
+
+} {} {}} {C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/cpu_tb.sv} {1 {vlog -work work -sv -stats=none {C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/cpu_tb.sv}
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module cpu_tb
+
+Top level modules:
+	cpu_tb
+
+} {} {}} {C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/UART_rx.sv} {1 {vlog -work work -sv -stats=none {C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/UART_rx.sv}
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module UART_rx
+
+Top level modules:
+	UART_rx
+
+} {} {}} {C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/src_mux.v} {1 {vlog -work work -stats=none {C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/src_mux.v}
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module src_mux
+
+Top level modules:
+	src_mux
+
+} {} {}} {C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/rf_mem.sv} {1 {vlog -work work -sv -stats=none {C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/rf_mem.sv}
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module rf_mem
+
+Top level modules:
+	rf_mem
+
+} {} {}} {C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/UART_tx.sv} {1 {vlog -work work -sv -stats=none {C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/UART_tx.sv}
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module UART_tx
+
+Top level modules:
+	UART_tx
+
+} {} {}} {C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/spart_tb.sv} {1 {vlog -work work -sv -stats=none {C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/spart_tb.sv}
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module spart_tb
+
+Top level modules:
+	spart_tb
+
+} {} {}} {C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/alu.v} {1 {vlog -work work -stats=none {C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/alu.v}
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module alu
+
+Top level modules:
+	alu
+
+} {} {}} {C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/BMP_ROM_Po.v} {1 {vlog -work work -stats=none {C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/BMP_ROM_Po.v}
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module BMP_ROM_Po
+
+Top level modules:
+	BMP_ROM_Po
+
+} {} {}} {C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/rf.sv} {1 {vlog -work work -sv -stats=none {C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/rf.sv}
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module rf
+
+Top level modules:
+	rf
+
+} {} {}} {C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/data_mem.sv} {1 {vlog -work work -sv -stats=none {C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/data_mem.sv}
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module DM
+
+Top level modules:
+	DM
+
+} {} {}} {C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/BMP_ROM_spaceship.v} {1 {vlog -work work -stats=none {C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/BMP_ROM_spaceship.v}
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module BMP_ROM_spaceship
+
+Top level modules:
+	BMP_ROM_spaceship
+
+} {} {}} {C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/BMP_display.v} {1 {vlog -work work -stats=none {C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/BMP_display.v}
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module BMP_display
+
+Top level modules:
+	BMP_display
+
+} {} {}} {C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/UART.v} {1 {vlog -work work -stats=none {C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/UART.v}
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module UART
+
+Top level modules:
+	UART
+
+} {} {}} {C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/id.v} {1 {vlog -work work -stats=none {C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/id.v}
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module id
+
+Top level modules:
+	id
+
+} {} {}} {C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/spart.sv} {1 {vlog -work work -sv -stats=none {C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/spart.sv}
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module spart
+
+Top level modules:
+	spart
+
+} {} {}} {C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/videoMem6bit.sv} {1 {vlog -work work -sv -stats=none {C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/videoMem6bit.sv}
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module videoMem6bit
+
+Top level modules:
+	videoMem6bit
+
+} {} {}} {C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/UART_rx_nq.sv} {1 {vlog -work work -sv -stats=none {C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/UART_rx_nq.sv}
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module UART_rx_nq
+
+Top level modules:
+	UART_rx_nq
+
+} {} {}} {C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/br_bool.v} {1 {vlog -work work -stats=none {C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/br_bool.v}
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module br_bool
+
+Top level modules:
+	br_bool
+
+} {} {}} {C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/PLL.v} {1 {vlog -work work -stats=none {C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/PLL.v}
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module PLL
+
+Top level modules:
+	PLL
+
+} {} {}} {C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/VGA_timing.sv} {1 {vlog -work work -sv -stats=none {C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/VGA_timing.sv}
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module VGA_timing
+
+Top level modules:
+	VGA_timing
+
+} {} {}} {C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/UART_tx_nq.sv} {1 {vlog -work work -sv -stats=none {C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/UART_tx_nq.sv}
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module UART_tx_nq
+
+Top level modules:
+	UART_tx_nq
+
+} {} {}} {C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/cpu.v} {1 {vlog -work work -stats=none {C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/cpu.v}
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module cpu
+
+Top level modules:
+	cpu
+
+} {} {}} {C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/gp_test.sv} {1 {vlog -work work -sv -stats=none {C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/gp_test.sv}
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module gp_test
+
+Top level modules:
+	gp_test
+
+} {} {}} {C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/instr_mem.sv} {1 {vlog -work work -sv -stats=none {C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/instr_mem.sv}
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module IM
+
+Top level modules:
+	IM
+
+} {} {}}
