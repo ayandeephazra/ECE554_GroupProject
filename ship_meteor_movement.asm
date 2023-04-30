@@ -11,6 +11,13 @@ lhb R3, 0x00
 llb R10, 0x10               # R10 holds mmap address for mmap_regs
 lhb R10, 0xC0
 
+####### set up LFSR
+
+llb R11, 0x88		# SEED that will be loaded into LFSR
+lhb R11, 0x00
+addi R8, R11, 0		# load R8 with SEED we want to use
+sw R8, R10, 6 		# store c016 w/ SEED
+
 ####### Place Ship
 llb R2, 0x10                # XLOC <= 10'h0080 (left side of the screen)
 lhb R2, 0x00
@@ -48,11 +55,13 @@ RUN:
     llb R13, 0xF0	        # should be 16'hF0F0   
     lhb R13, 0xF0        
 
+#     lw R12, R1, 12
     lw R12, R10, 4		    # load up register -> 0xc014
     sub R12, R12, R13		    # Is KEY[2] being pressed?
     b eq, UP	            	    # if eq, go to UP
     
-    # If KEY[2] pressed:   
+    # If KEY[2] pressed:  
+#     lw R12, R1, 13
     lw R12, R10, 5		    # load down register -> 0xc015
     sub R12, R12, R13		    # Is KEY[1] being pressed?
     b eq, DOWN                      # if eq, go to DOWN
@@ -154,6 +163,66 @@ REMOVE_IMAGE:
 	B uncond, PLACE_METEOR
 
 PLACE_METEOR: # meteor lanes will eventually go here
+
+##############################################################################
+# GETTING LFSR 
+##############################################################################
+
+	llb R11, 0x88		# SEED that will be loaded into LFSR
+	lhb R11, 0x00
+	addi R8, R11, 0		# load R8 with SEED we want to use
+	sw R8, R10, 6 		# store c016 w/ SEED
+
+	lw R8, R10, 6		# get LFSR output
+	llb R12, 0x00
+	lhb R12, 0x40
+
+	LFSR_TIMER:		# timer for LFSR...wait for RN
+	subi R12, R12, 1
+	B neq, LFSR_TIMER
+
+	lw R8, R10, 6		# get LFSR output again
+
+	lw R7, R10, 3		# get timer value
+	llb R12, 0xFF
+	llb R12, 0xFF
+	SUB  R12, R7, R12	# did timer finish?
+	B neq, CHECK_VALUE	# if no continue, if yes, go to change seed
+	addi R8, R9, 1		# change SEED
+	sw R8, R10, 6		# load in SEED
+	lw R8, R10,  6		# get value from LFSR
+
+
+############################################################################
+
+CHECK_VALUE:
+    llb R7, 0xD6	#214
+    lhb R7, 0x00
+    SUB R7, R8, R7              # if R3 < R2, then go to lane 6
+    b gt, LANE6
+
+    llb R7, 0xAB	#171
+    lhb R7, 0x00
+    SUB R7, R8, R7              # if R3 < R2, then go to lane 5
+    b gt, LANE5
+
+    llb R7, 0x80	#128
+    lhb R7, 0x00
+    SUB R7, R8, R7              # if R3 < R2, then go to lane 4
+    b gt, LANE4
+
+    llb R7, 0x55	#85
+    lhb R7, 0x00
+    SUB R7, R8, R7              # if R3 < R2, then go to lane 3
+    b gt, LANE3
+
+    llb R7, 0x2A	#42
+    lhb R7, 0x00
+    SUB R7, R8, R7              # if R3 < R2, then go to lane 2
+    b gt, LANE2
+
+    b uncond, LANE1             # uconditional branch to LANE1 if not others 
+
 
 llb R7, 0x44	# x coord for meteor
 lhb R7, 0xFE
