@@ -11,18 +11,18 @@ lhb R3, 0x00
 llb R10, 0x10               # R10 holds mmap address for mmap_regs
 lhb R10, 0xC0
 
-# R9 used temporarily
+# R2 used temporarily
 # x location of image deletion
-llb R9, 0x10  # 0x10
-lhb R9, 0x00
-sw R9, R1, 0
+llb R2, 0x10  # 0x10
+lhb R2, 0x00
+sw R2, R1, 0
 
-# R9 used temporarily
+# R2 used temporarily
 # C00B stores y location of last movement
-lw R9, R1, 3
-#llb R9, 0x72  # 0x10
-#lhb R9, 0x01
-sw R9, R1, 1
+lw R2, R1, 3
+#llb R2, 0x72  # 0x10
+#lhb R2, 0x01
+sw R2, R1, 1
 
 llb R4, 0x05                 # cntrl <= 5 + 1 for removing existing image
 lhb R4, 0xFF
@@ -39,9 +39,9 @@ B NEQ, REM_SHIP_IF_EXISTS
 ############################# Place Ship #####################################
 ##############################################################################
 
-llb R9, 0x10                # XLOC <= 10'h0010 (left side of the screen)
-lhb R9, 0x00
-sw R9, R1, 0                
+llb R2, 0x10                # XLOC <= 10'h0010 (left side of the screen)
+lhb R2, 0x00
+sw R2, R1, 0                
 
 sw R3, R1, 1                # YLOC <= 8'hF0 (center of the screen)
 
@@ -110,9 +110,9 @@ DOWN:
 
 MOVING_DOWN:
     addi R3, R3, 1          # move img down by 1 units
-	llb R9, 0x10            # XLOC <= 10'h0010 (left side of the screen)
-	lhb R9, 0x00
-    sw R9, R1, 0            # XLOC <= 10'h0010 (left side of the screen)
+	llb R2, 0x10            # XLOC <= 10'h0010 (left side of the screen)
+	lhb R2, 0x00
+    sw R2, R1, 0            # XLOC <= 10'h0010 (left side of the screen)
     sw R3, R1, 1
     llb R4, 0x3             # cntrl <= 3
     sw R4, R1, 2            # print new location
@@ -148,9 +148,9 @@ UP:
 MOVING_UP:
 
     subi R3, R3, 1          # move img up by 1 units
-	llb R9, 0x10            # XLOC <= 10'h0010 (left side of the screen)
-	lhb R9, 0x00
-    sw R9, R1, 0            # XLOC <= 10'h0010 (left side of the screen)
+	llb R2, 0x10            # XLOC <= 10'h0010 (left side of the screen)
+	lhb R2, 0x00
+    sw R2, R1, 0            # XLOC <= 10'h0010 (left side of the screen)
     sw R3, R1, 1
     llb R4, 0x3             # cntrl <= 3
     sw R4, R1, 2            # print new location
@@ -234,12 +234,12 @@ lhb R7, 0xFE
 
 sw R7, R1, 0
 
-llb R2, 0x50	#YLOC <= 8'h50
-lhb R2, 0x00
-sw R2, R1, 1
+llb R9, 0x50	#YLOC <= 8'h50
+lhb R9, 0x00
+sw R9, R1, 1
 
-llb R2, 0x5	# cntrl <= 5
-sw R2, R1, 2
+llb R9, 0x5	# cntrl <= 5
+sw R9, R1, 2
 
 llb R12, 0xFF	# 0x8000 limit?
 lhb R12, 0x79
