@@ -41,9 +41,6 @@ llb R2, 0x0b
 lhb R2, 0xc0
 sw R1, R2, 0        # stop stats -- clear mem[0xc00b]
 jal PRINT_STATS
-llb R12, 1          ##### DEBUG
-llb R12, 2          ##### DEBUG
-llb R12, 3          ##### DEBUG
 
 END:
 b uncond, END       # PC: 25
@@ -63,32 +60,37 @@ b uncond, END       # PC: 25
     llb R6, 0x00        # R6 holds MEM 0x100: string init addr
     lhb R6, 0x01
 
-    lw R5, R1, 0        # R5 holds stats
-    llb R12, 0xb
     push R15
 
-    jal STR_LOOP
-
+    lw R5, R1, 0
+    jal STR_LOOP        # "Branch count: 0x"
     jal CONVERT
 
-    llb R5, 16              #   --- 0x0010
+    lw R5, R1, 2
+    jal STR_LOOP        # "Hit count: 0x"
+    jal CONVERT
+
+    lw R5, R1, 1        # "Misprediction count: 0x "
+    jal STR_LOOP
     jal CONVERT
     
-    llb R12, 0xa
     pop R15
-    and R0, R0, R0      # NOP
+    and R0, R0, R0      # NOP bw pop and jump (no forwarding mux implemented before the jump muxing?)
     jr R15
 
 #########################################
 #   STR_LOOP:: Prints string
 #   assumes: 
-#       R6 holds starting addr of char
+#       R6 holds starting addr of string
+#       R2 holds 0xc004
+#       R4 holds 0x0080 (tx poll bitmask)
+#   corrupts: R3
 #########################################
     STR_LOOP:
     movc R3, R6, 0      # R3 holds char to print
     addi R6, R6, 1
 
-    and R0, R3, R3      # R0: JUNK reg
+    and R0, R3, R3      # look for null terminate
     b eq, STR_RETURN
     sw R3, R2, 0        # send char to print
 
@@ -104,13 +106,17 @@ b uncond, END       # PC: 25
 
 
 ##########################################
-#   CONVERT:: HEX --> CHAR 
+#   CONVERT:: Converts HEX -> CHAR and prints
 #   assumes:
 #       R5 holds hex value to be converted
 #       R2 holds spart addr
-#   uses: 
+#   uses: R4, R13, R9
 ##########################################
     CONVERT:
+    push R4
+    push R13
+    push R9
+
     llb R12, 9          # R12 contains 9 for comparing
     llb R4, 0x0f        # R4 contains bit mask to select each 4 bits after shifting
 
@@ -193,6 +199,10 @@ b uncond, END       # PC: 25
 
     sw R13, R2, 0      # PRINT
 
+    pop R9
+    pop R13
+    pop R4
+
     jr R15
 
 
@@ -201,4 +211,5 @@ b uncond, END       # PC: 25
 
 MEM 0x0100
 STRING Branch count: 0x
-STRING \nSNEHA HI: 0x 
+STRING Hit count: 0x
+STRING Misprediction count: 0x 
