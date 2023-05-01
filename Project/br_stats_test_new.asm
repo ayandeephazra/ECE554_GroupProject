@@ -1,4 +1,5 @@
 # test strong bit
+llb R14, 0      # default stack pointer to 0
 llb R1, 0x1
 llb R2, 0x0b
 lhb R2, 0xc0
@@ -63,26 +64,25 @@ b uncond, END       # PC: 25
     lhb R6, 0x01
 
     lw R5, R1, 0        # R5 holds stats
-
+    llb R12, 0xb
     push R15
 
     jal STR_LOOP
-    pop R15
 
-    push R15
     jal CONVERT
-    pop R15
 
-    llb R5, 16              #   --- 0x10
-    push R15
+    llb R5, 16              #   --- 0x0010
     jal CONVERT
     
+    llb R12, 0xa
     pop R15
+    and R0, R0, R0      # NOP
     jr R15
 
 #########################################
 #   STR_LOOP:: Prints string
-#   assumes: R6 holds starting addr of char
+#   assumes: 
+#       R6 holds starting addr of char
 #########################################
     STR_LOOP:
     movc R3, R6, 0      # R3 holds char to print
