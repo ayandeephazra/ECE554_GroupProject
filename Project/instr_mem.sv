@@ -22,7 +22,7 @@ always_ff @ (negedge clk)
 ////////////////////////////////////
 
 initial begin
-  $readmemh("C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/Group Project/pushpop_testing.hex",instr_mem);
+  $readmemh("I:/ece554/ECE554_GroupProject/Project/br_stats_test_new.hex",instr_mem);
 end
 
 endmodule

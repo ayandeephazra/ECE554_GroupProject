@@ -61,7 +61,7 @@ my %numArgs = ( qw/ADD 3 ADDZ 3 SUB 3 AND 3 NOR 3 XOR 3 SLL 3 SRL 3 SRA 3 LW 3 S
                 ADDI 3 SUBI 3 XORI 3 ANDNI 3 ANDI 3 XORNI 3 ORI 3 ANDN 3 SMUL 3 MOVC 3 UMUL 3 PUSH 1 POP 1 NOOP 0/);
 
 
-my %opcode = ( qw/ADD 00000000 ADDZ 00000001 SUB 00000010 AND 00000011 NOR 00000100 XOR 00011011 SLL 00000101 SRL 00000110 SRA 00000111 LW 00001000 SW 00001001 
+my %opcode = ( qw/ADD 00000000 ADDZ 00000001 SUB 00000010 AND 00000011 NOR 00000100 XOR 00010111 SLL 00000101 SRL 00000110 SRA 00000111 LW 00001000 SW 00001001 
                   LHB 00001010 LLB 00001011 B 00001100 JAL 00001101 JR 00001110 ADDI 00010000 SUBI 00010001 XORI 00010010 ANDNI 00010011 ANDI 00010100 
                   XORNI 00010101 ORI 00010110 ANDN 00010111 SMUL 00011010 MOVC 00011000 UMUL 00011001 PUSH 00000000 POP 00000000 NOOP 00001111/);
 
@@ -255,17 +255,13 @@ while(<IN>) {
 
       }
 
-
-
-      # this will essential just become a macro most likely, easier to do than in hardware
-      # just a placeholder for now - look at slides when changing
       elsif($instr =~ /^(PUSH)$/) {
 
         foreach my $reg ($args[0]) {
 
             if(!$regs{$reg}) { die("Bad register ($reg)\n$_") }
-
-            $bits = "00001001" . $regs{$reg} . "00000000";
+		#				R14, 0
+            $bits = "00001001" . $regs{$reg} . "11100000";
 
         }
 
@@ -275,8 +271,8 @@ while(<IN>) {
 
         $addr += 1;
 
-        #         opcode      R0/R0       1
-        $bits = "00010000" . "00000000" . "0001";
+        #         opcode      R14/R14       1
+        $bits = "00010000" . "11101110" . "0001";
 
       }
 
@@ -286,7 +282,7 @@ while(<IN>) {
 
             if(!$regs{$reg}) { die("Bad register ($reg)\n$_") }
 
-            $bits = "00010001" . "00000000" . "0001";
+            $bits = "00010001" . "11101110" . "0001";
 
         }
 
@@ -296,8 +292,8 @@ while(<IN>) {
 
         $addr += 1;
 
-        #         opcode                         R0       0
-        $bits = "00001000" . $regs{$args[0]} . "0000" . "0000";
+        #         opcode                         R14
+        $bits = "00001000" . $regs{$args[0]} . "1110" . "0000";
 
       }
 
