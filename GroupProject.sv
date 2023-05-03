@@ -67,6 +67,10 @@ module GroupProject(
 	// mmap reg signals
 	logic inc_br_cnt, inc_hit_cnt, inc_mispr_cnt; 	// branch pred stats
 	logic br_stats_wr, mmap_re, lfsr_load;
+	
+	// BMP_display
+	logic end_clear;
+	reg end_clear_reg;
 
 //=======================================================
 //  Structural coding
@@ -85,7 +89,8 @@ module GroupProject(
 	// Memory Mappings
 	always_comb begin
 		rdata = (mm_re & (addr==16'hc001)) ? {{6{1'b0}},SW} :
-				(mm_re & (addr==16'hc004 | addr==16'hc005 | addr[15:4]==12'hc01)) ? databus : 
+				(mm_re & (addr==16'hc004 | addr==16'hc005 | addr[15:4]==12'hc01)) ? databus :
+				(mm_re & (addr==16'hc00f)) ? end_clear :
 				16'ha5a5;
 
 		iocs_n = ~((addr==16'hc004 | addr==16'hc005 | addr==16'hc006 | addr==16'hc007) & (mm_we | mm_re));
@@ -136,7 +141,8 @@ module GroupProject(
     // // instantiate BMP_display	 //
     // //////////////////////////////
 	BMP_display iBMP(.clk(clk), .rst_n(rst_n), .pll_locked(pll_locked), .bmp_sel(bmp_sel), .addr(addr), .databus(databus),
-	 				.VGA_BLANK_N(VGA_BLANK_N), .VGA_B(VGA_B), .VGA_CLK(VGA_CLK), .VGA_G(VGA_G), .VGA_HS(VGA_HS), .VGA_R(VGA_R), .VGA_SYNC_N(VGA_SYNC_N), .VGA_VS(VGA_VS));
+	 				.VGA_BLANK_N(VGA_BLANK_N), .VGA_B(VGA_B), .VGA_CLK(VGA_CLK), .VGA_G(VGA_G), .VGA_HS(VGA_HS), 
+					.VGA_R(VGA_R), .VGA_SYNC_N(VGA_SYNC_N), .VGA_VS(VGA_VS), .end_clear(end_clear));
 
 
 

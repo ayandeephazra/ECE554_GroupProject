@@ -1,4 +1,18 @@
 # Final game code
+# FOR RESET
+#LLB R4, 0X0F
+
+#COUNT_RST_OUTER:
+
+#LLB R12, 0XFF
+#LHB R12, 0X79
+
+#COUNT_RST:
+#SUBI R12, R12, 1
+#b neq, COUNT_RST
+
+#SUBI R4, R4, 1
+#b neq, COUNT_RST_OUTER
 
 llb R14, 0x00	# set stack pointer to zero
 
@@ -10,6 +24,11 @@ lhb R3, 0x00
 
 llb R10, 0x10               # R10 holds mmap address for mmap_regs
 lhb R10, 0xC0
+
+CHECK_END_CLEAR:
+lw R4, R1, 7				# end clear
+SUBI R0, R4, 1
+b neq, CHECK_END_CLEAR
 
 ####### set up LFSR
 

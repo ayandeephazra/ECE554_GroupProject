@@ -10,7 +10,8 @@ module mmap_regs(
     input inc_hit_cnt,
     input inc_mispr_cnt,
     input KEY_UP,
-    input KEY_DOWN
+    input KEY_DOWN,
+    input end_clear
 );
 
     logic [15:0] br_cnt, mispr_cnt, hit_cnt;
@@ -18,6 +19,7 @@ module mmap_regs(
     logic stats_en;     // a write to mem addr 0xc00b sets or clears the stats reg
     logic [15:0] button_up, button_down;
     logic [7:0] lfsr_out, lfsr_SEED;
+    logic end_clear_reg;
 
     // mmap_addr needs to check all 4 bits -> switched to hex to make it easier
     assign databus = (mm_re & addr == 16'hc010) ? br_cnt :
@@ -27,6 +29,7 @@ module mmap_regs(
                      (mm_re & addr == 16'hc014) ? button_up :       
                      (mm_re & addr == 16'hc015) ? button_down :
                      (mm_re & addr == 16'hc016) ? lfsr_out :
+                     (mm_re & addr == 16'hc00f) ? end_clear_reg : 
                      16'hzzzz;
 
     // enable branch prediction stats count -- addr 0xc00b
@@ -81,6 +84,13 @@ module mmap_regs(
             button_down <= 16'hF0F0;
         else
             button_down <= 16'h0000;
+            
+            
+    always_ff @ (posedge clk, negedge rst_n)
+        if (!rst_n)
+            end_clear_reg <= 0;
+        else if (end_clear)
+            end_clear_reg <= 1;
 
     assign lfsr_SEED = (lfsr_load) ? databus[7:0] : 8'h0;
 
