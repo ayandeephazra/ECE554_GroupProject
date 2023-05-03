@@ -244,10 +244,12 @@ module PlaceBMP6bit_mm(clk,rst_n, waddr,wdata,we, add_fnt, add_img, rem_img, ima
   BMP_ROM_Font  iROM0(.clk(clk),.addr(font_addr),.dout(bmp_read0));
   BMP_ROM_spaceship iROM1(.clk(clk),.addr(bmp_addr),.dout(bmp_read1));
   BMP_ROM_asteroid iROM2(.clk(clk),.addr(bmp_addr),.dout(bmp_read2));
-  BMP_ROM_blackout_asteroid iROM3(.clk(clk),.addr(bmp_addr),.dout(bmp_read3));
+//   BMP_ROM_blackscreen iROM3(.clk(clk),.addr(bmp_addr),.dout(bmp_read3));
 // set bit 6 high to remove image
   assign bmp_read = (fnt_addr_inc) ? bmp_read0 :
-	  	    (indx == 5'b00001) ? bmp_read1 :
+	  	    (indx === 5'b00001) ? bmp_read1 :
+			// (indx === 5'b00011) ? bmp_read3 :
+	
 		//    (indx == 5'b00011) ? bmp_read3 :
 		    			  bmp_read2;
   

@@ -110,7 +110,8 @@ b uncond, END       # PC: 25
 #   assumes:
 #       R5 holds hex value to be converted
 #       R2 holds spart addr
-#   uses: R4, R13, R9
+#   uses:   (& saves context)
+#       R4, R13, R9
 ##########################################
     CONVERT:
     push R4
@@ -127,7 +128,7 @@ b uncond, END       # PC: 25
     srl R13, R5, 12      # R13 contains R5[15:12]
     and R13, R13, R4
 
-    sub R0, R13, R12    # R0 is junk reg for comparison subtraction
+    sub R0, R13, R12
     b gt, LETTER_4      # value > 9 -- needs letter char
     llb R9, 0x30        # R9 contains addition offset
     b uncond, CONVERT_4

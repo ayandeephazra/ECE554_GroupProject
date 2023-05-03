@@ -1,13 +1,13 @@
-Analysis & Synthesis Status : Successful - Tue Apr 11 17:45:06 2023
-Quartus Prime Version : 22.1std.0 Build 915 10/25/2022 SC Lite Edition
+Analysis & Synthesis Status : Successful - Wed May  3 12:31:54 2023
+Quartus Prime Version : 21.1.0 Build 842 10/21/2021 SJ Lite Edition
 Revision Name : GroupProject
 Top-level Entity Name : GroupProject
 Family : Cyclone V
 Logic utilization (in ALMs) : N/A
-Total registers : 565
-Total pins : 90
+Total registers : 682
+Total pins : 93
 Total virtual pins : 0
-Total block memory bits : 2,248,105
+Total block memory bits : 2,259,881
 Total DSP Blocks : 4
 Total HSSI RX PCSs : 0
 Total HSSI PMA RX Deserializers : 0

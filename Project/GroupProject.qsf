@@ -6,7 +6,7 @@ set_global_assignment -name FAMILY "Cyclone V"
 set_global_assignment -name DEVICE 5CSEMA5F31C6
 set_global_assignment -name TOP_LEVEL_ENTITY "GroupProject"
 set_global_assignment -name ORIGINAL_QUARTUS_VERSION 15.1.0
-set_global_assignment -name LAST_QUARTUS_VERSION "22.1std.0 Lite Edition"
+set_global_assignment -name LAST_QUARTUS_VERSION "21.1.0 Lite Edition"
 set_global_assignment -name PROJECT_CREATION_TIME_DATE "19:09:17 MARCH 07,2023"
 set_global_assignment -name DEVICE_FILTER_PACKAGE FBGA
 set_global_assignment -name DEVICE_FILTER_PIN_COUNT 896
@@ -27,11 +27,11 @@ set_location_assignment PIN_AF14 -to CLOCK_50
 #============================================================
 # KEY
 #============================================================
-set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to RST_n
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to KEY[0]
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to KEY[1]
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to KEY[2]
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to KEY[3]
-set_location_assignment PIN_AA14 -to RST_n
+set_location_assignment PIN_AA14 -to KEY[0]
 set_location_assignment PIN_AA15 -to KEY[1]
 set_location_assignment PIN_W15 -to KEY[2]
 set_location_assignment PIN_Y16 -to KEY[3]
