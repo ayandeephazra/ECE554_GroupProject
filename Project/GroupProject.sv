@@ -12,7 +12,7 @@ module GroupProject(
 	input 		          		CLOCK_50,
 
 	//////////// KEY //////////
-	input 		     [3:0]		KEY,
+	input			 [3:0]		KEY,
 
 	//////////// LED //////////
 	output		     [9:0]		LEDR,
@@ -52,9 +52,6 @@ module GroupProject(
 	wire [15:0] databus;
 	logic iorw_n, iocs_n, rx_q_empty, tx_q_full;
 
-	// BMP
-	logic bmp_sel;
-
 	// PLL/rst_synch
 	logic pll_locked;
 
@@ -68,6 +65,9 @@ module GroupProject(
 	logic inc_br_cnt, inc_hit_cnt, inc_mispr_cnt; 	// branch pred stats
 	logic br_stats_wr, mmap_re, lfsr_load;
 	logic btb_en;
+	
+	// BMP_display
+	logic bmp_sel, end_clear;
 
 //=======================================================
 //  Structural coding
@@ -89,7 +89,7 @@ module GroupProject(
 	// Memory Mappings
 	always_comb begin
 		rdata = (mm_re & (addr==16'hc001)) ? {{6{1'b0}},SW} :
-				(mm_re & (addr==16'hc004 | addr==16'hc005 | addr[15:4]==12'hc01)) ? databus : 
+				(mm_re & (addr==16'hc004 | addr==16'hc005 | addr[15:4]==12'hc01)) ? databus :
 				16'ha5a5;
 
 		iocs_n = ~((addr==16'hc004 | addr==16'hc005 | addr==16'hc006 | addr==16'hc007) & (mm_we | mm_re));
@@ -132,8 +132,8 @@ module GroupProject(
 	//////////////////////////////////////////
 	// Instantiate memory mapped registers //
 	////////////////////////////////////////
-	mmap_regs immap_regs(.clk(clk), .rst_n(rst_n), .inc_br_cnt(inc_br_cnt), .inc_hit_cnt(inc_hit_cnt), .inc_mispr_cnt(inc_mispr_cnt),
-						 .lfsr_load(lfsr_load), .br_stats_wr(br_stats_wr), .databus(databus), .addr(addr), .mm_re(mm_re), .KEY_UP(~KEY[1]), .KEY_DOWN(~KEY[2]));
+	mmap_regs immap_regs(.clk(clk), .rst_n(rst_n), .KEY_UP(~KEY[1]), .KEY_DOWN(~KEY[2]), .inc_br_cnt(inc_br_cnt), .inc_hit_cnt(inc_hit_cnt), .inc_mispr_cnt(inc_mispr_cnt),
+						 .lfsr_load(lfsr_load), .br_stats_wr(br_stats_wr), .databus(databus), .addr(addr), .mm_re(mm_re));
 
 	
 
@@ -141,7 +141,8 @@ module GroupProject(
     // // instantiate BMP_display	 //
     // //////////////////////////////
 	BMP_display iBMP(.clk(clk), .rst_n(rst_n), .pll_locked(pll_locked), .bmp_sel(bmp_sel), .addr(addr), .databus(databus),
-	 				.VGA_BLANK_N(VGA_BLANK_N), .VGA_B(VGA_B), .VGA_CLK(VGA_CLK), .VGA_G(VGA_G), .VGA_HS(VGA_HS), .VGA_R(VGA_R), .VGA_SYNC_N(VGA_SYNC_N), .VGA_VS(VGA_VS));
+	 				.VGA_BLANK_N(VGA_BLANK_N), .VGA_B(VGA_B), .VGA_CLK(VGA_CLK), .VGA_G(VGA_G), .VGA_HS(VGA_HS), 
+					.VGA_R(VGA_R), .VGA_SYNC_N(VGA_SYNC_N), .VGA_VS(VGA_VS), .end_clear(end_clear));
 
 
 

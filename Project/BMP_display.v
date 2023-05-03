@@ -19,7 +19,9 @@ module BMP_display(
 	output		          		VGA_HS,
 	output		     [7:0]		VGA_R,
 	output		          		VGA_SYNC_N,
-	output		          		VGA_VS
+	output		          		VGA_VS,
+
+  output                  end_clear   // cleared video mem on reset
 );
 
   ////////////////////////////////////
@@ -66,7 +68,8 @@ module BMP_display(
   wire rem_img;	
   PlaceBMP6bit_mm iplace(.clk(clk),.rst_n(rst_n),
 	.waddr(waddr),.wdata(wdata),.we(we), .add_fnt(add_fnt),.fnt_indx(fnt_indx),
-	  .add_img(add_img),.rem_img(rem_img),.image_indx(image_indx), .xloc(xloc),.yloc(yloc)); 
+	  .add_img(add_img),.rem_img(rem_img),.image_indx(image_indx), .xloc(xloc),.yloc(yloc),
+        .end_clear(end_clear)); 
 
 reg [9:0] XLOC;
 reg [8:0] YLOC;

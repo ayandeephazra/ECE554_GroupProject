@@ -1,4 +1,4 @@
 Info (10281): Verilog HDL Declaration information at rst_synch.v(4): object "RST_n" differs only in case from object "rst_n" in the same scope File: I:/ece554/ECE554_GroupProject/Project/rst_synch.v Line: 4
 Info (10281): Verilog HDL Declaration information at UART_tx.sv(30): object "trmt" differs only in case from object "TRMT" in the same scope File: I:/ece554/ECE554_GroupProject/Project/UART_tx.sv Line: 30
-Info (10281): Verilog HDL Declaration information at BMP_display.v(38): object "xloc" differs only in case from object "XLOC" in the same scope File: I:/ece554/ECE554_GroupProject/Project/BMP_display.v Line: 38
-Info (10281): Verilog HDL Declaration information at BMP_display.v(39): object "yloc" differs only in case from object "YLOC" in the same scope File: I:/ece554/ECE554_GroupProject/Project/BMP_display.v Line: 39
+Info (10281): Verilog HDL Declaration information at BMP_display.v(40): object "xloc" differs only in case from object "XLOC" in the same scope File: I:/ece554/ECE554_GroupProject/Project/BMP_display.v Line: 40
+Info (10281): Verilog HDL Declaration information at BMP_display.v(41): object "yloc" differs only in case from object "YLOC" in the same scope File: I:/ece554/ECE554_GroupProject/Project/BMP_display.v Line: 41

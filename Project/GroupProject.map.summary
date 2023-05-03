@@ -1,10 +1,10 @@
-Analysis & Synthesis Status : Successful - Wed May  3 12:31:54 2023
+Analysis & Synthesis Status : Successful - Wed May  3 15:23:21 2023
 Quartus Prime Version : 21.1.0 Build 842 10/21/2021 SJ Lite Edition
 Revision Name : GroupProject
 Top-level Entity Name : GroupProject
 Family : Cyclone V
 Logic utilization (in ALMs) : N/A
-Total registers : 682
+Total registers : 683
 Total pins : 93
 Total virtual pins : 0
 Total block memory bits : 2,259,881

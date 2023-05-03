@@ -1,5 +1,13 @@
 # Final game code
 
+llb R1, 0x0f
+lhb R1, 0xc0
+
+WAIT_VIDMEM_CLR:
+lw R2, R1, 0				# end clear
+and R0, R2, R2
+b eq, WAIT_VIDMEM_CLR
+
 llb R14, 0x00	# set stack pointer to zero
 llb R1, 0x1
 llb R2, 0x0b
@@ -469,17 +477,25 @@ END:
     lhb R4, 0x00
     llb R6, 0x00        # R6 holds MEM 0x200: string init addr
     lhb R6, 0x02
+    llb R8, 0x0a        # For printing LF (\n)
+    llb R9, 0x0d        # carriage return
 
     push R15
+
+    jal CLR_CENTER      # clear and center putty terminal
 
     lw R5, R1, 0
     jal STR_LOOP        # "Branch count: 0x"
     jal CONVERT
 
+    sw R8, R2, 0        # print \n
+    sw R9, R2, 0        # print \n
     lw R5, R1, 2
     jal STR_LOOP        # "Hit count: 0x"
     jal CONVERT
 
+    sw R8, R2, 0        # print \n
+    sw R9, R2, 0        # print \n
     lw R5, R1, 1        # "Misprediction count: 0x "
     jal STR_LOOP
     jal CONVERT
@@ -488,15 +504,47 @@ END:
     and R0, R0, R0      # NOP bw pop and jump (no forwarding mux implemented before the jump muxing?)
     jr R15
 
+
+#############################
+#   CLR_CENTER: Putty Terminal
+#   uses: R1
+#############################
+    CLR_CENTER:
+    push R1
+
+    llb R1, 0x1b        # <Esc> --- clears screen
+    sw R1, R2, 0
+    llb R1, 0x5b        # [
+    sw R1, R2, 0
+    llb R1, 0x32        # 2
+    sw R1, R2, 0
+    llb R1, 0x4a        # J
+    sw R1, R2, 0
+    llb R1, 0x1b        # <Esc> --- idk
+    sw R1, R2, 0
+    llb R1, 0x5b        # [
+    sw R1, R2, 0
+    llb R1, 0x48        # H
+    sw R1, R2, 0
+
+    pop R1
+    jr R15
+
+
+
+
 #########################################
 #   STR_LOOP:: Prints string
 #   assumes: 
 #       R6 holds starting addr of string
 #       R2 holds 0xc004
 #       R4 holds 0x0080 (tx poll bitmask)
-#   corrupts: R3
+#   uses: R3
 #########################################
     STR_LOOP:
+    push R3
+
+    STR_LOOP_2:
     movc R3, R6, 0      # R3 holds char to print
     addi R6, R6, 1
 
@@ -509,9 +557,10 @@ END:
     and R0, R3, R4      # look for R3 == 1XXX_XXXX (tx_queue is empty)
     b eq, TX_WAIT       # if result is zero => MSB of status_reg is not 1 => not empty keep waiting
                         # PC: 49
-    b uncond, STR_LOOP
+    b uncond, STR_LOOP_2
 
     STR_RETURN:
+    pop R3
     jr R15
 
 

@@ -1,4 +1,4 @@
-module PlaceBMP6bit_mm(clk,rst_n, waddr,wdata,we, add_fnt, add_img, rem_img, image_indx, fnt_indx, xloc, yloc);
+module PlaceBMP6bit_mm(clk,rst_n, waddr,wdata,we, add_fnt, add_img, rem_img, image_indx, fnt_indx, xloc, yloc, end_clear);
 
   input add_fnt;
   input add_img;
@@ -13,6 +13,7 @@ module PlaceBMP6bit_mm(clk,rst_n, waddr,wdata,we, add_fnt, add_img, rem_img, ima
   output reg [18:0] waddr;		// write address to videoMem
   output logic [5:0] wdata;		// write 9-bit pixel to videoMem
   output reg we;
+  output logic end_clear;
     
   //////////////////////////////////////////
   // Declare any internal registers next //
@@ -29,7 +30,7 @@ module PlaceBMP6bit_mm(clk,rst_n, waddr,wdata,we, add_fnt, add_img, rem_img, ima
   reg [5:0] font_indx;				// 1 of 42
   reg rem;							// set if removing image
   
-  typedef enum reg[3:0] {IDLE,ADV1,ADV2,XRD1,XRD2,YRD1,YRD2,WRT,WRT2} state_t;
+  typedef enum reg[3:0] {RST,IDLE,ADV1,ADV2,XRD1,XRD2,YRD1,YRD2,WRT,WRT2} state_t;
   
   state_t state, nxt_state;
   
@@ -71,7 +72,7 @@ module PlaceBMP6bit_mm(clk,rst_n, waddr,wdata,we, add_fnt, add_img, rem_img, ima
 	  
   always_ff @(posedge clk, negedge rst_n)
     if (!rst_n)
-	  bmp_addr_end <= 16'h0000;
+	  bmp_addr_end <= 18'd307199;//16'h0000;			<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< WHAT ?? 
 	else if (captureXwid2)
 	  bmp_addr_end <= xwid + bmp_read;		// bmp_read is currently = xwidth
     else if (captureYwid2)
@@ -155,7 +156,7 @@ module PlaceBMP6bit_mm(clk,rst_n, waddr,wdata,we, add_fnt, add_img, rem_img, ima
 		
   always_ff @(posedge clk, negedge rst_n)
     if (!rst_n)
-	  state <= IDLE;
+	  state <= RST; //IDLE;
 	else
 	  state <= nxt_state;
   
@@ -171,8 +172,21 @@ module PlaceBMP6bit_mm(clk,rst_n, waddr,wdata,we, add_fnt, add_img, rem_img, ima
 	fnt_addr_inc = 0;
 	we = 0;
 	wdata = 9'hxxx;
+	end_clear = 0;
 
 	case (state)
+	  RST: begin
+		if (bmp_addr<bmp_addr_end) begin
+		  bmp_addr_inc = 1;
+		  wdata =  6'h00;
+		//   we = 1'b1;	
+		  we = (bmp_read==6'h024) ? 1'b0 : 1'b1;	// 128,64,32 is treated as transparent
+		  waddr_inc = 1;
+		end else begin
+		  end_clear = 1;
+		  nxt_state = IDLE;
+		end
+	  end
 	  IDLE: begin
 	    if (add_img | rem_img) begin
 		  captureIndx = 1;
@@ -244,13 +258,12 @@ module PlaceBMP6bit_mm(clk,rst_n, waddr,wdata,we, add_fnt, add_img, rem_img, ima
   BMP_ROM_Font  iROM0(.clk(clk),.addr(font_addr),.dout(bmp_read0));
   BMP_ROM_spaceship iROM1(.clk(clk),.addr(bmp_addr),.dout(bmp_read1));
   BMP_ROM_asteroid iROM2(.clk(clk),.addr(bmp_addr),.dout(bmp_read2));
-//   BMP_ROM_blackscreen iROM3(.clk(clk),.addr(bmp_addr),.dout(bmp_read3));
+  //BMP_ROM_blackscreen iROM3(.clk(clk),.addr(bmp_addr),.dout(bmp_read3));
 // set bit 6 high to remove image
   assign bmp_read = (fnt_addr_inc) ? bmp_read0 :
 	  	    (indx === 5'b00001) ? bmp_read1 :
-			// (indx === 5'b00011) ? bmp_read3 :
+			//(indx === 5'b00011) ? bmp_read3 :
 	
-		//    (indx == 5'b00011) ? bmp_read3 :
 		    			  bmp_read2;
   
 endmodule

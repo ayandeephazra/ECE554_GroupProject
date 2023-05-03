@@ -1,12 +1,12 @@
-Fitter Status : Successful - Wed May  3 12:34:08 2023
+Fitter Status : Successful - Wed May  3 15:25:55 2023
 Quartus Prime Version : 21.1.0 Build 842 10/21/2021 SJ Lite Edition
 Revision Name : GroupProject
 Top-level Entity Name : GroupProject
 Family : Cyclone V
 Device : 5CSEMA5F31C6
 Timing Models : Final
-Logic utilization (in ALMs) : 920 / 32,070 ( 3 % )
-Total registers : 798
+Logic utilization (in ALMs) : 910 / 32,070 ( 3 % )
+Total registers : 782
 Total pins : 93 / 457 ( 20 % )
 Total virtual pins : 0
 Total block memory bits : 2,259,881 / 4,065,280 ( 56 % )
