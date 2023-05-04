@@ -23,6 +23,27 @@ lhb R3, 0x00
 llb R10, 0x10               # R10 holds mmap address for mmap_regs
 lhb R10, 0xC0
 
+# clear screen
+
+#llb R4, 0x04                # XLOC <= 10'h0080 (left side of the screen)
+#lhb R4, 0xFC
+#sw R4, R1, 0 
+
+#llb R4, 0x00                # YLOC <= 10'h0000 (TOP end of the screen)
+#lhb R4, 0x00
+#sw R4, R1, 1 
+
+#llb R4, 0x07                # cntrl <= 7
+#sw R4, R1, 2
+
+llb R12, 0x00     
+lhb R12, 0x40
+
+CLEAR_SCREEN:
+SUBI R12, R12, 1
+B NEQ, CLEAR_SCREEN
+
+
 ####### set up LFSR
 
 llb R11, 0x88		# SEED that will be loaded into LFSR
@@ -455,6 +476,150 @@ COUNT:
     JR R15
 
 END:
+    ####### Place G
+    llb R2, 0x04
+    lhb R2, 0x01
+    sw R2, R1, 0        # XLOC <= 
+
+    llb R2, 0xF0        # YLOC <= 8'h50
+    lhb R2, 0x00
+    sw R2, R1, 1
+
+    llb R2, 0x20         # cntrl <= 3 --- 0
+    sw R2, R1, 2
+
+    llb R12, 0x00     
+    lhb R12, 0x40
+    COUNT_G:
+    SUBI R12, R12, 1
+    B NEQ, COUNT_G 
+
+    ####### Place A
+    llb R2, 0x18
+    lhb R2, 0x01
+    sw R2, R1, 0        # XLOC <= 
+
+    llb R2, 0xF0        # YLOC <= 8'h50
+    lhb R2, 0x00
+    sw R2, R1, 1
+
+    llb R2, 0x14         # cntrl <= 3 --- 0
+    sw R2, R1, 2
+
+    llb R12, 0x00     
+    lhb R12, 0x40
+    COUNT_A:
+    SUBI R12, R12, 1
+    B NEQ, COUNT_A  
+    
+    ####### Place M
+    llb R2, 0x2C
+    lhb R2, 0x01
+    sw R2, R1, 0        # XLOC <= 
+
+    llb R2, 0xF0        # YLOC <= 8'h50
+    lhb R2, 0x00
+    sw R2, R1, 1
+
+    llb R2, 0x2C         # cntrl <= 3 --- 0
+    sw R2, R1, 2
+
+    llb R12, 0x00     
+    lhb R12, 0x40
+    COUNT_M:
+    SUBI R12, R12, 1
+    B NEQ, COUNT_M
+    
+    ####### Place E
+    llb R2, 0x40
+    lhb R2, 0x01
+    sw R2, R1, 0        # XLOC <= 
+
+    llb R2, 0xF0        # YLOC <= 8'h50
+    lhb R2, 0x00
+    sw R2, R1, 1
+
+    llb R2, 0x1C         # cntrl <= 3 --- 0
+    sw R2, R1, 2
+
+    llb R12, 0x00     
+    lhb R12, 0x40
+    COUNT_E:
+    SUBI R12, R12, 1
+    B NEQ, COUNT_E 
+    
+    ####### Place O
+    llb R2, 0x68
+    lhb R2, 0x01
+    sw R2, R1, 0        # XLOC <= 
+
+    llb R2, 0xF0        # YLOC <= 8'h50
+    lhb R2, 0x00
+    sw R2, R1, 1
+
+    llb R2, 0x30         # cntrl <= 3 --- 0
+    sw R2, R1, 2
+
+    llb R12, 0x00     
+    lhb R12, 0x40
+    COUNT_O:
+    SUBI R12, R12, 1
+    B NEQ, COUNT_O   
+    
+    ####### Place V
+    llb R2, 0x7C
+    lhb R2, 0x01
+    sw R2, R1, 0        # XLOC <= 
+
+    llb R2, 0xF0        # YLOC <= 8'h50
+    lhb R2, 0x00
+    sw R2, R1, 1
+
+    llb R2, 0x3E         # cntrl <= 3 --- 0
+    sw R2, R1, 2
+
+    llb R12, 0x00     
+    lhb R12, 0x40
+    COUNT_V:
+    SUBI R12, R12, 1
+    B NEQ, COUNT_V  
+    
+    ####### Place E
+    llb R2, 0x90
+    lhb R2, 0x01
+    sw R2, R1, 0        # XLOC <= 
+
+    llb R2, 0xF0        # YLOC <= 8'h50
+    lhb R2, 0x00
+    sw R2, R1, 1
+
+    llb R2, 0x1C         # cntrl <= 3 --- 0
+    sw R2, R1, 2
+
+    llb R12, 0x00     
+    lhb R12, 0x40
+    COUNT_E2:
+    SUBI R12, R12, 1
+    B NEQ, COUNT_E2
+    
+    ####### Place R
+    llb R2, 0xA4
+    lhb R2, 0x01
+    sw R2, R1, 0        # XLOC <= 
+
+    llb R2, 0xF0        # YLOC <= 8'h50
+    lhb R2, 0x00
+    sw R2, R1, 1
+
+    llb R2, 0x36         # cntrl <= 3 --- 0
+    sw R2, R1, 2
+
+    llb R12, 0x00     
+    lhb R12, 0x40
+    COUNT_R:
+    SUBI R12, R12, 1
+    B NEQ, COUNT_R  
+    
     B uncond, END
 
 
