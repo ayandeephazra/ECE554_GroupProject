@@ -20,7 +20,7 @@ module btb (
 
 // 512 entries deep
 // <<<   TAG[24:18] || S[17] || V[16] || target_PC[15:0]   >>>
-logic [24:0] btb_mem [0:511];
+logic [24:0] btb_mem [0:127];
 
 logic [8:0] index;
 logic [6:0] tag;
@@ -37,10 +37,15 @@ logic [25:0] btb_wr_data;
 
 assign index = PC[8:0];
 
-always_ff @(negedge clk) begin
-  btb_out <= btb_mem[index];
-  if (write)
+integer i;
+always_ff @(negedge clk, negedge rst_n) begin
+  if (!rst_n)
+    for (i = 0; i < 128; i = i + 1) begin
+      btb_mem[i] <= 25'h0;
+    end
+  else if (write)
     btb_mem[wr_index] <= btb_wr_data;
+  btb_out <= btb_mem[index];
 end
 
 assign strong_bit = btb_out[17];
@@ -101,10 +106,10 @@ assign inc_mispr_cnt = btb_hit_ID_EX & flow_change_ID_EX;   // misprediction
 
 
 
-// use initial readmemh to reset all valid bits to 0. This will synthesize on the FPGA.
-// not possible to connect an async reset to the entire btb_mem on FPGA
-initial
-  $readmemh("C:/Users/Ayan Deep Hazra/Desktop/Semesters/SPRING 2023/ECE554/GroupProject_003/btb_contents_reset.hex",btb_mem);
+// // use initial readmemh to reset all valid bits to 0. This will synthesize on the FPGA.
+// // not possible to connect an async reset to the entire btb_mem on FPGA
+// initial
+//   $readmemh("I:/ece554/ECE554_GroupProject/Project/btb_contents_reset.hex",btb_mem);
 
     
 endmodule

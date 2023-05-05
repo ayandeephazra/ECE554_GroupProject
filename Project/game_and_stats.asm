@@ -1,5 +1,26 @@
 # Final game code
 
+# DEFAULTING ALL REGISTERS TO ZERO
+llb R1, 0
+llb R2, 0
+llb R3, 0
+llb R4, 0
+llb R5, 0
+llb R6, 0
+llb R7, 0
+llb R8, 0
+llb R9, 0
+llb R10, 0
+llb R11, 0
+llb R12, 0
+llb R13, 0
+llb R14, 0
+llb R15, 0
+
+###############################################################################
+############      B E G I N   G A M E   C O D E   H E R E       ###############
+###############################################################################
+
 llb R1, 0x0f
 lhb R1, 0xc0
 
@@ -23,18 +44,7 @@ lhb R3, 0x00
 llb R10, 0x10               # R10 holds mmap address for mmap_regs
 lhb R10, 0xC0
 
-# clear screen
-
-#llb R4, 0x04                # XLOC <= 10'h0080 (left side of the screen)
-#lhb R4, 0xFC
-#sw R4, R1, 0 
-
-#llb R4, 0x00                # YLOC <= 10'h0000 (TOP end of the screen)
-#lhb R4, 0x00
-#sw R4, R1, 1 
-
-#llb R4, 0x07                # cntrl <= 7
-#sw R4, R1, 2
+#######################################################################
 
 llb R12, 0x00     
 lhb R12, 0x40
@@ -51,22 +61,6 @@ lhb R11, 0x00
 addi R8, R11, 0		# load R8 with SEED we want to use
 sw R8, R10, 6 		# store c016 w/ SEED
 
-####### Place Ship
-llb R2, 0x10                # XLOC <= 10'h0080 (left side of the screen)
-lhb R2, 0x00
-sw R2, R1, 0                
-
-sw R3, R1, 1                # YLOC <= 8'hF0 (center of the screen)
-
-llb R4, 0x3                 # cntrl <= 3
-sw R4, R1, 2
-
-llb R12, 0x00     
-lhb R12, 0x40
-
-PLACE_SHIP_COUNT:
-SUBI R12, R12, 1
-B NEQ, PLACE_SHIP_COUNT
 
 GAME_LOOP:
 # place meteor here:
@@ -91,7 +85,7 @@ RUN:
 	# Game end condition here:
 	COLLISION_CHECK:	# check if collision after a move
 	# branch to handling iff 1, 2 amd 3 hold simultaneously 
-	# 1. x coordinate of top left of spaceship (R11->16'h0010) + decimal 100 >= TOP left x coordinate of meteor (R7)
+	# 1. x coordinate of top left of spaceship (16'h0010) + decimal 100 >= TOP left x coordinate of meteor (R7)
 	# 2. y coordinate of TOP left of spaceship (R3) <= TOP left y coordinate of meteor (R9) 
 	# 3. y coordinate of TOP left of spaceship (R3) + 100  >= TOP left y coordinate of meteor (R9) + 60 
 	#   \---- 
@@ -265,6 +259,23 @@ REMOVE_IMAGE:
 	B uncond, PLACE_METEOR
 
 PLACE_METEOR: # meteor lanes will eventually go here
+
+    ####### Place Ship
+    llb R2, 0x10                # XLOC <= 10'h0080 (left side of the screen)
+    lhb R2, 0x00
+    sw R2, R1, 0                
+
+    sw R3, R1, 1                # YLOC <= 8'hF0 (center of the screen)
+
+    llb R4, 0x3                 # cntrl <= 3
+    sw R4, R1, 2
+
+    llb R12, 0x00     
+    lhb R12, 0x40
+
+    PLACE_SHIP_COUNT:
+    SUBI R12, R12, 1
+    B NEQ, PLACE_SHIP_COUNT
 
 ##############################################################################
 # GETTING LFSR 
