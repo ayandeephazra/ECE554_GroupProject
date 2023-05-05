@@ -57,9 +57,9 @@ module BMP_display(
   ///////////////////////////////////
   videoMem6bit ivm(.clk(clk), .rst_n(rst_n), .we(we),.waddr(waddr),.wdata(wdata),.raddr(raddr),.rdata(rdata));
   
-  assign VGA_R = (rst_n)? {rdata[5:4],6'b000000}: 8'h00;
-  assign VGA_G = (rst_n)? {rdata[3:2],6'b000000}: 8'h00; // (ypix>9'd240) ?  8'h80 : 
-  assign VGA_B = (rst_n)? {rdata[1:0],6'b000000}: 8'h00;
+  assign VGA_R = {rdata[5:4],6'b000000}; //(rst_n)? : 8'h00;
+  assign VGA_G =  {rdata[3:2],6'b000000}; //(rst_n)?: 8'h00; // (ypix>9'd240) ?  8'h80 : 
+  assign VGA_B = {rdata[1:0],6'b000000}; //(rst_n)? : 8'h00;
   
   //////////////////////////////////////////////
   // Instantiate Logic that determines pixel //
