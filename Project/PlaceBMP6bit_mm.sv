@@ -72,7 +72,7 @@ module PlaceBMP6bit_mm(clk,rst_n, waddr,wdata,we, add_fnt, add_img, rem_img, ima
 	  
   always_ff @(posedge clk, negedge rst_n)
     if (!rst_n)
-	  bmp_addr_end <= 18'd307199;//16'h0000;			<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< WHAT ?? 
+	  bmp_addr_end <= 16'h0000;
 	else if (captureXwid2)
 	  bmp_addr_end <= xwid + bmp_read;		// bmp_read is currently = xwidth
     else if (captureYwid2)
@@ -135,6 +135,8 @@ module PlaceBMP6bit_mm(clk,rst_n, waddr,wdata,we, add_fnt, add_img, rem_img, ima
   always_ff @(posedge clk, negedge rst_n)
       if (!rst_n)
 	    waddr <= 18'h00000;
+	  else if (end_clear)
+		waddr <= 18'h00000;
 	  else if (captureIndx)
 	    waddr <= yloc*10'd640 + xloc;
 	  else if (waddr_wrap_en)
@@ -176,11 +178,9 @@ module PlaceBMP6bit_mm(clk,rst_n, waddr,wdata,we, add_fnt, add_img, rem_img, ima
 
 	case (state)
 	  RST: begin
-		if (bmp_addr<bmp_addr_end) begin
-		  bmp_addr_inc = 1;
-		  wdata =  6'h00;
-		//   we = 1'b1;	
-		  we = (bmp_read==6'h024) ? 1'b0 : 1'b1;	// 128,64,32 is treated as transparent
+		wdata =  6'h00;	
+		we = 1'b1;
+		if (waddr<19'd307199) begin
 		  waddr_inc = 1;
 		end else begin
 		  end_clear = 1;
@@ -258,8 +258,7 @@ module PlaceBMP6bit_mm(clk,rst_n, waddr,wdata,we, add_fnt, add_img, rem_img, ima
   BMP_ROM_Font  iROM0(.clk(clk),.addr(font_addr),.dout(bmp_read0));
   BMP_ROM_spaceship iROM1(.clk(clk),.addr(bmp_addr),.dout(bmp_read1));
   BMP_ROM_asteroid iROM2(.clk(clk),.addr(bmp_addr),.dout(bmp_read2));
-  //BMP_ROM_blackscreen iROM3(.clk(clk),.addr(bmp_addr),.dout(bmp_read3));
-// set bit 6 high to remove image
+
   assign bmp_read = (fnt_addr_inc) ? bmp_read0 :
 	  	    (indx === 5'b00001) ? bmp_read1 :
 			//(indx === 5'b00011) ? bmp_read3 :
