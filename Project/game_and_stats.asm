@@ -1,5 +1,21 @@
 # Final game code
 
+llb R1, 0
+llb R2, 0
+llb R3, 0
+llb R4, 0
+llb R5, 0
+llb R6, 0
+llb R7, 0
+llb R8, 0
+llb R9, 0
+llb R10, 0
+llb R11, 0
+llb R12, 0
+llb R13, 0
+llb R14, 0
+llb R15, 0
+
 llb R1, 0x0f
 lhb R1, 0xc0
 
