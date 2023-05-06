@@ -1,0 +1,23 @@
+@0000 0BB04	// llb R11, 0x04
+@0001 0ABC0	// lhb R11, 0xC0
+@0002 0BA9F	// llb R10, 0x9f
+@0003 0AA00	// lhb R10, 0x00
+@0004 0BC09	// llb R12, 9
+@0005 06DA4	// srl R13, R10, 4
+@0006 02EDC	// sub R14, R13, R12
+@0007 0C402	// b gt, LETTER_1
+@0008 0BF30	// llb R15, 0x30
+@0009 0CE01	// b uncond, CONVERT_1
+@000a 0BF57	// llb R15, 0x57
+@000b 00DDF	// add R13, R13, R15
+@000c 09DB0	// sw R13, R11, 0
+@000d 0BE0F	// llb R14, 0x0f
+@000e 03DEA	// and R13, R14, R10
+@000f 02EDC	// sub R14, R13, R12
+@0010 0C402	// b gt, LETTER_2
+@0011 0BF30	// llb R15, 0x30
+@0012 0CE01	// b uncond, CONVERT_2
+@0013 0BF57	// llb R15, 0x57
+@0014 00DDF	// add R13, R13, R15
+@0015 09DB0	// sw R13, R11, 0
+@0016 0CFFF	// b uncond, END

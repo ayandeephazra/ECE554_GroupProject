@@ -1,0 +1,25 @@
+@0000 0B101	// llb R1, 0x1
+@0001 0B20B	// llb R2, 0x0b
+@0002 0A2C0	// lhb R2, 0xc0
+@0003 09120	// sw R1, R2, 0
+@0004 0B101	// llb R1, 0x1
+@0005 0B204	// llb R2, 0x4
+@0006 0B303	// llb R3, 0x3
+@0007 02523	// sub R5, R2, R3
+@0008 0C804	// b gte, FIRST
+@0009 0B400	// llb R4, 0x0
+@000a 0B401	// llb R4, 0x1
+@000b 0B402	// llb R4, 0x2
+@000c 0B403	// llb R4, 0x3
+@000d 0B408	// llb R4, 0x8
+@000e 0B409	// llb R4, 0x9
+@000f 0B40A	// llb R4, 0xa
+@0010 0B40B	// llb R4, 0xb
+@0011 02221	// sub R2, R2, R1
+@0012 0C201	// b eq, END_STATS
+@0013 0C9F3	// b gte, REPEAT
+@0014 0B100	// llb R1, 0x0
+@0015 0B20B	// llb R2, 0x0b
+@0016 0A2C0	// lhb R2, 0xc0
+@0017 09120	// sw R1, R2, 0
+@0018 0CFFF	// b uncond, END

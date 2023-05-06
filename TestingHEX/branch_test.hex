@@ -1,0 +1,16 @@
+@0000 0B101	// llb R1, 0x1
+@0001 0B203	// llb R2, 0x3
+@0002 00312	// add R3, R1, R2
+@0003 0C20A	// b eq, FIRST
+@0004 0B401	// llb R4, 0x1
+@0005 0B402	// llb R4, 0x2
+@0006 0B403	// llb R4, 0x3
+@0007 0B404	// llb R4, 0x4
+@0008 02543	// sub R5, R4, R3
+@0009 0C204	// b eq, FIRST
+@000a 0B405	// llb R4, 0x5
+@000b 0B406	// llb R4, 0x6
+@000c 0B407	// llb R4, 0x7
+@000d 0B408	// llb R4, 0x8
+@000e 0BEFF	// llb R14, 0xff
+@000f 0CFFF	// b uncond, END

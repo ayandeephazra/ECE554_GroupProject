@@ -1,0 +1,93 @@
+@0000 0B101	// llb R1, 0x1
+@0001 0B20B	// llb R2, 0x0b
+@0002 0A2C0	// lhb R2, 0xc0
+@0003 09120	// sw R1, R2, 0
+@0004 0B101	// llb R1, 0x1
+@0005 0B204	// llb R2, 0x4
+@0006 0B303	// llb R3, 0x3
+@0007 02523	// sub R5, R2, R3
+@0008 0C804	// b gte, FIRST
+@0009 0B400	// llb R4, 0x0
+@000a 0B401	// llb R4, 0x1
+@000b 0B402	// llb R4, 0x2
+@000c 0B403	// llb R4, 0x3
+@000d 0B408	// llb R4, 0x8
+@000e 0B409	// llb R4, 0x9
+@000f 0B40A	// llb R4, 0xa
+@0010 0B40B	// llb R4, 0xb
+@0011 02221	// sub R2, R2, R1
+@0012 0C201	// b eq, END_STATS
+@0013 0C9F3	// b gte, REPEAT
+@0014 0B100	// llb R1, 0x0
+@0015 0B20B	// llb R2, 0x0b
+@0016 0A2C0	// lhb R2, 0xc0
+@0017 09120	// sw R1, R2, 0
+@0018 0D001	// jal PRINT_STATS
+@0019 0CFFF	// b uncond, END
+@001a 0B110	// llb R1, 0x10
+@001b 0A1C0	// lhb R1, 0xc0
+@001c 0B204	// llb R2, 0x04
+@001d 0A2C0	// lhb R2, 0xC0
+@001e 0B480	// llb R4, 0x80
+@001f 0A400	// lhb R4, 0x00
+@0020 08510	// lw R5, R1, 0
+@0021 0B353	// llb R3, 0x53
+@0022 09320	// sw R3, R2, 0
+@0023 0B374	// llb R3, 0x74
+@0024 09320	// sw R3, R2, 0
+@0025 0B361	// llb R3, 0x61
+@0026 09320	// sw R3, R2, 0
+@0027 0B374	// llb R3, 0x74
+@0028 09320	// sw R3, R2, 0
+@0029 0B373	// llb R3, 0x73
+@002a 09320	// sw R3, R2, 0
+@002b 0B33A	// llb R3, 0x3a
+@002c 09320	// sw R3, R2, 0
+@002d 0B320	// llb R3, 0x20
+@002e 09320	// sw R3, R2, 0
+@002f 08321	// lw R3, R2, 1
+@0030 03334	// and R3, R3, R4
+@0031 0C3FD	// b eq, L_WAIT_EMP
+@0032 0B330	// llb R3, 0x30
+@0033 09320	// sw R3, R2, 0
+@0034 0B378	// llb R3, 0x78
+@0035 09320	// sw R3, R2, 0
+@0036 0BEFF	// llb R14, 0xff
+@0037 0BC09	// llb R12, 9
+@0038 0B40F	// llb R4, 0x0f
+@0039 06D5C	// srl R13, R5, 12
+@003a 03DD4	// and R13, R13, R4
+@003b 02EDC	// sub R14, R13, R12
+@003c 0C402	// b gt, LETTER_4
+@003d 0B930	// llb R9, 0x30
+@003e 0CE01	// b uncond, CONVERT_4
+@003f 0B957	// llb R9, 0x57
+@0040 00DD9	// add R13, R13, R9
+@0041 09D20	// sw R13, R2, 0
+@0042 06D58	// srl R13, R5, 8
+@0043 03DD4	// and R13, R13, R4
+@0044 02EDC	// sub R14, R13, R12
+@0045 0C402	// b gt, LETTER_3
+@0046 0B930	// llb R9, 0x30
+@0047 0CE01	// b uncond, CONVERT_3
+@0048 0B957	// llb R9, 0x57
+@0049 00DD9	// add R13, R13, R9
+@004a 09D20	// sw R13, R2, 0
+@004b 06D54	// srl R13, R5, 4
+@004c 03DD4	// and R13, R13, R4
+@004d 02EDC	// sub R14, R13, R12
+@004e 0C402	// b gt, LETTER_2
+@004f 0B930	// llb R9, 0x30
+@0050 0CE01	// b uncond, CONVERT_2
+@0051 0B957	// llb R9, 0x57
+@0052 00DD9	// add R13, R13, R9
+@0053 09D20	// sw R13, R2, 0
+@0054 03D45	// and R13, R4, R5
+@0055 02EDC	// sub R14, R13, R12
+@0056 0C402	// b gt, LETTER_1
+@0057 0B930	// llb R9, 0x30
+@0058 0CE01	// b uncond, CONVERT_1
+@0059 0B957	// llb R9, 0x57
+@005a 00DD9	// add R13, R13, R9
+@005b 09D20	// sw R13, R2, 0
+@005c 0E0F0	// jr R15
