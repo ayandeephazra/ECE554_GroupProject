@@ -9,17 +9,17 @@ module mmap_regs(
     input inc_br_cnt,
     input inc_hit_cnt,
     input inc_mispr_cnt,
-    input KEY_UP,
-    input KEY_DOWN,
+    input KEY_UP,           // KEY[1] from FPGA
+    input KEY_DOWN,         // KEY[2] from FPGA
     input end_clear
 );
 
     logic [15:0] br_cnt, mispr_cnt, hit_cnt;
     logic [15:0] timer;
-    logic stats_en;     // a write to mem addr 0xc00b sets or clears the stats reg
-    logic [15:0] button_up, button_down;
-    logic [7:0] lfsr_out, lfsr_SEED;
-    logic end_clear_reg;
+    logic stats_en;                                 // a write to mem addr 0xc00b sets or clears the stats reg
+    logic [15:0] button_up, button_down;            // output to read in game code to check if a button is pressed
+    logic [7:0] lfsr_out, lfsr_SEED;                // LFSR output and LFSR input
+    logic end_clear_reg;                            // game over signal -> to clear the screen
 
     // mmap_addr needs to check all 4 bits -> switched to hex to make it easier
     assign databus = (mm_re & addr == 16'hc010) ? br_cnt :
@@ -85,20 +85,19 @@ module mmap_regs(
         else
             button_down <= 16'h0000;
             
-    
+    // End -- addr 0xc00f
     always_ff @ (posedge clk, negedge rst_n)
         if (!rst_n)
             end_clear_reg <= 0;
         else if (end_clear)
             end_clear_reg <= 1;
 
+    // SEED from assembly code to be placed into the LFSR
     assign lfsr_SEED = (lfsr_load) ? databus[7:0] : 8'h0;
 
     ////////////////////////
 	// Instantiate LFSR  //
 	//////////////////////
 	LFSR iLFSR(.clk(clk), .rst_n(rst_n), .load(lfsr_load), .SEED(lfsr_SEED), .q(lfsr_out));
-
-    
 
 endmodule
