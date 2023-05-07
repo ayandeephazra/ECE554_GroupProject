@@ -45,7 +45,7 @@ always @(posedge clk, negedge rst_n)
 	  neg_EX_DM <= neg;
 	end
 
-// // always @(br_instr_ID_EX,cc_ID_EX,zr_EX_DM,ov_EX_DM,neg_EX_DM,jmp_reg_ID_EX,jmp_imm_ID_EX,btb_hit_ID_EX) begin
+
 always @(*) begin
 
   flow_change_ID_EX = jmp_imm_ID_EX | jmp_reg_ID_EX;	// jumps always change the flow
@@ -77,29 +77,6 @@ always @(*) begin
   end
     
 end
-
-
-
-
-// assign flow_change_ID_EX = (jmp_imm_ID_EX | jmp_reg_ID_EX) ? 1:
-//     (~br_instr_ID_EX) ? 0 : 
-//     (cc_ID_EX == 3'b000) ? (btb_hit_ID_EX ? ~(~zr_EX_DM) : ~zr_EX_DM) :
-//     (cc_ID_EX == 3'b001) ? (btb_hit_ID_EX ? ~(zr_EX_DM) : zr_EX_DM) :
-//     (cc_ID_EX == 3'b010) ? (btb_hit_ID_EX ? ~(~zr_EX_DM & ~neg_EX_DM) : (~zr_EX_DM & ~neg_EX_DM)) :
-//     (cc_ID_EX == 3'b011) ? (btb_hit_ID_EX ? ~(neg_EX_DM) : neg_EX_DM) :
-//     (cc_ID_EX == 3'b100) ? (btb_hit_ID_EX ? ~(zr_EX_DM | (~zr_EX_DM & ~neg_EX_DM)) : (zr_EX_DM | (~zr_EX_DM & ~neg_EX_DM))) :
-//     (cc_ID_EX == 3'b101) ? (btb_hit_ID_EX ? ~(neg_EX_DM | zr_EX_DM) : (neg_EX_DM | zr_EX_DM)) :
-//     (cc_ID_EX == 3'b110) ? (btb_hit_ID_EX ? ~(ov_EX_DM) : ov_EX_DM) :
-//     (cc_ID_EX == 3'b111) ? (btb_hit_ID_EX ? 0 : 1) : 0;
-    
-
-
-
-
-
-
-
-
 
 
 endmodule

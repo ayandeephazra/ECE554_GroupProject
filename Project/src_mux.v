@@ -54,7 +54,6 @@ assign RF_p1 = // instr gets more priority than bypass_1 but not if LWI is not h
 			   (byp1_EX) ? {(LWI_instr_EX_DM)? instr: dst_EX_DM }:		// EX gets priority because it represents more recent data
                (byp1_DM) ? dst_DM_WB :
 			   p1_ID_EX;	
-			   // //(LWI_instr_EX_DM)? instr: 
 			   
 ////////////////////////////////////////////////////
 // Need to pipeline the data to be stored for SW //

@@ -8,6 +8,7 @@ module videoMem6bit(clk, rst_n, we,waddr,wdata,raddr,rdata);
   input [18:0] raddr;
   output reg [5:0] rdata;
   
+  // 6 BIT VIDEO MEMORY 307K WIDE
   reg [5:0]mem[0:307199];
   
   always @(posedge clk) begin

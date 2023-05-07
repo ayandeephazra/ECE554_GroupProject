@@ -38,25 +38,6 @@ wire [15:0] nxt_pc;
 
 assign nxt_pc = pc + 1;
 
-/*
-always @(posedge clk, negedge rst_n)
-  if (!rst_n) begin
-    pc_pre_movc_mux <= 16'h0000;
-	pc <= 16'h0000;
-  end
-  else if (!stall_IM_ID)	// all stalls stall the PC
-    if (flow_change_ID_EX) begin
-      pc_pre_movc_mux <= dst_ID_EX;
-	  pc <= dst_ID_EX;
-	end
-    else begin
-	  pc_pre_movc_mux <= nxt_pc;
-	  pc <= pc_pre_movc_mux;
-	end
-  else if (LWI_instr_EX_DM)
-    pc <= dst_EX_DM;
-*/
-
 ////////////////////////////////
 // Implement the PC register //
 //////////////////////////////
@@ -79,29 +60,7 @@ always @(posedge clk, negedge rst_n)
     else
 	    pc_pre_mux <= nxt_pc;
 
-    // MERGE CONFLICT !!!!!!!!!
-    // BRANCH PREDICTION HIGHER PRIORITY
-//     if (flow_change_ID_EX) begin
-// <<<<<<< HEAD
-//       pc_pre_mux <= dst_ID_EX;
-//     else
-// 	  pc_pre_mux <= nxt_pc;
-// =======
-//       if (btb_hit_ID_EX)
-//         pc <= pc_ID_EX;   // branch misprediction :( -- flush back to og pc
-//       else
-//         pc <= dst_ID_EX;
-//     else if (btb_hit)
-//       pc <= btb_nxt_pc;
-//     else
-// 	    pc <= nxt_pc;
-
-// >>>>>>> branch_predictor
-    // end
-
-
-
-
+   
 /////////////////////////////////////////////////
 // Implement the mux that selects the movc pc //
 ///////////////////////////////////////////////

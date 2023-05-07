@@ -58,7 +58,7 @@ module BMP_display(
   videoMem6bit ivm(.clk(clk), .rst_n(rst_n), .we(we),.waddr(waddr),.wdata(wdata),.raddr(raddr),.rdata(rdata));
   
   assign VGA_R = {rdata[5:4],6'b000000};
-  assign VGA_G = {rdata[3:2],6'b000000}; // (ypix>9'd240) ?  8'h80 : 
+  assign VGA_G = {rdata[3:2],6'b000000}; 
   assign VGA_B = {rdata[1:0],6'b000000};
   
   //////////////////////////////////////////////

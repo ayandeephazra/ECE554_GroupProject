@@ -198,7 +198,7 @@ assign flush = flow_change_ID_EX | flow_change_EX_DM | hlt_ID_EX | hlt_EX_DM;
 assign load_use_hazard = (((rf_dst_addr_ID_EX==rf_p0_addr) && rf_re0) || 
                           ((rf_dst_addr_ID_EX==rf_p1_addr) && rf_re1)) ? dm_re_ID_EX : 1'b0;
 						  
-assign stall_IM_ID = hlt_ID_EX | load_use_hazard | LWI_instr_EX_DM; //stall_movc
+assign stall_IM_ID = hlt_ID_EX | load_use_hazard | LWI_instr_EX_DM; 
 assign stall_ID_EX = 1'b0; // hlt_EX_DM;
 assign stall_EX_DM = 1'b0; // hlt_EX_DM;
 
@@ -284,10 +284,6 @@ always @(instr_IM_ID) begin
 	  rf_we = 1;
       alu_func = SRL;
 	  clk_z = 1;
-//		fprintf(fptr, "File was not opened\n");
-//
-//		fprintf(fptr, "File was not opened\n");
-//
 	end	
 	SRAi : begin
 	  rf_re1 = 1;
@@ -376,7 +372,6 @@ always @(instr_IM_ID) begin
 	end
 	ANDIi: begin // sign extend
 	 rf_re0 = 1;
-	 //src0sel = IMM2SRC0_4BZE;
 	 src0sel = IMM2SRC0;
 	 rf_we = 1;
 	 clk_z = 1;
@@ -391,7 +386,6 @@ always @(instr_IM_ID) begin
 	end
 	ORIi: begin // sign extend
 	  rf_re0 = 1;
-	  //src0sel = IMM2SRC0_4BZE;
 	  src0sel = IMM2SRC0;
 	  rf_we = 1;
 	  clk_z = 1;
@@ -399,14 +393,11 @@ always @(instr_IM_ID) begin
 	end
 	ANDNi: begin // sign extend
 	  rf_re0 = 1;
-	//  rf_re1 = 1;
-	// src0sel = IMM2SRC0_4BZE;
 	 src0sel = IMM2SRC0;
 	  rf_we = 1;
       	alu_func = ANDN;
 	  clk_z = 1;
 	end
-	// MUL till assembler is updated
 	SMULi: begin
 	  rf_re0 = 1;
 	  rf_re1 = 1;

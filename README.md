@@ -1,5 +1,16 @@
 # ECE554_GroupProject
+Spring 2023 ECE 554 Project
 Complex ISA with Dynamic Branch Predictor and VGA capabilities that includes a custom-indie game wherein a player tries to dodge asteroids as a spaceship pilot. 
+
+Team Members:
+
+Josh Bowers -> Assembler, spaceship movement, LFSR, Push/Pop
+
+Brody Skaleski -> ISA expansion, meteor movement, meteor spawn randomness
+
+Anish Munimadugu -> BTB unit, Memory mappings to regs, Branch pred stats, coded branch pred enable/disable
+
+Ayan Deep Hazra -> MOVC/ISA Immediates, Push/Pop Validation, ISA extension/5 bit opcodes, Collisions
 
 Our game showcases how a CPU can improve efficiency by implementing dynamic branch prediction. Our game code contains image movement subroutines that are connected together through branches. When branch prediction is disabled, the speed of the game is slow due to all game branch instructions flowing through the CPU pipeline every time the spaceship or meteor moves or collides with each other. But when branch prediction is activated, the game’s speed dramatically increases because the branch predictor determines which branch will be taken without the need to flow through the CPU.
 
